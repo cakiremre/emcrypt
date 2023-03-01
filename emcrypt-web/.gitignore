@@ -34,3 +34,5 @@ build/
 .vscode/
 mvnw
 mvnw.cmd
+
+src/main/resources/static/
