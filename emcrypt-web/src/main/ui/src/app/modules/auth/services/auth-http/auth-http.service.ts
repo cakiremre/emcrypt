@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Account } from '../../models/account';
 import { environment } from '../../../../../environments/environment';
-import { AuthResponse } from '../../models/auth-response';
+import { AuthResponse } from '../../models/account';
 import { GenericResponse } from 'src/app/common/models/generic-response';
 
 const API_USERS_URL = `${environment.apiUrl}/gw/auth`;
@@ -29,6 +29,13 @@ export class AuthHTTPService {
       {},
       { params: new HttpParams().append('username', username) }
     );
+  }
+
+  setPassword(link: string, password: string): Observable<any> {
+    return this.http.post<AuthResponse>(`${API_USERS_URL}/set-password`, {
+      link,
+      password,
+    });
   }
 
   getUserByToken(token: string): Observable<Account> {

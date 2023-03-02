@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.auth;
+package com.beam.emcryptcore.dto.gw;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Data
 @Builder
-public class AuthResponse {
+public class AuthRequest {
 
-    private int code;
-    private String token;
-    private Account account;
+    private String username;
+    private String password;
 }

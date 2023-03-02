@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.comm.exception;
+package com.beam.emcryptcore.exception.comm;
 
 import com.beam.emcryptcore.model.comm.mail.Type;
 import com.beam.emcryptcore.model.common.Language;

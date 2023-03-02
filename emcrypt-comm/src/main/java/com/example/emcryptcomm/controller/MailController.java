@@ -1,8 +1,10 @@
 package com.example.emcryptcomm.controller;
 
 import com.beam.emcryptcore.dto.GenericResponse;
-import com.beam.emcryptcore.dto.comm.MultipleMailRequest;
-import com.beam.emcryptcore.dto.comm.SingleMailRequest;
+import com.beam.emcryptcore.dto.comm.mail.MultipleRequest;
+import com.beam.emcryptcore.dto.comm.mail.Options;
+import com.beam.emcryptcore.dto.comm.mail.Result;
+import com.beam.emcryptcore.dto.comm.mail.SingleRequest;
 import com.beam.emcryptcore.model.comm.mail.*;
 import com.example.emcryptcomm.service.MailService;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +27,12 @@ public class MailController {
 
 
     @PostMapping("system")
-    public Result system(@RequestBody SingleMailRequest request){
+    public Result system(@RequestBody SingleRequest request){
         return service.singleSend(request.getRecipient(), request.getType(), request.getOptions());
     }
 
     @PostMapping("system-multiple")
-    public List<Result> system(@RequestBody MultipleMailRequest request){
+    public List<Result> system(@RequestBody MultipleRequest request){
         return service.multipleSend(request.getRecipientList(), request.getType(), request.getOptions());
     }
 

@@ -2,10 +2,11 @@ package com.beam.emcryptgw.service;
 
 import com.beam.emcryptcore.base.BaseService;
 import com.beam.emcryptcore.dto.GenericResponse;
-import com.beam.emcryptcore.dto.comm.SingleMailRequest;
+import com.beam.emcryptcore.dto.comm.mail.Options;
+import com.beam.emcryptcore.dto.comm.mail.SingleRequest;
+import com.beam.emcryptcore.dto.gw.SetPasswordRequest;
 import com.beam.emcryptcore.model.auth.Account;
 import com.beam.emcryptcore.model.auth.AccountLink;
-import com.beam.emcryptcore.model.comm.mail.Options;
 import com.beam.emcryptcore.model.comm.mail.Recipient;
 import com.beam.emcryptcore.model.comm.mail.Type;
 import com.beam.emcryptcore.util.RandomStringGenerator;
@@ -29,20 +30,13 @@ public class AccountService extends BaseService<AccountRepository, Account> {
     public GenericResponse<Account> authenticate(String username, String password) {
         Optional<Account> query = repository.findByUsername(username);
         if (query.isEmpty()) {
-            return GenericResponse.<Account>builder()
-                    .code(10)
-                    .build();
+            return GenericResponse.code(10);
         } else {
             Account account = query.get();
             if (passwordEncoder.matches(password, account.getPassword())) {
-                return GenericResponse.<Account>builder()
-                        .code(0)
-                        .data(account)
-                        .build();
+                return GenericResponse.success(account);
             } else {
-                return GenericResponse.<Account>builder()
-                        .code(11)
-                        .build();
+                return GenericResponse.code(11);
             }
         }
     }
@@ -50,14 +44,9 @@ public class AccountService extends BaseService<AccountRepository, Account> {
     public GenericResponse<Account> loadByUsername(String username) {
         Optional<Account> query = repository.findByUsername(username);
         if (query.isEmpty()) {
-            return GenericResponse.<Account>builder()
-                    .code(10)
-                    .build();
+            return GenericResponse.code(10);
         } else {
-            return GenericResponse.<Account>builder()
-                    .code(0)
-                    .data(query.get())
-                    .build();
+            return GenericResponse.success(query.get());
         }
     }
 
@@ -73,7 +62,7 @@ public class AccountService extends BaseService<AccountRepository, Account> {
             accountLinkRepository.save(link);
 
             // request to mail-service
-            mailService.system(SingleMailRequest.builder()
+            mailService.system(SingleRequest.builder()
                     .type(Type.FORGOT)
                     .recipient(Recipient.builder()
                             .email(username)
@@ -85,8 +74,25 @@ public class AccountService extends BaseService<AccountRepository, Account> {
                             .build())
                     .build());
         }
-        return GenericResponse.<Account>builder()
-                .code(0)
-                .build();
+        return GenericResponse.success();
+    }
+
+    public GenericResponse<Account> setPassword(SetPasswordRequest request) {
+        AccountLink link = accountLinkRepository.findByLink(request.getLink());
+
+        if (link == null) {
+            return GenericResponse.code(10);
+        } else {
+            String username = link.getUsername();
+            Optional<Account> query = repository.findByUsername(username);
+            if (query.isEmpty()) {
+                return GenericResponse.code(11);
+            } else {
+                Account account = query.get();
+                account.setPassword(passwordEncoder.encode(request.getPassword()));
+                account = repository.save(account);
+                return GenericResponse.success(account);
+            }
+        }
     }
 }

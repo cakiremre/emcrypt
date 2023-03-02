@@ -2,9 +2,8 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
 import { Account } from '../models/account';
-import { AuthResponse } from '../models/auth-response';
+import { AuthResponse } from '../models/account';
 import { AuthHTTPService } from './auth-http';
-import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { GenericResponse } from 'src/app/common/models/generic-response';
 
@@ -48,6 +47,22 @@ export class AuthService implements OnDestroy {
   login(email: string, password: string): Observable<UserType> {
     this.isLoadingSubject.next(true);
     return this.authHttpService.login(email, password).pipe(
+      map((auth: AuthResponse) => {
+        const result = this.setAuthFromLocalStorage(auth);
+        this.setUser(auth.account);
+        return auth.account;
+      }),
+      catchError((err) => {
+        console.error('err', err);
+        return of(undefined);
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  setPassword(link: string, password: string): Observable<UserType> {
+    this.isLoadingSubject.next(true);
+    return this.authHttpService.setPassword(link, password).pipe(
       map((auth: AuthResponse) => {
         const result = this.setAuthFromLocalStorage(auth);
         this.setUser(auth.account);

@@ -1,6 +1,5 @@
-package com.beam.emcryptcore.dto.comm;
+package com.beam.emcryptcore.dto.comm.mail;
 
-import com.beam.emcryptcore.model.comm.mail.Options;
 import com.beam.emcryptcore.model.comm.mail.Recipient;
 import com.beam.emcryptcore.model.comm.mail.Type;
 import lombok.AllArgsConstructor;
@@ -8,15 +7,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MultipleMailRequest {
+public class SingleRequest {
 
-    private List<Recipient> recipientList;
+    private Recipient recipient;
     private Type type;
     private Options options;
 }

@@ -1,6 +1,6 @@
 package com.example.emcryptcomm.service;
 
-import com.beam.emcryptcore.model.comm.mail.Options;
+import com.beam.emcryptcore.dto.comm.mail.Options;
 import com.beam.emcryptcore.model.comm.mail.Recipient;
 import com.beam.emcryptcore.model.comm.mail.Type;
 import org.junit.jupiter.api.Test;

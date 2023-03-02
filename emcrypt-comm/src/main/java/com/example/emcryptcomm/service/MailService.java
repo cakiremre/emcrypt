@@ -2,7 +2,9 @@ package com.example.emcryptcomm.service;
 
 import com.beam.emcryptcore.base.BaseService;
 import com.beam.emcryptcore.dto.GenericResponse;
-import com.beam.emcryptcore.model.comm.exception.TemplateException;
+import com.beam.emcryptcore.dto.comm.mail.Options;
+import com.beam.emcryptcore.dto.comm.mail.Result;
+import com.beam.emcryptcore.exception.comm.TemplateException;
 import com.beam.emcryptcore.model.comm.mail.*;
 import com.example.emcryptcomm.repository.MailRepository;
 import com.example.emcryptcomm.util.SmtpUtils;
@@ -15,8 +17,8 @@ import org.springframework.util.Assert;
 
 import java.util.*;
 
-import static com.beam.emcryptcore.model.comm.exception.TemplateException.CONTENT_NOT_FOUND;
-import static com.beam.emcryptcore.model.comm.exception.TemplateException.NOT_FOUND;
+import static com.beam.emcryptcore.exception.comm.TemplateException.CONTENT_NOT_FOUND;
+import static com.beam.emcryptcore.exception.comm.TemplateException.NOT_FOUND;
 import static com.example.emcryptcomm.util.SmtpUtils.convertSenderToInternetAddress;
 import static com.example.emcryptcomm.util.SmtpUtils.convertSendersToInternetAddresses;
 import static jakarta.mail.Message.RecipientType.TO;

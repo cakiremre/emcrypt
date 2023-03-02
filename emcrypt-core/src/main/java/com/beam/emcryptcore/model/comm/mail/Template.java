@@ -1,7 +1,7 @@
 package com.beam.emcryptcore.model.comm.mail;
 
 import com.beam.emcryptcore.base.Base;
-import com.beam.emcryptcore.model.comm.exception.TemplateException;
+import com.beam.emcryptcore.exception.comm.TemplateException;
 import com.beam.emcryptcore.model.common.Language;
 import com.beam.emcryptcore.model.common.Settings;
 import lombok.AllArgsConstructor;

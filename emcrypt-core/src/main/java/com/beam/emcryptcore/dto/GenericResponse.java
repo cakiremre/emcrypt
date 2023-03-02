@@ -9,9 +9,29 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class GenericResponse <T>{
+public class GenericResponse<T> {
 
     private int code;
     private String message;
     private T data;
+
+    public static GenericResponse code(int code) {
+        return GenericResponse.builder()
+                .code(code)
+                .build();
+    }
+
+    public static GenericResponse success() {
+        return GenericResponse.builder()
+                .code(0)
+                .build();
+    }
+
+    public static <T> GenericResponse success(T data) {
+        return GenericResponse.<T>builder()
+                .code(0)
+                .data(data)
+                .build();
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.comm.mail;
+package com.beam.emcryptcore.dto.comm.mail;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
