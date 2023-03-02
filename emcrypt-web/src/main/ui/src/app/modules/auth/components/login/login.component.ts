@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { UserModel } from '../../models/user.model';
+import { Account } from '../../models/account';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -77,7 +77,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     const loginSubscr = this.authService
       .login(this.f.email.value, this.f.password.value)
       .pipe(first())
-      .subscribe((user: UserModel | undefined) => {
+      .subscribe((user: Account | undefined) => {
         if (user) {
           this.router.navigate([this.returnUrl]);
         } else {

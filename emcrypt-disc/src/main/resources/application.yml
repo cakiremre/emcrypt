@@ -4,8 +4,7 @@ eureka:
     register-with-eureka: false
   instance:
     hostname: localhost
-
 server:
-  port:8761
+  port: 8761
 
 

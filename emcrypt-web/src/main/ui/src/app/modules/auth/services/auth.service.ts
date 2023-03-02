@@ -1,13 +1,13 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
-import { UserModel } from '../models/user.model';
-import { AuthModel } from '../models/auth.model';
+import { Account } from '../models/account';
+import { AuthResponse } from '../models/auth-response';
 import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
-export type UserType = UserModel | undefined;
+export type UserType = Account | undefined;
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +15,7 @@ export type UserType = UserModel | undefined;
 export class AuthService implements OnDestroy {
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-  private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
+  private authLocalStorageToken = `EMCRYPT-AUTH-JWT`;
 
   // public fields
   currentUser$: Observable<UserType>;
@@ -47,11 +47,11 @@ export class AuthService implements OnDestroy {
   login(email: string, password: string): Observable<UserType> {
     this.isLoadingSubject.next(true);
     return this.authHttpService.login(email, password).pipe(
-      map((auth: AuthModel) => {
+      map((auth: AuthResponse) => {
         const result = this.setAuthFromLocalStorage(auth);
-        return result;
+        this.setUser(auth.account);
+        return auth.account;
       }),
-      switchMap(() => this.getUserByToken()),
       catchError((err) => {
         console.error('err', err);
         return of(undefined);
@@ -67,14 +67,18 @@ export class AuthService implements OnDestroy {
     });
   }
 
+  setUser(account: Account) {
+    this.currentUserSubject.next(account);
+  }
+
   getUserByToken(): Observable<UserType> {
     const auth = this.getAuthFromLocalStorage();
-    if (!auth || !auth.authToken) {
+    if (!auth || !auth.token) {
       return of(undefined);
     }
 
     this.isLoadingSubject.next(true);
-    return this.authHttpService.getUserByToken(auth.authToken).pipe(
+    return this.authHttpService.getUserByToken(auth.token).pipe(
       map((user: UserType) => {
         if (user) {
           this.currentUserSubject.next(user);
@@ -87,47 +91,32 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  // need create new user then login
-  registration(user: UserModel): Observable<any> {
-    this.isLoadingSubject.next(true);
-    return this.authHttpService.createUser(user).pipe(
-      map(() => {
-        this.isLoadingSubject.next(false);
-      }),
-      switchMap(() => this.login(user.email, user.password)),
-      catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
-  }
-
-  forgotPassword(email: string): Observable<boolean> {
+  forgotPassword(username: string): Observable<boolean> {
     this.isLoadingSubject.next(true);
     return this.authHttpService
-      .forgotPassword(email)
+      .forgotPassword(username)
       .pipe(finalize(() => this.isLoadingSubject.next(false)));
   }
 
   // private methods
-  private setAuthFromLocalStorage(auth: AuthModel): boolean {
+  private setAuthFromLocalStorage(auth: AuthResponse): boolean {
     // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
-    if (auth && auth.authToken) {
-      localStorage.setItem(this.authLocalStorageToken, JSON.stringify(auth));
+    if (auth && auth.token) {
+      localStorage.setItem(this.authLocalStorageToken, auth.token);
       return true;
     }
     return false;
   }
 
-  private getAuthFromLocalStorage(): AuthModel | undefined {
+  private getAuthFromLocalStorage(): AuthResponse | undefined {
     try {
       const lsValue = localStorage.getItem(this.authLocalStorageToken);
       if (!lsValue) {
         return undefined;
       }
 
-      const authData = JSON.parse(lsValue);
+      const authData = new AuthResponse();
+      authData.token = lsValue;
       return authData;
     } catch (error) {
       console.error(error);
