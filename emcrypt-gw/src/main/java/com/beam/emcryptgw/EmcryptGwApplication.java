@@ -35,6 +35,12 @@ public class EmcryptGwApplication implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .authorities(Arrays.asList(Role.admin()))
                 .build();
-        accountRepository.saveAll(Arrays.asList(admin));
+
+        Account emre = Account.builder()
+                .username("emre@beamteknoloji.com")
+                .password(passwordEncoder.encode("12345678"))
+                .authorities(Arrays.asList(Role.admin()))
+                .build();
+        accountRepository.saveAll(Arrays.asList(admin, emre));
     }
 }

@@ -6,6 +6,7 @@ import { AuthResponse } from '../models/auth-response';
 import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { GenericResponse } from 'src/app/common/models/generic-response';
 
 export type UserType = Account | undefined;
 
@@ -91,7 +92,7 @@ export class AuthService implements OnDestroy {
     );
   }
 
-  forgotPassword(username: string): Observable<boolean> {
+  forgotPassword(username: string): Observable<GenericResponse> {
     this.isLoadingSubject.next(true);
     return this.authHttpService
       .forgotPassword(username)

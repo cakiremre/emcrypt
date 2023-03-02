@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { first } from 'rxjs/operators';
+import { GenericResponse } from 'src/app/common/models/generic-response';
 
 enum ErrorStates {
   NotSubmitted,
@@ -39,7 +40,7 @@ export class ForgotPasswordComponent implements OnInit {
   initForm() {
     this.forgotPasswordForm = this.fb.group({
       email: [
-        'admin@demo.com',
+        'emre@beamteknoloji.com',
         Validators.compose([
           Validators.required,
           Validators.email,
@@ -55,8 +56,9 @@ export class ForgotPasswordComponent implements OnInit {
     const forgotPasswordSubscr = this.authService
       .forgotPassword(this.f.email.value)
       .pipe(first())
-      .subscribe((result: boolean) => {
-        this.errorState = result ? ErrorStates.NoError : ErrorStates.HasError;
+      .subscribe((result: GenericResponse) => {
+        this.errorState =
+          result.code == 0 ? ErrorStates.NoError : ErrorStates.HasError;
       });
     this.unsubscribe.push(forgotPasswordSubscr);
   }

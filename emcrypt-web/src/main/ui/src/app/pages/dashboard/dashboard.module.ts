@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { ModalsModule, WidgetsModule } from '../../_metronic/partials';
+import { AuthModule } from 'src/app/modules/auth/auth.module';
 
 @NgModule({
   declarations: [DashboardComponent],

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Account } from '../../models/account';
 import { environment } from '../../../../../environments/environment';
 import { AuthResponse } from '../../models/auth-response';
+import { GenericResponse } from 'src/app/common/models/generic-response';
 
 const API_USERS_URL = `${environment.apiUrl}/gw/auth`;
 
@@ -22,10 +23,12 @@ export class AuthHTTPService {
   }
 
   // Your server should check email => If email exists send link to the user and return true | If email doesn't exist return false
-  forgotPassword(username: string): Observable<boolean> {
-    return this.http.post<boolean>(`${API_USERS_URL}/forgot-password`, {
-      username,
-    });
+  forgotPassword(username: string): Observable<GenericResponse> {
+    return this.http.post<GenericResponse>(
+      `${API_USERS_URL}/forgot`,
+      {},
+      { params: new HttpParams().append('username', username) }
+    );
   }
 
   getUserByToken(token: string): Observable<Account> {

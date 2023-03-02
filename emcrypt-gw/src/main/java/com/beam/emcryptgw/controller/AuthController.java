@@ -7,10 +7,7 @@ import com.beam.emcryptcore.model.auth.AuthResponse;
 import com.beam.emcryptgw.service.AccountService;
 import com.beam.emcryptgw.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -36,5 +33,16 @@ public class AuthController {
                     .code(10)
                     .build();
         }
+    }
+
+    @GetMapping("/me")
+    public GenericResponse<Account> me(@RequestHeader("Authorization") String header) {
+        String username = jwtService.extractUsername(header.substring(7));
+        return accountService.loadByUsername(username);
+    }
+
+    @PostMapping("/forgot")
+    public GenericResponse forgot(@RequestParam String username) {
+        return accountService.forgot(username);
     }
 }

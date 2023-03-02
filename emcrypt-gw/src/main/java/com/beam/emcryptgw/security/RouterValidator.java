@@ -9,7 +9,8 @@ import java.util.function.Predicate;
 public class RouterValidator {
 
     public static final List<String> publicApis = List.of(
-            "/api/g/auth/authenticate"
+            "/api/gw/auth/authenticate",
+            "/api/gw/auth/forgot"
     );
 
     public Predicate<String> isSecured =
