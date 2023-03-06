@@ -1,9 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { NavigationCancel, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { LayoutService } from '../../core/layout.service';
 import { MenuComponent } from '../../../kt/components';
 import { ILayout, LayoutType } from '../../core/configs/config';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -29,11 +37,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
   appSidebarDefaultCollapseDesktopEnabled: boolean;
   appSidebarDisplay: boolean;
   appHeaderDefaultContent: string = '';
-  appHeaderDefaulMenuDisplay: boolean;
+  appHeaderDefaultMenuDisplay: boolean;
   appPageTitleDisplay: boolean;
+
+  mobileSidebarOpen = false;
+
+  @ViewChild('ktSidebar') sidebar: ElementRef;
 
   constructor(private layout: LayoutService, private router: Router) {
     this.routingChanges();
+  }
+
+  toggleSidebar() {
+    const sb = document.getElementById('kt_app_sidebar');
+    this.mobileSidebarOpen = !this.mobileSidebarOpen;
+    if (this.mobileSidebarOpen) {
+      sb?.classList.add('my-active');
+    } else {
+      sb?.classList.remove('my-active');
+    }
   }
 
   updateProps(config: ILayout) {
@@ -54,7 +76,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       'app.header.default.content',
       config
     ) as string;
-    this.appHeaderDefaulMenuDisplay = this.layout.getProp(
+    this.appHeaderDefaultMenuDisplay = this.layout.getProp(
       'app.header.default.menu.display',
       config
     ) as boolean;

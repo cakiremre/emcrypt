@@ -12,6 +12,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 @EnableFeignClients
 @RequiredArgsConstructor
@@ -34,13 +35,23 @@ public class EmcryptGwApplication implements CommandLineRunner {
                 .username("team@olta.la")
                 .password(passwordEncoder.encode("12345678"))
                 .authorities(Arrays.asList(Role.admin()))
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
                 .build();
+        admin.setId(UUID.randomUUID().toString());
 
         Account emre = Account.builder()
                 .username("emre@beamteknoloji.com")
                 .password(passwordEncoder.encode("12345678"))
-                .authorities(Arrays.asList(Role.admin()))
+                .authorities(Arrays.asList(Role.manager()))
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
                 .build();
+        emre.setId(UUID.randomUUID().toString());
         accountRepository.saveAll(Arrays.asList(admin, emre));
     }
 }

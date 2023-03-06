@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/modules/auth';
 import { LayoutType } from '../../../core/configs/config';
 import { LayoutService } from '../../../core/layout.service';
 
@@ -18,7 +19,10 @@ export class SidebarLogoComponent implements OnInit, OnDestroy {
 
   toggleAttr: string;
 
-  constructor(private layout: LayoutService) {}
+  constructor(
+    private layout: LayoutService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.toggleAttr = `app-sidebar-${this.toggleType}`;
@@ -32,5 +36,9 @@ export class SidebarLogoComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
+  }
+
+  logoClicked() {
+    this.authService.navigateToHome();
   }
 }

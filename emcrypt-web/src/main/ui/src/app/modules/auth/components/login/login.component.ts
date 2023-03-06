@@ -34,15 +34,12 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
     if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
+      this.authService.navigateToHome();
     }
   }
 
   ngOnInit(): void {
     this.initForm();
-    // get return url from route parameters or default to '/'
-    this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'.toString()] || '/';
   }
 
   // convenience getter for easy access to form fields
@@ -79,7 +76,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe((user: Account | undefined) => {
         if (user) {
-          this.router.navigate([this.returnUrl]);
+          this.authService.navigateToHome();
         } else {
           this.hasError = true;
         }

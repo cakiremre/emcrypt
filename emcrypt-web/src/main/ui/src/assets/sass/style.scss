@@ -12,3 +12,11 @@
 // Layout
 @import "./core/layout/base/layout";
 @import "layout/layout";
+
+.hand {
+  cursor: pointer;
+}
+
+.my-active {
+  display: block !important;
+}

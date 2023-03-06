@@ -16,7 +16,7 @@ export class LayoutInitService {
       ? layoutType
       : this.layout.getBaseLayoutTypeFromRouteOrLocalStorage();
     const config = this.layout.getLayoutConfig(currentLayoutType);
-    this.layout.currentLayoutTypeSubject.next(currentLayoutType)
+    this.layout.currentLayoutTypeSubject.next(currentLayoutType);
     this.config.next({ ...config });
 
     // init base layout

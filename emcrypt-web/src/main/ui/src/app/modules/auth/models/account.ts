@@ -12,10 +12,6 @@ export class Account {
   credentialsNonExpired: boolean;
   enabled: boolean;
 
-  firstname: string;
-  lastname: string;
-  pic: string;
-
   setUser(_user: Account) {
     this.id = _user.id;
     this.username = _user.username || '';
@@ -25,10 +21,16 @@ export class Account {
     this.accountNonLocked = _user.accountNonLocked || true;
     this.credentialsNonExpired = _user.credentialsNonExpired || true;
     this.enabled = _user.enabled || true;
+  }
 
-    this.firstname = _user.firstname || '';
-    this.lastname = _user.lastname || '';
-    this.pic = _user.pic || '#';
+  hasRole(role: string): boolean {
+    let has = false;
+    this.authorities.forEach((a) => {
+      if (a.name === role) {
+        has = true;
+      }
+    });
+    return has;
   }
 }
 

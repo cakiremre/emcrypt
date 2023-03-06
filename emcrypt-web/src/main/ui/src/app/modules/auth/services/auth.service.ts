@@ -49,8 +49,10 @@ export class AuthService implements OnDestroy {
     return this.authHttpService.login(email, password).pipe(
       map((auth: AuthResponse) => {
         const result = this.setAuthFromLocalStorage(auth);
-        this.setUser(auth.account);
-        return auth.account;
+        let acc: UserType = new Account();
+        acc.setUser(auth.account);
+        this.setUser(acc);
+        return acc;
       }),
       catchError((err) => {
         console.error('err', err);
@@ -95,9 +97,11 @@ export class AuthService implements OnDestroy {
 
     this.isLoadingSubject.next(true);
     return this.authHttpService.getUserByToken(auth.token).pipe(
-      map((user: UserType) => {
+      map((user: Account) => {
+        let acc: UserType = new Account();
+        acc.setUser(user);
         if (user) {
-          this.currentUserSubject.next(user);
+          this.currentUserSubject.next(acc);
         } else {
           this.logout();
         }
@@ -112,6 +116,21 @@ export class AuthService implements OnDestroy {
     return this.authHttpService
       .forgotPassword(username)
       .pipe(finalize(() => this.isLoadingSubject.next(false)));
+  }
+
+  navigateToHome() {
+    if (this.currentUserValue) {
+      let acc = this.currentUserValue;
+      if (acc.hasRole('ROLE_ADMIN')) {
+        this.router.navigate(['/dashboard']);
+      }
+
+      if (acc.hasRole('ROLE_MANAGER')) {
+        this.router.navigate(['/company']);
+      }
+    } else {
+      this.logout();
+    }
   }
 
   // private methods

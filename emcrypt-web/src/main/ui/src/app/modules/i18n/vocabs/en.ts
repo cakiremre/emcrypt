@@ -6,19 +6,17 @@ export const locale = {
       SELECT: 'Select your language',
     },
     MENU: {
-      NEW: 'new',
-      ACTIONS: 'Actions',
-      CREATE_POST: 'Create New Post',
-      PAGES: 'Pages',
-      FEATURES: 'Features',
-      APPS: 'Apps',
       DASHBOARD: 'Dashboard',
+      COMPANIES: 'Companies',
+      COMPANY: 'Company',
+      ACCOUNTS: 'Accounts',
+      SETTINGS: 'Settings',
     },
     AUTH: {
       GENERAL: {
         OR: 'Or',
         SUBMIT_BUTTON: 'Submit',
-        NO_ACCOUNT: 'Don\'t have an account?',
+        NO_ACCOUNT: "Don't have an account?",
         SIGNUP_BUTTON: 'Sign Up',
         FORGOT_BUTTON: 'Forgot Password',
         BACK_BUTTON: 'Back',
@@ -33,19 +31,19 @@ export const locale = {
       FORGOT: {
         TITLE: 'Forgotten Password?',
         DESC: 'Enter your email to reset your password',
-        SUCCESS: 'Your account has been successfully reset.'
+        SUCCESS: 'Your account has been successfully reset.',
       },
       REGISTER: {
         TITLE: 'Sign Up',
         DESC: 'Enter your details to create your account',
-        SUCCESS: 'Your account has been successfuly registered.'
+        SUCCESS: 'Your account has been successfuly registered.',
       },
       INPUT: {
         EMAIL: 'Email',
         FULLNAME: 'Fullname',
         PASSWORD: 'Password',
         CONFIRM_PASSWORD: 'Confirm Password',
-        USERNAME: 'Username'
+        USERNAME: 'Username',
       },
       VALIDATION: {
         INVALID: '{{name}} is not valid',
@@ -58,7 +56,7 @@ export const locale = {
         MIN_LENGTH_FIELD: 'Minimum field length:',
         MAX_LENGTH_FIELD: 'Maximum field length:',
         INVALID_FIELD: 'Field is not valid',
-      }
+      },
     },
     ECOMMERCE: {
       COMMON: {
@@ -72,7 +70,7 @@ export const locale = {
         BUSINESS: 'Business',
         INDIVIDUAL: 'Individual',
         SEARCH: 'Search',
-        IN_ALL_FIELDS: 'in all fields'
+        IN_ALL_FIELDS: 'in all fields',
       },
       ECOMMERCE: 'eCommerce',
       CUSTOMERS: {
@@ -83,23 +81,23 @@ export const locale = {
           TITLE: 'Customer Delete',
           DESCRIPTION: 'Are you sure to permanently delete this customer?',
           WAIT_DESCRIPTION: 'Customer is deleting...',
-          MESSAGE: 'Customer has been deleted'
+          MESSAGE: 'Customer has been deleted',
         },
         DELETE_CUSTOMER_MULTY: {
           TITLE: 'Customers Delete',
           DESCRIPTION: 'Are you sure to permanently delete selected customers?',
           WAIT_DESCRIPTION: 'Customers are deleting...',
-          MESSAGE: 'Selected customers have been deleted'
+          MESSAGE: 'Selected customers have been deleted',
         },
         UPDATE_STATUS: {
           TITLE: 'Status has been updated for selected customers',
-          MESSAGE: 'Selected customers status have successfully been updated'
+          MESSAGE: 'Selected customers status have successfully been updated',
         },
         EDIT: {
           UPDATE_MESSAGE: 'Customer has been updated',
-          ADD_MESSAGE: 'Customer has been created'
-        }
-      }
-    }
-  }
+          ADD_MESSAGE: 'Customer has been created',
+        },
+      },
+    },
+  },
 };

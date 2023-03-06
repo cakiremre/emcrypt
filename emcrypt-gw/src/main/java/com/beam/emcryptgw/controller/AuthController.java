@@ -26,9 +26,10 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public GenericResponse<Account> me(@RequestHeader("Authorization") String header) {
+    public Account me(@RequestHeader("Authorization") String header) {
         String username = jwtService.extractUsername(header.substring(7));
-        return accountService.loadByUsername(username);
+        return accountService.loadByUsername(username)
+                .orElse(null);
     }
 
     @PostMapping("/forgot")

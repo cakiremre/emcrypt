@@ -41,13 +41,8 @@ public class AccountService extends BaseService<AccountRepository, Account> {
         }
     }
 
-    public GenericResponse<Account> loadByUsername(String username) {
-        Optional<Account> query = repository.findByUsername(username);
-        if (query.isEmpty()) {
-            return GenericResponse.code(10);
-        } else {
-            return GenericResponse.success(query.get());
-        }
+    public Optional<Account> loadByUsername(String username) {
+        return repository.findByUsername(username);
     }
 
 

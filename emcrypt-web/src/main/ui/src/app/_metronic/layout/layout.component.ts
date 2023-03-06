@@ -284,9 +284,18 @@ export class LayoutComponent implements OnInit, OnDestroy {
   }
 
   updateFooter(config: ILayout) {
-    this.appFooterCSSClass = this.layout.getProp('app.footer.class', config) as string;
-    this.appFooterContainer = this.layout.getProp('app.footer.container', config) as string;
-    this.appFooterContainerCSSClass = this.layout.getProp('app.footer.containerClass', config) as string;
+    this.appFooterCSSClass = this.layout.getProp(
+      'app.footer.class',
+      config
+    ) as string;
+    this.appFooterContainer = this.layout.getProp(
+      'app.footer.container',
+      config
+    ) as string;
+    this.appFooterContainerCSSClass = this.layout.getProp(
+      'app.footer.containerClass',
+      config
+    ) as string;
     if (this.appFooterContainer === 'fixed') {
       this.appFooterContainerCSSClass += ' container-xxl';
     } else {
@@ -295,14 +304,19 @@ export class LayoutComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.appFooterFixedDesktop = this.layout.getProp('app.footer.fixed.desktop', config) as boolean;
+    this.appFooterFixedDesktop = this.layout.getProp(
+      'app.footer.fixed.desktop',
+      config
+    ) as boolean;
     if (this.appFooterFixedDesktop) {
-      document.body.classList.add('data-kt-app-footer-fixed', 'true')
+      document.body.classList.add('data-kt-app-footer-fixed', 'true');
     }
 
-    this.appFooterFixedMobile = this.layout.getProp('app.footer.fixed.mobile') as boolean;
+    this.appFooterFixedMobile = this.layout.getProp(
+      'app.footer.fixed.mobile'
+    ) as boolean;
     if (this.appFooterFixedMobile) {
-      document.body.classList.add('data-kt-app-footer-fixed-mobile', 'true')
+      document.body.classList.add('data-kt-app-footer-fixed-mobile', 'true');
     }
   }
 
