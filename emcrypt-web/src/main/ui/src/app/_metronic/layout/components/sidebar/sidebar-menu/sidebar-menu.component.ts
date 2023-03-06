@@ -10,27 +10,32 @@ import { MenuItem } from './menu-item';
 export class SidebarMenuComponent implements OnInit {
   allItems: MenuItem[] = [
     {
-      link: '/dashboard',
+      link: '/admin/dashboard',
       icon: './assets/media/icons/duotune/general/gen001.svg',
       text: 'MENU.DASHBOARD',
     },
     {
-      link: '/company',
+      link: '/company/overview',
       icon: './assets/media/icons/duotune/general/gen017.svg',
-      text: 'MENU.COMPANY',
+      text: 'MENU.OVERVIEW',
     },
     {
-      link: '/companies',
+      link: '/admin/companies',
       icon: './assets/media/icons/duotune/general/gen008.svg',
       text: 'MENU.COMPANIES',
     },
     {
-      link: '/accounts',
+      link: '/company/accounts',
       icon: './assets/media/icons/duotune/general/gen049.svg',
       text: 'MENU.ACCOUNTS',
     },
     {
-      link: '/settings',
+      link: '/admin/settings',
+      icon: './assets/media/icons/duotune/general/gen062.svg',
+      text: 'MENU.SETTINGS',
+    },
+    {
+      link: '/company/settings',
       icon: './assets/media/icons/duotune/general/gen062.svg',
       text: 'MENU.SETTINGS',
     },
@@ -48,7 +53,7 @@ export class SidebarMenuComponent implements OnInit {
     }
 
     if (account?.hasRole('ROLE_MANAGER')) {
-      this.items = [this.allItems[1], this.allItems[3], this.allItems[4]];
+      this.items = [this.allItems[1], this.allItems[3], this.allItems[5]];
     }
   }
 }

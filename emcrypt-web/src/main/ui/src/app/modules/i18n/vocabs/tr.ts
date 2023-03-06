@@ -6,11 +6,11 @@ export const locale = {
       SELECT: 'Select your language',
     },
     MENU: {
-      DASHBOARD: 'Dashboard',
-      COMPANIES: 'Companies',
-      OVERVIEW: 'Overview',
-      ACCOUNTS: 'Accounts',
-      SETTINGS: 'Settings',
+      DASHBOARD: 'Ana Sayfa',
+      COMPANIES: 'Firmalar',
+      OVERVIEW: 'Firma',
+      ACCOUNTS: 'Kullanıcılar',
+      SETTINGS: 'Ayarlar',
     },
     AUTH: {
       GENERAL: {

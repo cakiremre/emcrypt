@@ -122,11 +122,11 @@ export class AuthService implements OnDestroy {
     if (this.currentUserValue) {
       let acc = this.currentUserValue;
       if (acc.hasRole('ROLE_ADMIN')) {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/admin/dashboard']);
       }
 
       if (acc.hasRole('ROLE_MANAGER')) {
-        this.router.navigate(['/company']);
+        this.router.navigate(['/company/overview']);
       }
     } else {
       this.logout();

@@ -1,18 +1,18 @@
 import { Routes } from '@angular/router';
 import { RedirComponent } from '../modules/auth/components/redir/redir.component';
 import { AuthGuard } from '../modules/auth/services/auth.guard';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { CompanyComponent } from './company/company.component';
 
 const Routing: Routes = [
   {
-    path: 'dashboard',
-    component: DashboardComponent,
+    path: 'admin',
+    loadChildren: () =>
+      import('../modules/admin/admin.module').then((m) => m.AdminModule),
     canActivate: [AuthGuard],
   },
   {
     path: 'company',
-    component: CompanyComponent,
+    loadChildren: () =>
+      import('../modules/company/company.module').then((m) => m.CompanyModule),
     canActivate: [AuthGuard],
   },
   {
