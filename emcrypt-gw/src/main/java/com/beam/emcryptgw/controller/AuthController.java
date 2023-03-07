@@ -34,7 +34,7 @@ public class AuthController {
 
     @PostMapping("/forgot")
     public GenericResponse forgot(@RequestParam String username) {
-        return accountService.forgot(username);
+        return accountService.reset(username);
     }
 
     @PostMapping("/set-password")

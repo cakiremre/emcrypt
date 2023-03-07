@@ -1,13 +1,14 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
 import { map, catchError, switchMap, finalize } from 'rxjs/operators';
-import { Account } from '../models/account';
-import { AuthResponse } from '../models/account';
+import { Account } from '../models/model';
+import { AuthResponse } from '../models/model';
 import { AuthHTTPService } from './auth-http';
 import { Router } from '@angular/router';
-import { GenericResponse } from 'src/app/common/models/generic-response';
+import { GenericResponse } from 'src/app/common/models/model';
 
 export type UserType = Account | undefined;
+export const authLocalStorageToken = `EMCRYPT-AUTH-JWT`;
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,6 @@ export type UserType = Account | undefined;
 export class AuthService implements OnDestroy {
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-  private authLocalStorageToken = `EMCRYPT-AUTH-JWT`;
 
   // public fields
   currentUser$: Observable<UserType>;
@@ -79,7 +79,7 @@ export class AuthService implements OnDestroy {
   }
 
   logout() {
-    localStorage.removeItem(this.authLocalStorageToken);
+    localStorage.removeItem(authLocalStorageToken);
     this.router.navigate(['/auth/login'], {
       queryParams: {},
     });
@@ -137,7 +137,7 @@ export class AuthService implements OnDestroy {
   private setAuthFromLocalStorage(auth: AuthResponse): boolean {
     // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
     if (auth && auth.token) {
-      localStorage.setItem(this.authLocalStorageToken, auth.token);
+      localStorage.setItem(authLocalStorageToken, auth.token);
       return true;
     }
     return false;
@@ -145,7 +145,7 @@ export class AuthService implements OnDestroy {
 
   private getAuthFromLocalStorage(): AuthResponse | undefined {
     try {
-      const lsValue = localStorage.getItem(this.authLocalStorageToken);
+      const lsValue = localStorage.getItem(authLocalStorageToken);
       if (!lsValue) {
         return undefined;
       }

@@ -45,31 +45,42 @@ public class AccountService extends BaseService<AccountRepository, Account> {
         return repository.findByUsername(username);
     }
 
-
-    public GenericResponse forgot(String username) {
+    public GenericResponse reset(String username) {
         Optional<Account> query = repository.findByUsername(username);
         if (query.isPresent()) {
-            AccountLink link = AccountLink.builder()
-                    .link(RandomStringGenerator.generateRandomString())
-                    .username(username)
-                    .build();
-            link.setId(UUID.randomUUID().toString());
-            accountLinkRepository.save(link);
-
-            // request to mail-service
-            mailService.system(SingleRequest.builder()
-                    .type(Type.FORGOT)
-                    .recipient(Recipient.builder()
-                            .email(username)
-                            .firstName("emre")
-                            .lastName("cakir")
-                            .build())
-                    .options(Options.<String>builder()
-                            .data(link.getLink())
-                            .build())
-                    .build());
+            sendResetPasswordMail(query.get(), Type.FORGOT);
         }
         return GenericResponse.success();
+    }
+
+    @Override
+    public Account create(Account item) {
+        item = super.create(item);
+        sendResetPasswordMail(item, Type.ACTIVATION);
+        return item;
+    }
+
+    private void sendResetPasswordMail(Account account, Type type) {
+        AccountLink link = AccountLink.builder()
+                .link(RandomStringGenerator.generateRandomString())
+                .username(account.getUsername())
+                .build();
+        link.setId(UUID.randomUUID().toString());
+        accountLinkRepository.save(link);
+
+        // request to mail-service
+        mailService.system(SingleRequest.builder()
+                .type(type)
+                .recipient(Recipient.builder()
+                        .email(account.getUsername())
+                        .firstName(account.getProfile().getFirstName())
+                        .lastName(account.getProfile().getLastName())
+                        .build())
+                .options(Options.<String>builder()
+                        .data(link.getLink())
+                        .saved(true)
+                        .build())
+                .build());
     }
 
     public GenericResponse<Account> setPassword(SetPasswordRequest request) {
@@ -90,4 +101,6 @@ public class AccountService extends BaseService<AccountRepository, Account> {
             }
         }
     }
+
+
 }

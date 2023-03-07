@@ -1,7 +1,9 @@
 package com.beam.emcryptgw;
 
 import com.beam.emcryptcore.model.auth.Account;
+import com.beam.emcryptcore.model.auth.Profile;
 import com.beam.emcryptcore.model.auth.Role;
+import com.beam.emcryptcore.model.common.Language;
 import com.beam.emcryptgw.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -35,6 +37,11 @@ public class EmcryptGwApplication implements CommandLineRunner {
                 .username("team@olta.la")
                 .password(passwordEncoder.encode("12345678"))
                 .authorities(Arrays.asList(Role.admin()))
+                .profile(Profile.builder()
+                        .firstName("Team")
+                        .lastName("Olta.La")
+                        .prefer(Language.TR)
+                        .build())
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)
@@ -46,6 +53,11 @@ public class EmcryptGwApplication implements CommandLineRunner {
                 .username("emre@beamteknoloji.com")
                 .password(passwordEncoder.encode("12345678"))
                 .authorities(Arrays.asList(Role.manager()))
+                .profile(Profile.builder()
+                        .firstName("Emre")
+                        .lastName("Cakir")
+                        .prefer(Language.EN)
+                        .build())
                 .accountNonExpired(true)
                 .accountNonLocked(true)
                 .credentialsNonExpired(true)

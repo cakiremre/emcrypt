@@ -2,12 +2,9 @@ package com.beam.emcryptcore.base;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 public class BaseService<T extends MongoRepository<K, String>, K extends Base> {
@@ -25,7 +22,7 @@ public class BaseService<T extends MongoRepository<K, String>, K extends Base> {
     }
 
     public K create(K item) {
-        item.setId(UUID.randomUUID().toString());
+        item.newIdAndCreated();
         return repository.insert(item);
     }
 

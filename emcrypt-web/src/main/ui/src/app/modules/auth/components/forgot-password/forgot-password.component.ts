@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { first } from 'rxjs/operators';
-import { GenericResponse } from 'src/app/common/models/generic-response';
+import { GenericResponse } from 'src/app/common/models/model';
 
 enum ErrorStates {
   NotSubmitted,

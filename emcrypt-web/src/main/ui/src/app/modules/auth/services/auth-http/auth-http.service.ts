@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Account } from '../../models/account';
+import { Account } from '../../models/model';
 import { environment } from '../../../../../environments/environment';
-import { AuthResponse } from '../../models/account';
-import { GenericResponse } from 'src/app/common/models/generic-response';
+import { AuthResponse } from '../../models/model';
+import { GenericResponse } from 'src/app/common/models/model';
 
 const API_USERS_URL = `${environment.apiUrl}/gw/auth`;
 
