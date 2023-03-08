@@ -8,7 +8,7 @@ spring:
         refetch-instances-interval: 2s
   data:
     mongodb:
-      database: comm
+      database: emcrypt-comm
 
 server:
   port: 0

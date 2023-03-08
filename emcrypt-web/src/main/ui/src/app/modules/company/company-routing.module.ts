@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AccountsComponent } from './components/accounts/accounts.component';
 import { CompanyComponent } from './components/company/company.component';
-import { OptionsComponent } from './components/options/options.component';
+import { SettingsHomeComponent } from './modules/settings/components/settings-home/settings-home.component';
+import { UserListComponent } from './modules/users/components/user-list/user-list.component';
 
 const routes: Routes = [
   {
@@ -13,12 +13,12 @@ const routes: Routes = [
         component: CompanyComponent,
       },
       {
-        path: 'accounts',
-        component: AccountsComponent,
+        path: 'users',
+        component: UserListComponent,
       },
       {
         path: 'settings',
-        component: OptionsComponent,
+        component: SettingsHomeComponent,
       },
       { path: '', redirectTo: '/company/overview', pathMatch: 'full' },
       { path: '**', redirectTo: '/company/overview', pathMatch: 'full' },

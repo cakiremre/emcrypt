@@ -11,8 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
-import static java.util.Collections.emptyList;
-
 @Document("Account")
 @TypeAlias("Account")
 @AllArgsConstructor
@@ -24,6 +22,8 @@ public class Account extends Base {
 
     private String username;
     private String password;
+
+    private String tenant; // Tenant identifier.
 
     private List<Role> authorities;
     private Profile profile;

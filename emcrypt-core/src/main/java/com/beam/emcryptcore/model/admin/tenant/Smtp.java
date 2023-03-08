@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.firm.config;
+package com.beam.emcryptcore.model.admin.tenant;
 
 
 import lombok.AllArgsConstructor;

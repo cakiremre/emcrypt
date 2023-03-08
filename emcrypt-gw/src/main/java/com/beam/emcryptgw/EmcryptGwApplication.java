@@ -35,6 +35,7 @@ public class EmcryptGwApplication implements CommandLineRunner {
         accountRepository.deleteAll();
         Account admin = Account.builder()
                 .username("team@olta.la")
+                .tenant("oltala")
                 .password(passwordEncoder.encode("12345678"))
                 .authorities(Arrays.asList(Role.admin()))
                 .profile(Profile.builder()
@@ -51,6 +52,7 @@ public class EmcryptGwApplication implements CommandLineRunner {
 
         Account emre = Account.builder()
                 .username("emre@beamteknoloji.com")
+                .tenant("beamteknolojicom")
                 .password(passwordEncoder.encode("12345678"))
                 .authorities(Arrays.asList(Role.manager()))
                 .profile(Profile.builder()

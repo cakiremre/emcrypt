@@ -18,6 +18,8 @@ import java.util.function.Function;
 public class JwtService {
 
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
+    public static final String CLAIM_TENANT_KEY = "tnt";
+    public static final String CLAIM_ROLE_KEY = "rls";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -57,7 +59,8 @@ public class JwtService {
 
     public String generateToken(Account account) {
         Map<String,Object> claims=new HashMap<>();
-        claims.put("roles", account.getAuthorities());
+        claims.put(CLAIM_ROLE_KEY, account.getAuthorities());
+        claims.put(CLAIM_TENANT_KEY, account.getTenant());
         return createToken(claims, account.getUsername());
     }
 

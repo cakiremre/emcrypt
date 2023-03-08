@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.admin;
+package com.beam.emcryptcore.model.admin.tenant;
 
 import com.beam.emcryptcore.base.Base;
 import lombok.AllArgsConstructor;
@@ -22,6 +22,7 @@ public class Tenant extends Base {
     private String domain;
     private Status status;
     private String owner;
+    private String identifier; // simply domain name without dot.
 
     @Override
     public Tenant newIdAndCreated() {

@@ -1,16 +1,15 @@
 package com.beam.emcryptcore.model.auth;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
-@Data
 @Builder
+@Data
 public class Role {
 
     private String name;
@@ -31,5 +30,18 @@ public class Role {
         return Role.builder()
                 .name("ROLE_USER")
                 .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Role role = (Role) o;
+        return Objects.equals(name, role.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.admin;
+package com.beam.emcryptcore.model.admin.tenant;
 
 public enum Status {
     ENABLED,

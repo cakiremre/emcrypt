@@ -6,9 +6,6 @@ spring:
       health-check:
         refetch-instances: true
         refetch-instances-interval: 2s
-  data:
-    mongodb:
-      database: admin
 
 server:
   port: 0

@@ -25,7 +25,7 @@ export class SidebarMenuComponent implements OnInit {
       text: 'MENU.COMPANIES',
     },
     {
-      link: '/company/accounts',
+      link: '/company/users',
       icon: './assets/media/icons/duotune/general/gen049.svg',
       text: 'MENU.ACCOUNTS',
     },

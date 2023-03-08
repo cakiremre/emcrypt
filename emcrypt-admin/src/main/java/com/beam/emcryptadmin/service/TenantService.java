@@ -2,7 +2,7 @@ package com.beam.emcryptadmin.service;
 
 import com.beam.emcryptadmin.repository.TenantRepository;
 import com.beam.emcryptcore.base.BaseService;
-import com.beam.emcryptcore.model.admin.Tenant;
+import com.beam.emcryptcore.model.admin.tenant.Tenant;
 import com.beam.emcryptcore.model.auth.Account;
 import com.beam.emcryptcore.model.auth.Role;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +19,13 @@ public class TenantService extends BaseService<TenantRepository, Tenant> {
     @Override
     public Tenant create(Tenant item) {
         // create tenant data
+        item.setIdentifier(item.getDomain().replace(".", ""));
         item = super.create(item);
 
         // create account - at gw.
         accountService.create(Account.builder()
                 .username(item.getOwner())
+                .tenant(item.getIdentifier())
                 .enabled(true)
                 .credentialsNonExpired(true)
                 .accountNonLocked(true)

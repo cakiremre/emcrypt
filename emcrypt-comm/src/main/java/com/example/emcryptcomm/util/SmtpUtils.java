@@ -1,7 +1,7 @@
 package com.example.emcryptcomm.util;
 
 import com.beam.emcryptcore.model.comm.mail.Sender;
-import com.beam.emcryptcore.model.firm.config.Smtp;
+import com.beam.emcryptcore.model.admin.tenant.Smtp;
 import jakarta.mail.Authenticator;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
