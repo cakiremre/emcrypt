@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CompaniesComponent } from './components/companies/companies.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { SettingsComponent } from './components/settings/settings.component';
+import { SettingsHomeComponent } from './modules/settings/components/settings-home/settings-home.component';
+import { TenantEditComponent } from './modules/tenant/components/tenant-edit/tenant-edit.component';
+import { TenantListComponent } from './modules/tenant/components/tenant-list/tenant-list.component';
 
 const routes: Routes = [
   {
@@ -14,11 +15,15 @@ const routes: Routes = [
       },
       {
         path: 'companies',
-        component: CompaniesComponent,
+        component: TenantListComponent,
+      },
+      {
+        path: 'companies/:id',
+        component: TenantEditComponent,
       },
       {
         path: 'settings',
-        component: SettingsComponent,
+        component: SettingsHomeComponent,
       },
       { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' },
       { path: '**', redirectTo: '/admin/dashboard', pathMatch: 'full' },

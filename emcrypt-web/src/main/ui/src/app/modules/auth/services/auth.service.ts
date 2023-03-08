@@ -50,7 +50,7 @@ export class AuthService implements OnDestroy {
       map((auth: AuthResponse) => {
         const result = this.setAuthFromLocalStorage(auth);
         let acc: UserType = new Account();
-        acc.setUser(auth.account);
+        acc.init(auth.account);
         this.setUser(acc);
         return acc;
       }),
@@ -67,8 +67,10 @@ export class AuthService implements OnDestroy {
     return this.authHttpService.setPassword(link, password).pipe(
       map((auth: AuthResponse) => {
         const result = this.setAuthFromLocalStorage(auth);
-        this.setUser(auth.account);
-        return auth.account;
+        let acc: UserType = new Account();
+        acc.init(auth.account);
+        this.setUser(acc);
+        return acc;
       }),
       catchError((err) => {
         console.error('err', err);
@@ -99,7 +101,7 @@ export class AuthService implements OnDestroy {
     return this.authHttpService.getUserByToken(auth.token).pipe(
       map((user: Account) => {
         let acc: UserType = new Account();
-        acc.setUser(user);
+        acc.init(user);
         if (user) {
           this.currentUserSubject.next(acc);
         } else {
@@ -128,6 +130,8 @@ export class AuthService implements OnDestroy {
       if (acc.hasRole('ROLE_MANAGER')) {
         this.router.navigate(['/company/overview']);
       }
+
+      // FIXME role match olmuyorsa redir component görünüyor.
     } else {
       this.logout();
     }

@@ -30,7 +30,6 @@ public class Account extends Base {
 
     @Override
     public Account newIdAndCreated() {
-        authorities = emptyList();
         profile = Profile.init();
 
         return super.newIdAndCreated();

@@ -28,7 +28,7 @@ export class ActivateComponent implements OnInit, OnDestroy {
     this.isLoading$ = this.authService.isLoading$;
     // redirect to home if already logged in
     if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
+      //this.router.navigateByUrl('/');
     }
   }
 
@@ -90,7 +90,7 @@ export class ActivateComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe((user: UserType) => {
         if (user) {
-          this.router.navigate(['/dashboard']);
+          this.router.navigateByUrl('/');
         } else {
           this.hasError = true;
         }
