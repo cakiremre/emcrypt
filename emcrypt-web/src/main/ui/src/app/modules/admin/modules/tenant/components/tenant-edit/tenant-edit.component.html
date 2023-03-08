@@ -1,0 +1,146 @@
+<div class="card mb-5 mb-xl-10">
+  <div
+    class="card-header border-0 cursor-pointer"
+    role="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#kt_account_profile_details"
+    aria-expanded="true"
+    aria-controls="kt_account_profile_details"
+  >
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">Organization Details</h3>
+    </div>
+  </div>
+  <div id="kt_account_profile_details" class="collapse show">
+    <form
+      novalidate=""
+      class="form"
+      autocomplete="off"
+      id="tf"
+      [formGroup]="tenantForm"
+    >
+      <div class="card-body border-top p-9">
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Name</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+              id="name"
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="eg. Acme Corporation"
+              name="name"
+              required=""
+              formControlName="name"
+              [class.is-invalid]="name.touched && name.invalid"
+            />
+          </div>
+          <div *ngIf="name.touched && name.invalid" class="small red">
+            <div *ngIf="name.errors?.['required']">
+              Organization name is required.
+            </div>
+          </div>
+
+          <div *ngIf="name.untouched || name.valid" class="small">
+            <div>Please enter name of the organization.</div>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Domain</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+              id="domain"
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="eg. acme.com"
+              name="domain"
+              required=""
+              formControlName="domain"
+              [class.is-invalid]="domain.touched && domain.invalid"
+            />
+          </div>
+          <div *ngIf="domain.touched && domain.invalid" class="small red">
+            <div *ngIf="domain.errors?.['required']">
+              Organization domain is required.
+            </div>
+          </div>
+
+          <div *ngIf="domain.untouched || domain.valid" class="small">
+            <div>
+              Please enter domain name of the organization. Eg. acme.com
+            </div>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label fw-bold fs-6"
+            ><span class="required">Manager</span></label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+              id="owner"
+              type="tel"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="eg. john@acme.inc"
+              name="owner"
+              required=""
+              formControlName="owner"
+              [class.is-invalid]="owner.touched && owner.invalid"
+            />
+          </div>
+        </div>
+        <div *ngIf="owner.touched && owner.invalid" class="small red">
+          <div *ngIf="owner.errors?.['required']">
+            Every organization is created with a primary owner username (email
+            address).
+          </div>
+        </div>
+
+        <div *ngIf="owner.untouched || owner.valid" class="small">
+          <div>Please enter owner of the organization. Eg. john@acme.com</div>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end py-6 px-9">
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="isLoading"
+          (click)="save()"
+        >
+          <ng-container *ngIf="!isLoading">Save Changes</ng-container>
+          <ng-container *ngIf="isLoading">
+            <span clas="indicator-progress" [style.display]="'block'">
+              Please wait...{{ ' ' }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card mb-5 mb-xl-10" *ngIf="tenant?.id">
+  <div class="card-footer d-flex justify-content-end py-6 px-9">
+    <button
+      type="button"
+      class="btn btn-danger"
+      [disabled]="isDeleting"
+      (click)="delete()"
+    >
+      <ng-container *ngIf="!isDeleting">Delete Organization</ng-container>
+      <ng-container *ngIf="isDeleting">
+        <span clas="indicator-progress" [style.display]="'block'">
+          Please wait...{{ ' ' }}
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </ng-container>
+    </button>
+  </div>
+</div>
