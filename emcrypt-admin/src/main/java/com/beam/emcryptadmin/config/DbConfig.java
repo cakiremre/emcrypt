@@ -8,16 +8,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DbConfig {
 
-    public static final String PRIMARY_DATABASE_URI = "mongodb://localhost/emcrypt-admin";
+    public static final String PRIMARY_DATABASE_URI = "mongodb://localhost/";
+    public static final String PRIMARY_DATABASE_NAME = "emcrypt-admin";
+
 
     @Bean
     public MongoClient mongoClient() {
-        return MongoClients.create(PRIMARY_DATABASE_URI.substring(0, PRIMARY_DATABASE_URI.lastIndexOf("/")));
+        return MongoClients.create(PRIMARY_DATABASE_URI);
     }
 
     @Bean
     public String databaseName() {
-        return PRIMARY_DATABASE_URI.substring(PRIMARY_DATABASE_URI.lastIndexOf("/") + 1);
+        return PRIMARY_DATABASE_NAME;
     }
 
 

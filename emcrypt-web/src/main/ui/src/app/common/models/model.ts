@@ -1,7 +1,7 @@
 import { OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-export class Base {
+export abstract class Base {
   id: string;
   created: Date;
 
@@ -21,11 +21,11 @@ export class GenericDataResponse<T> extends GenericResponse {
 }
 
 export enum Language {
-  EN,
-  TR,
-  DE,
-  AR,
-  AZ,
+  EN = 'EN',
+  TR = 'TR',
+  DE = 'DE',
+  AR = 'AR',
+  AZ = 'AZ',
 }
 
 export class HasSubscription {

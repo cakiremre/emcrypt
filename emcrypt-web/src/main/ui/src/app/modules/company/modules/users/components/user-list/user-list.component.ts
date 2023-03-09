@@ -21,6 +21,7 @@ export class UserListComponent
   ngOnInit(): void {
     let subs = this.userService.list().subscribe((data) => {
       this.users = data;
+      console.log(this.users);
     });
 
     this.unsubscribe.push(subs);

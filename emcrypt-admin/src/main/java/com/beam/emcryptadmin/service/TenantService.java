@@ -2,6 +2,7 @@ package com.beam.emcryptadmin.service;
 
 import com.beam.emcryptadmin.repository.TenantRepository;
 import com.beam.emcryptcore.base.BaseService;
+import com.beam.emcryptcore.model.admin.tenant.Db;
 import com.beam.emcryptcore.model.admin.tenant.Tenant;
 import com.beam.emcryptcore.model.auth.Account;
 import com.beam.emcryptcore.model.auth.Role;
@@ -10,17 +11,31 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
+import static com.beam.emcryptadmin.config.DbConfig.PRIMARY_DATABASE_URI;
+
 @Service
 @RequiredArgsConstructor
 public class TenantService extends BaseService<TenantRepository, Tenant> {
 
     private final AccountService accountService;
+    private final DbService dbService;
 
     @Override
     public Tenant create(Tenant item) {
         // create tenant data
         item.setIdentifier(item.getDomain().replace(".", ""));
         item = super.create(item);
+
+        // create database configuration
+        Db db = Db.builder()
+                .tenant(item.getIdentifier())
+                .url(PRIMARY_DATABASE_URI)
+                .databaseName(item.getIdentifier())
+                .build();
+        dbService.create(db);
+
+        // TODO create storage configuration
+
 
         // create account - at gw.
         accountService.create(Account.builder()

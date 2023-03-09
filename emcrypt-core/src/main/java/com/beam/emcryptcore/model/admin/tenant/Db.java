@@ -21,11 +21,10 @@ public class Db extends Base {
 
     private String tenant; // Tenant identifier
     private String url;
+    private String databaseName;
 
-    @JsonIgnore
-    public String databaseName(){
-        return url.substring(url.lastIndexOf("/") + 1);
-    }
+    private DbLocation dbLocation;
+
 
     @JsonIgnore
     public MongoClient getClient(){

@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.beam.emcryptadmin.config.DbConfig.PRIMARY_DATABASE_NAME;
 import static com.beam.emcryptadmin.config.DbConfig.PRIMARY_DATABASE_URI;
 import static com.beam.emcryptadmin.util.TenantContext.COMMON;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
@@ -29,6 +30,7 @@ public class CachedMongoClients {
     private Db primary = Db.builder()
             .tenant(COMMON)
             .url(PRIMARY_DATABASE_URI)
+            .databaseName(PRIMARY_DATABASE_NAME)
             .build();
 
     private MongoTemplate primaryMongoTemplate;
@@ -57,7 +59,7 @@ public class CachedMongoClients {
         }
 
         return db.getClient()
-                .getDatabase(db.databaseName());
+                .getDatabase(db.getDatabaseName());
     }
 
 }

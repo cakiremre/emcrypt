@@ -10,7 +10,7 @@ export class Profile {
   lastName: string;
   prefer: Language;
 
-  setProfile(_profile: Profile) {
+  init(_profile: Profile) {
     if (_profile) {
       this.firstName = _profile.firstName;
       this.lastName = _profile.lastName;
@@ -39,7 +39,7 @@ export class Account extends Base {
 
     this.authorities = _user.authorities || [];
     this.profile = new Profile();
-    this.profile.setProfile(_user.profile);
+    this.profile.init(_user.profile);
 
     this.accountNonExpired = _user.accountNonExpired || true;
     this.accountNonLocked = _user.accountNonLocked || true;

@@ -10,6 +10,7 @@ public class TenantContext {
     public static final ThreadLocal<String> CONTEXT = new ThreadLocal<>();
 
     public static void setTenant(String tenant){
+        CONTEXT.set(tenant);
         log.debug("Setting tenant id: " + tenant);
     }
 

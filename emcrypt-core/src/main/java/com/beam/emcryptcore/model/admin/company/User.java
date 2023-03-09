@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("Db")
-@TypeAlias("Db")
+@Document("User")
+@TypeAlias("User")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

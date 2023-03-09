@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CompanyComponent } from './components/company/company.component';
 import { SettingsHomeComponent } from './modules/settings/components/settings-home/settings-home.component';
 import { UserListComponent } from './modules/users/components/user-list/user-list.component';
+import { UserManualComponent } from './modules/users/components/user-manual/user-manual.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
       {
         path: 'users',
         component: UserListComponent,
+      },
+      {
+        path: 'users/:id',
+        component: UserManualComponent,
       },
       {
         path: 'settings',
