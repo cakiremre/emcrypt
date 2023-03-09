@@ -1,11 +1,9 @@
-package com.beam.emcryptadmin.config;
+package com.beam.emcryptcore.db;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
-@Configuration
 public class MultiTenantMongoDbFactory extends SimpleMongoClientDatabaseFactory {
 
     private CachedMongoClients cachedMongoClients;

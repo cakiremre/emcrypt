@@ -1,14 +1,12 @@
-package com.beam.emcryptadmin.util;
+package com.beam.emcryptcore.db;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.context.request.WebRequestInterceptor;
 
 @Slf4j
-@Component
 public class DbConfigurerInterceptor implements WebRequestInterceptor {
 
     public static final String TENANT_HEADER = "X-TENANT";

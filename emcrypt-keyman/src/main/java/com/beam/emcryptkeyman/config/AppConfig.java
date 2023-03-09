@@ -1,4 +1,4 @@
-package com.beam.emcryptadmin.config;
+package com.beam.emcryptkeyman.config;
 
 import com.beam.emcryptcore.db.DbConfigurerInterceptor;
 import lombok.RequiredArgsConstructor;

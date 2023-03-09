@@ -1,4 +1,4 @@
-package com.beam.emcryptadmin.util;
+package com.beam.emcryptcore.db;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,39 +1,40 @@
-package com.beam.emcryptadmin.config;
+package com.beam.emcryptcore.db;
 
-import com.beam.emcryptadmin.util.TenantContext;
 import com.beam.emcryptcore.model.admin.tenant.Db;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.beam.emcryptadmin.config.DbConfig.PRIMARY_DATABASE_NAME;
-import static com.beam.emcryptadmin.config.DbConfig.PRIMARY_DATABASE_URI;
-import static com.beam.emcryptadmin.util.TenantContext.COMMON;
+import static com.beam.emcryptcore.db.TenantContext.COMMON;
 import static org.springframework.data.mongodb.core.query.Criteria.where;
 import static org.springframework.data.mongodb.core.query.Query.query;
 
-@RequiredArgsConstructor
-@Configuration
 public class CachedMongoClients {
 
     private final MongoClient mongoClient;
     private final String databaseName;
+    private final PrimaryDbConfigurator configurator;
 
     private Map<String, Db> tenantDbMap = new HashMap<>();
-
-    private Db primary = Db.builder()
-            .tenant(COMMON)
-            .url(PRIMARY_DATABASE_URI)
-            .databaseName(PRIMARY_DATABASE_NAME)
-            .build();
-
     private MongoTemplate primaryMongoTemplate;
+
+    private Db primary;
+
+    public CachedMongoClients(MongoClient mongoClient, String databaseName, PrimaryDbConfigurator configurator){
+        this.mongoClient = mongoClient;
+        this.databaseName = databaseName;
+        this.configurator = configurator;
+
+        primary = Db.builder()
+                .tenant(COMMON)
+                .url(configurator.getPrimaryDatabaseUri())
+                .databaseName(configurator.getPrimaryDatabaseName())
+                .build();
+    }
 
     @PostConstruct
     public void init() {

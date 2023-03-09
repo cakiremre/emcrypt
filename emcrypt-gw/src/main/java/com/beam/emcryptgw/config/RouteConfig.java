@@ -28,6 +28,11 @@ public class RouteConfig {
                         .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
                         .uri("lb://admin")
                 )
+                .route( p -> p
+                        .path("/api/ekm/**")
+                        .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
+                        .uri("lb://keyman")
+                )
                 .route(p -> p
                         .path("/eureka/web")
                         .filters(f->f.setPath("/"))

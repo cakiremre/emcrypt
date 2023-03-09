@@ -1,4 +1,4 @@
-package com.beam.emcryptadmin.config;
+package com.beam.emcryptkeyman.config;
 
 import com.beam.emcryptcore.db.CachedMongoClients;
 import com.beam.emcryptcore.db.MultiTenantMongoDbFactory;
@@ -12,7 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class DbConfig implements PrimaryDbConfigurator {
 
     public static final String PRIMARY_DATABASE_URI = "mongodb://localhost/";
-    public static final String PRIMARY_DATABASE_NAME = "emcrypt-admin";
+    public static final String PRIMARY_DATABASE_NAME = "emcrypt-keyman";
+
 
     @Bean
     public MultiTenantMongoDbFactory multiTenantMongoDbFactory() {

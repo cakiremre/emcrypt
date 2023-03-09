@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -25,9 +26,15 @@ public class Db extends Base {
 
     private DbLocation dbLocation;
 
+    @Transient
+    private MongoClient _client;
 
+    @Transient
     @JsonIgnore
-    public MongoClient getClient(){
-        return MongoClients.create(url);
+    public MongoClient getClient() {
+        if (_client == null) {
+            _client = MongoClients.create(url);
+        }
+        return _client;
     }
 }
