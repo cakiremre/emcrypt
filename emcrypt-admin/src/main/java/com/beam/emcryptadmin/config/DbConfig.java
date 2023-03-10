@@ -1,15 +1,16 @@
 package com.beam.emcryptadmin.config;
 
 import com.beam.emcryptcore.db.CachedMongoClients;
+import com.beam.emcryptcore.db.DbCachedMongoClients;
 import com.beam.emcryptcore.db.MultiTenantMongoDbFactory;
-import com.beam.emcryptcore.db.PrimaryDbConfigurator;
+import com.beam.emcryptcore.db.IPrimaryDbConfigurator;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DbConfig implements PrimaryDbConfigurator {
+public class DbConfig implements IPrimaryDbConfigurator {
 
     public static final String PRIMARY_DATABASE_URI = "mongodb://localhost/";
     public static final String PRIMARY_DATABASE_NAME = "emcrypt-admin";
@@ -21,7 +22,7 @@ public class DbConfig implements PrimaryDbConfigurator {
 
     @Bean
     public CachedMongoClients cachedMongoClients() {
-        return new CachedMongoClients(mongoClient(), databaseName(), this);
+        return new DbCachedMongoClients(mongoClient(), databaseName(), this);
     }
 
     @Bean

@@ -2,18 +2,23 @@ package com.beam.emcryptkeyman.config;
 
 import com.beam.emcryptcore.db.CachedMongoClients;
 import com.beam.emcryptcore.db.MultiTenantMongoDbFactory;
-import com.beam.emcryptcore.db.PrimaryDbConfigurator;
+import com.beam.emcryptcore.db.IPrimaryDbConfigurator;
+import com.beam.emcryptcore.db.ServiceCachedMongoClients;
+import com.beam.emcryptkeyman.service.DbService;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+@RequiredArgsConstructor
 @Configuration
-public class DbConfig implements PrimaryDbConfigurator {
+public class DbConfig implements IPrimaryDbConfigurator {
 
     public static final String PRIMARY_DATABASE_URI = "mongodb://localhost/";
     public static final String PRIMARY_DATABASE_NAME = "emcrypt-keyman";
 
+    private final DbService dbService;
 
     @Bean
     public MultiTenantMongoDbFactory multiTenantMongoDbFactory() {
@@ -22,7 +27,7 @@ public class DbConfig implements PrimaryDbConfigurator {
 
     @Bean
     public CachedMongoClients cachedMongoClients() {
-        return new CachedMongoClients(mongoClient(), databaseName(), this);
+        return new ServiceCachedMongoClients(dbService, mongoClient(), databaseName(), this);
     }
 
     @Bean

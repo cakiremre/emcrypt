@@ -7,4 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DbService extends BaseService<DbRepository, Db> {
+    public Db findByTenant(String tenant) {
+        return repository.findByTenant(tenant)
+                .orElse(null);
+    }
 }

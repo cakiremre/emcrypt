@@ -1,6 +1,6 @@
 package com.beam.emcryptcore.db;
 
-public interface PrimaryDbConfigurator {
+public interface IPrimaryDbConfigurator {
 
     String getPrimaryDatabaseUri();
     String getPrimaryDatabaseName();

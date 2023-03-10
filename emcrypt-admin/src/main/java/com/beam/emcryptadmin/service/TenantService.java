@@ -2,10 +2,12 @@ package com.beam.emcryptadmin.service;
 
 import com.beam.emcryptadmin.repository.TenantRepository;
 import com.beam.emcryptcore.base.BaseService;
+import com.beam.emcryptcore.dto.keyman.KeyRequest;
 import com.beam.emcryptcore.model.admin.tenant.Db;
 import com.beam.emcryptcore.model.admin.tenant.Tenant;
 import com.beam.emcryptcore.model.auth.Account;
 import com.beam.emcryptcore.model.auth.Role;
+import com.beam.emcryptcore.model.keyman.EmKeyType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,7 @@ public class TenantService extends BaseService<TenantRepository, Tenant> {
 
     private final AccountService accountService;
     private final DbService dbService;
+    private final KeyService keyService;
 
     @Override
     public Tenant create(Tenant item) {
@@ -33,6 +36,13 @@ public class TenantService extends BaseService<TenantRepository, Tenant> {
                 .databaseName(item.getIdentifier())
                 .build();
         dbService.create(db);
+
+        // create organization root-key
+        keyService.create(item.getIdentifier(),
+                KeyRequest.builder()
+                        .owner(item.getIdentifier())
+                        .type(EmKeyType.ORG)
+                        .build());
 
         // TODO create storage configuration
 

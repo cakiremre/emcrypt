@@ -20,41 +20,48 @@ import java.util.*;
 @Service
 public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
 
-
+    /**
+     * This method takes too much time should be async
+     * If a key exists for an owner dont just overwrite it
+     */
     public KeyResponse create(KeyRequest keyRequest) {
-        /// generate key-pair
-        try {
-            KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-            generator.initialize(2048);
 
-            KeyPair pair = generator.generateKeyPair();
+        Optional<EmKey> query = repository.findByOwner(keyRequest.getOwner());
 
-            EmKey emKey = EmKey.builder()
-                    .keyType(keyRequest.getType())
-                    .owner(keyRequest.getOwner())
-                    .pubkey(Base64.getEncoder().encodeToString(pair.getPublic().getEncoded()))
-                    .prikey(Base64.getEncoder().encodeToString(pair.getPrivate().getEncoded()))
-                    .build();
-
-            // FIXME delete old key first; for development purposes.
-            // Decide; reject or re-generate key; if owner already has one
-            repository.deleteByOwner(keyRequest.getOwner());
-
-            create(emKey);
-
+        if (query.isPresent()) {
             return KeyResponse.builder()
-                    .code(0)
-                    .owner(keyRequest.getOwner())
+                    .code(99)
+                    .message("Owner has already a key")
                     .build();
+        } else {
+            try {
+                KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+                generator.initialize(2048);
 
-        } catch (NoSuchAlgorithmException e) {
-            log.error(e.getMessage());
-            e.printStackTrace();
-            return KeyResponse.builder()
-                    .code(100)
-                    .owner(keyRequest.getOwner())
-                    .message(e.getMessage())
-                    .build();
+                KeyPair pair = generator.generateKeyPair();
+
+                EmKey emKey = EmKey.builder()
+                        .keyType(keyRequest.getType())
+                        .owner(keyRequest.getOwner())
+                        .pubkey(Base64.getEncoder().encodeToString(pair.getPublic().getEncoded()))
+                        .prikey(Base64.getEncoder().encodeToString(pair.getPrivate().getEncoded()))
+                        .build();
+                create(emKey);
+
+                return KeyResponse.builder()
+                        .code(0)
+                        .owner(keyRequest.getOwner())
+                        .build();
+
+            } catch (NoSuchAlgorithmException e) {
+                log.error(e.getMessage());
+                e.printStackTrace();
+                return KeyResponse.builder()
+                        .code(100)
+                        .owner(keyRequest.getOwner())
+                        .message(e.getMessage())
+                        .build();
+            }
         }
     }
 

@@ -21,6 +21,10 @@ public class EmKey extends Base {
 
     private EmKeyType keyType;
 
+    /**
+     * identifier for tenant
+     * email for user
+     * */
     private String owner;
 
     private String pubkey;
