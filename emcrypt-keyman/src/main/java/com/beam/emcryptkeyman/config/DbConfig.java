@@ -1,10 +1,10 @@
 package com.beam.emcryptkeyman.config;
 
 import com.beam.emcryptcore.db.CachedMongoClients;
-import com.beam.emcryptcore.db.MultiTenantMongoDbFactory;
 import com.beam.emcryptcore.db.IPrimaryDbConfigurator;
+import com.beam.emcryptcore.db.MultiTenantMongoDbFactory;
 import com.beam.emcryptcore.db.ServiceCachedMongoClients;
-import com.beam.emcryptkeyman.service.DbService;
+import com.beam.emcryptcore.service.DbService;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import lombok.RequiredArgsConstructor;

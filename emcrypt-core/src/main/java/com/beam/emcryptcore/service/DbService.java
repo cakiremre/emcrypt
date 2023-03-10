@@ -1,4 +1,4 @@
-package com.beam.emcryptkeyman.service;
+package com.beam.emcryptcore.service;
 
 import com.beam.emcryptcore.db.IDbService;
 import com.beam.emcryptcore.model.admin.tenant.Db;
