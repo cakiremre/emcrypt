@@ -1,0 +1,175 @@
+<div class="card mb-5 mb-xl-10">
+  <div
+    class="card-header border-0 cursor-pointer"
+    role="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#kt_account_profile_details"
+    aria-expanded="true"
+    aria-controls="kt_account_profile_details"
+  >
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">User Details</h3>
+    </div>
+  </div>
+  <div id="kt_account_profile_details" class="collapse show">
+    <form
+      novalidate=""
+      class="form"
+      autocomplete="off"
+      id="uf"
+      [formGroup]="userForm"
+    >
+      <div class="card-body border-top p-9">
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Email</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+              id="email"
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="eg. john@company.co"
+              name="email"
+              required=""
+              formControlName="email"
+              [class.is-invalid]="email.touched && email.invalid"
+            />
+          </div>
+          <div *ngIf="email.touched && email.invalid" class="small red">
+            <div *ngIf="email.errors?.['required']">
+              User email is required.
+            </div>
+          </div>
+
+          <div *ngIf="email.untouched || email.valid" class="small">
+            <div>Please enter name of the user.</div>
+          </div>
+        </div>
+        <div formGroupName="profile">
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6"
+              >First Name</label
+            >
+            <div class="col-lg-8 fv-row">
+              <input
+                id="firstName"
+                type="text"
+                class="form-control form-control-lg form-control-solid"
+                placeholder="eg. John"
+                name="firstName"
+                required=""
+                formControlName="firstName"
+                [class.is-invalid]="firstName.touched && firstName.invalid"
+              />
+            </div>
+            <div
+              *ngIf="firstName.touched && firstName.invalid"
+              class="small red"
+            >
+              <div *ngIf="firstName.errors?.['required']">
+                User first name is required.
+              </div>
+            </div>
+
+            <div *ngIf="firstName.untouched || firstName.valid" class="small">
+              <div>Please enter first name of the user. Eg. John</div>
+            </div>
+          </div>
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6"
+              >Last Name</label
+            >
+            <div class="col-lg-8 fv-row">
+              <input
+                id="lastName"
+                type="text"
+                class="form-control form-control-lg form-control-solid"
+                placeholder="eg. Doe"
+                name="lastName"
+                required=""
+                formControlName="lastName"
+                [class.is-invalid]="lastName.touched && lastName.invalid"
+              />
+            </div>
+            <div *ngIf="lastName.touched && lastName.invalid" class="small red">
+              <div *ngIf="lastName.errors?.['required']">
+                User last name is required.
+              </div>
+            </div>
+
+            <div *ngIf="lastName.untouched || lastName.valid" class="small">
+              <div>Please enter last name of the user. Eg. Doe</div>
+            </div>
+          </div>
+          <div class="row mb-6">
+            <label class="col-lg-4 col-form-label required fw-bold fs-6"
+              >Prefered Language</label
+            >
+            <div class="col-lg-8 fv-row">
+              <select
+                id="prefer"
+                name="prefer"
+                class="form-control form-control-lg form-control-solid"
+                required=""
+                formControlName="prefer"
+                [class.is-invalid]="prefer.touched && prefer.invalid"
+              >
+                <option>Please select language</option>
+                <option
+                  *ngFor="let language of languages"
+                  value="{{ language }}"
+                >
+                  {{ language }}
+                </option>
+              </select>
+            </div>
+            <div *ngIf="prefer.touched && prefer.invalid" class="small red">
+              <div *ngIf="prefer.errors?.['required']">
+                Prefered language is required.
+              </div>
+            </div>
+
+            <div *ngIf="prefer.untouched || prefer.valid" class="small">
+              <div>Please enter prefered language of the user. Eg. TR|EN</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end py-6 px-9">
+        <button
+          type="button"
+          class="btn btn-primary me-3"
+          [disabled]="isLoading"
+          (click)="save(false)"
+        >
+          <ng-container *ngIf="!isLoading">Save</ng-container>
+          <ng-container *ngIf="isLoading">
+            <span clas="indicator-progress" [style.display]="'block'">
+              Please wait...{{ ' ' }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          [disabled]="isLoading"
+          (click)="save(true)"
+        >
+          <ng-container *ngIf="!isLoading">Save and Stay</ng-container>
+          <ng-container *ngIf="isLoading">
+            <span clas="indicator-progress" [style.display]="'block'">
+              Please wait...{{ ' ' }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
