@@ -10,7 +10,9 @@ public class RouterValidator {
 
     public static final List<String> publicApis = List.of(
             "/api/gw/auth/authenticate",
-            "/api/gw/auth/forgot"
+            "/api/gw/auth/forgot",
+            "/api/adm/user/activate",
+            "/api/ekm/emkey/read"
     );
 
     public Predicate<String> isSecured =

@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 @Configuration
 public class CorsConfiguration {
 
-  private static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Content-Length, Authorization, credential, X-XSRF-TOKEN";
+  private static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Content-Length, Authorization, credential, X-XSRF-TOKEN, X-TENANT";
   private static final String ALLOWED_METHODS = "GET, PUT, POST, DELETE, OPTIONS, PATCH";
-  private static final String ALLOWED_ORIGIN = "http://localhost:4200";
+  private static final String ALLOWED_ORIGIN = "*";
   private static final String MAX_AGE = "7200"; //2 hours (2 * 60 * 60) 
 
   @Bean

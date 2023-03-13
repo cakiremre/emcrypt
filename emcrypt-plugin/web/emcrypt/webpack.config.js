@@ -20,6 +20,7 @@ module.exports = async (env, options) => {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
       readpane: ["./src/readpane/readpane.js", "./src/readpane/readpane.html"],
       compose: ["./src/compose/compose.js", "./src/compose/compose.html"],
+      splash: ["./src/splash/splash.js", "./src/splash/splash.html"],
       commands: "./src/commands/commands.js",
     },
     output: {
@@ -64,6 +65,11 @@ module.exports = async (env, options) => {
         filename: "compose.html",
         template: "./src/compose/compose.html",
         chunks: ["polyfill", "compose"],
+      }),
+      new HtmlWebpackPlugin({
+        filename: "splash.html",
+        template: "./src/splash/splash.html",
+        chunks: ["polyfill", "splash"],
       }),
       new CopyWebpackPlugin({
         patterns: [
