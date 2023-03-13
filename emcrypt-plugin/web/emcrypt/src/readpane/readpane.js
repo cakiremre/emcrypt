@@ -37,7 +37,7 @@ export async function decrypt() {
 
     let text = decryptMessage(payload, encryptedKey, privateKey);
 
-    console.log(text);
+    $("#content").html(text);
   });
 
   getContent(Office, mailboxItem).then((content) => {

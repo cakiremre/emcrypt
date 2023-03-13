@@ -36,7 +36,9 @@ export async function encrypt() {
   Promise.all([content, key]).then((values) => {
     let result = encryptMessage(values[0], values[1]); // data, key
 
-    setContent(Office, mailboxItem, result).then(() => {
+    let content = `<b>This is encrypted message </b><p class="data">${result.payload}</p><p class="key">${result.key}</p>`
+
+    setContent(Office, mailboxItem, content).then(() => {
       console.log("content changed");
     });
   });

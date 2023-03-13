@@ -33,8 +33,8 @@ function setUserConfig(office, email) {
       office.context.roamingSettings.saveAsync(function (asyncResult) {
         if (asyncResult.status == office.AsyncResultStatus.Succeeded) {
           resolve({
-            "activated": true,
-            "email": email,
+            activated: true,
+            email: email,
           });
         } else {
           reject(asyncResult.error);
@@ -62,20 +62,16 @@ function getContent(office, mailboxItem) {
   });
 }
 
-function setContent(office, mailboxItem, replacement) {
+function setContent(office, mailboxItem, content) {
   return new office.Promise(function (resolve, reject) {
     try {
-      mailboxItem.body.setAsync(
-        `<b>This is encrypted message </b><p class="data">${replacement.payload}</p><p class="key">${replacement.key}</p>`,
-        { coercionType: office.CoercionType.Html },
-        function (asyncResult) {
-          if (asyncResult.status == office.AsyncResultStatus.Succeeded) {
-            resolve(asyncResult.value);
-          } else {
-            reject(asyncResult.error);
-          }
+      mailboxItem.body.setAsync(content, { coercionType: office.CoercionType.Html }, function (asyncResult) {
+        if (asyncResult.status == office.AsyncResultStatus.Succeeded) {
+          resolve(asyncResult.value);
+        } else {
+          reject(asyncResult.error);
         }
-      );
+      });
     } catch (error) {
       reject(error);
     }

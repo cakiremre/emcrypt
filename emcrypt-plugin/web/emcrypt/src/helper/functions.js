@@ -8,13 +8,14 @@ let generateKey = function generateKey(keyLength) {
     var rnum = Math.floor(Math.random() * chars.length);
     randomstring += chars.substring(rnum, rnum + 1);
   }
-  return randomstring;
+
+  return CryptoJS.MD5(randomstring).toString();
 };
 
 let encryptMessage = function (data, publicKey) {
-  let key = CryptoJS.enc.Utf8.parse(generateKey(32));
-  let iv = CryptoJS.enc.Utf8.parse(generateKey(16));
-  let aesEncrypted = CryptoJS.AES.encrypt(data, key, {iv: iv});
+  let key = generateKey(50);
+  let iv = generateKey(50);
+  let aesEncrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Hex.parse(key), { iv: CryptoJS.enc.Hex.parse(iv) });
   let aesKey = key + ":::" + iv;
   let encryptedMessage = aesEncrypted.toString();
 
@@ -27,23 +28,26 @@ let encryptMessage = function (data, publicKey) {
   };
 };
 
-let decryptMessage = function(payload, encryptedKey, privateKey){
+let decryptMessage = function (payload, encryptedKey, privateKey) {
   let rsaEncrypt = new JSEncrypt();
   rsaEncrypt.setPrivateKey(privateKey);
-  let aesKeyAndIV = rsaEncrypt.decrypt(encryptedKey).split(":::");
-  
-  let decrypted = CryptoJS.AES.decrypt(payload, aesKeyAndIV[0], {iv: aesKeyAndIV[1]});
-  return decrypted.toString(CryptoJS.enc.Utf8);
-}
+  let aesKeyAndIV = rsaEncrypt.decrypt(encryptedKey);
 
-let extractData = function(content) {
+  let key = aesKeyAndIV.split(":::")[0];
+  let iv = aesKeyAndIV.split(":::")[1];
+
+  let decrypted = CryptoJS.AES.decrypt(payload, CryptoJS.enc.Hex.parse(key), { iv: CryptoJS.enc.Hex.parse(iv) }).toString(CryptoJS.enc.Utf8);
+  return decrypted;
+};
+
+let extractData = function (content) {
   var rx = /<p class=data>(.*)<\/p>/g;
   var arr = rx.exec(content);
   return arr[1];
-}
+};
 
-let extractKey = function(content) {
+let extractKey = function (content) {
   var rx = /<p class=key>(.*)<\/p>/g;
   var arr = rx.exec(content);
   return arr[1];
-}
+};
