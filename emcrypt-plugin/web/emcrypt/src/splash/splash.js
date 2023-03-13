@@ -22,18 +22,15 @@ Office.onReady((info) => {
 
 export async function config() {
   let conf = getUserConfig(Office);
-  console.log(conf);
 }
 
 export async function setConfig() {
   setUserConfig(Office, "emre@beamteknoloji.com").then((ret) => {
-    console.log("config set", ret);
   });
 }
 
 export async function resetConfig() {
   resetUserConfig(Office).then(() => {
-    console.log("config reset");
   });
 }
 

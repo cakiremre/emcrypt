@@ -28,11 +28,7 @@ let encryptMessage = function (data, publicKey) {
   };
 };
 
-let decryptMessage = function (payload, encryptedKey, privateKey) {
-  let rsaEncrypt = new JSEncrypt();
-  rsaEncrypt.setPrivateKey(privateKey);
-  let aesKeyAndIV = rsaEncrypt.decrypt(encryptedKey);
-
+let decryptMessage = function (payload, aesKeyAndIV) {
   let key = aesKeyAndIV.split(":::")[0];
   let iv = aesKeyAndIV.split(":::")[1];
 
@@ -41,13 +37,13 @@ let decryptMessage = function (payload, encryptedKey, privateKey) {
 };
 
 let extractData = function (content) {
-  var rx = /<p class=data>(.*)<\/p>/g;
+  var rx = /<p class=data>(.*?)</;
   var arr = rx.exec(content);
   return arr[1];
 };
 
 let extractKey = function (content) {
-  var rx = /<p class=key>(.*)<\/p>/g;
+  var rx = /<p class=key>(.*?)</;
   var arr = rx.exec(content);
   return arr[1];
 };

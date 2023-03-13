@@ -10,10 +10,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.*;
+import java.security.spec.EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
+
+import static javax.crypto.Cipher.DECRYPT_MODE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -89,6 +97,38 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
                     .data("NOT_FOUND")
                     .code(404)
                     .build();
+        }
+    }
+
+    public KeyResponse<String> decryptKey(String owner, String key) {
+        KeyResponse<String> response = findByOwner(owner, KeyType.PRIVATE);
+
+        if (response.getCode() == 0) {
+            String privateKey = response.getData();
+
+
+            try {
+                KeyFactory kf = KeyFactory.getInstance("RSA");
+                Cipher cipher = Cipher.getInstance("RSA");
+
+                PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
+
+                cipher.init(DECRYPT_MODE,  kf.generatePrivate(ks));
+
+                byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(key));
+                return KeyResponse.<String>builder()
+                        .code(0)
+                        .data(new String(decrypted))
+                        .build();
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException |
+                     IllegalBlockSizeException | BadPaddingException exc) {
+                return KeyResponse.<String>builder()
+                        .code(100)
+                        .data(exc.getMessage())
+                        .build();
+            }
+        } else {
+            return response;
         }
     }
 }

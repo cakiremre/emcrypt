@@ -25,7 +25,7 @@ Office.onReady((info) => {
 
 export async function reset() {
   resetUserConfig().then(() => {
-    console.log("config reset");
+
   });
 }
 
@@ -39,7 +39,6 @@ export async function encrypt() {
     let content = `<b>This is encrypted message </b><p class="data">${result.payload}</p><p class="key">${result.key}</p>`
 
     setContent(Office, mailboxItem, content).then(() => {
-      console.log("content changed");
     });
   });
 }

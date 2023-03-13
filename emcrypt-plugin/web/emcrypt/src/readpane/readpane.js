@@ -11,7 +11,6 @@ Office.onReady((info) => {
   $("#decrypt").bind("click", decrypt);
 
   const config = getUserConfig(Office);
-  console.log(config);
 
   if (!config.activated) {
     window.location = "splash.html";
@@ -22,26 +21,19 @@ Office.onReady((info) => {
 
 export async function resetUser() {
   resetUserConfig(Office).then(() => {
-    console.log("config reset");
   });
 }
 
 export async function decrypt() {
-  let content = getContent(Office, mailboxItem);
-  let key = getPrivateKey(Office);
+  getContent(Office, mailboxItem).then((data) => {
+    let payload = extractData(data);
+    let encryptedKey = extractKey(data);
 
-  Promise.all([content, key]).then((values) => {
-    let payload = extractData(values[0]);
-    let encryptedKey = extractKey(values[0]);
-    let privateKey = values[1];
+    decryptKey(Office, encryptedKey).then((aesKeyAndIV) => {
+      let text = decryptMessage(payload, aesKeyAndIV);
 
-    let text = decryptMessage(payload, encryptedKey, privateKey);
+      $("#content").html(text);
+    });
 
-    $("#content").html(text);
-  });
-
-  getContent(Office, mailboxItem).then((content) => {
-    let data = extractData(content);
-    let key = extractKey(content);
   });
 }

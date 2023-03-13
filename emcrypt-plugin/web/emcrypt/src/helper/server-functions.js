@@ -34,11 +34,11 @@ function activateUser(office, email) {
   });
 }
 
-function getPublicKey(office){
+function getPublicKey(office) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.get({
-        url: "http://localhost:8080/api/ekm/emkey/read?owner=" + tenant + "&keyType=PUBLIC",
+        url: baseUrl + "/api/ekm/emkey/read?owner=" + tenant + "&keyType=PUBLIC",
         headers: {
           "X-TENANT": tenant,
         },
@@ -56,11 +56,14 @@ function getPublicKey(office){
   });
 }
 
-function getPrivateKey(office){
+function decryptKey(office, encrypted) {
   return new office.Promise(function (resolve, reject) {
     try {
-      $.get({
-        url: "http://localhost:8080/api/ekm/emkey/read?owner=" + tenant + "&keyType=PRIVATE",
+      $.post({
+        url: baseUrl + "/api/ekm/emkey/decrypt-key",
+        data: JSON.stringify({ owner: tenant, key: encrypted }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
         headers: {
           "X-TENANT": tenant,
         },
@@ -77,4 +80,3 @@ function getPrivateKey(office){
     }
   });
 }
-
