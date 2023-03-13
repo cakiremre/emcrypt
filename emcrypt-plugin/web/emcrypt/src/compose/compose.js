@@ -5,38 +5,39 @@
 
 /* global document, Office */
 import $ from "jquery";
+let CryptoJS = require("crypto-js");
+let JSEncrypt = require("jsencrypt");
+
+let mailboxItem;
 
 Office.onReady((info) => {
-  $("#resetUser").bind("click", resetUser);
-  $("#encrypt").bind("click", encryptMessage);
+  $("#resetUser").bind("click", reset);
+  $("#encrypt").bind("click", encrypt);
 
-  const config = getUserConfig();
+  const config = getUserConfig(Office);
 
   if (!config.activated) {
     window.location = "splash.html";
+  } else {
+    mailboxItem = Office.context.mailbox.item;
   }
 });
 
-export async function resetUser() {
-  resetUserConfig();
+export async function reset() {
+  resetUserConfig().then(() => {
+    console.log("config reset");
+  });
 }
 
-export async function encryptMessage() {
-  // get pub-key of the organization.
-  $.get({
-    url: "http://localhost:8080/api/ekm/emkey/read?owner=" + tenant + "&keyType=PUBLIC",
-    headers: {
-      "X-TENANT": tenant
-    },
-    success: function(response){
-      console.log(response);
-    },
-    error: function(err){
-      console.log(err);
-    }
+export async function encrypt() {
+  let content = getContent(Office, mailboxItem);
+  let key = getPublicKey(Office);
+
+  Promise.all([content, key]).then((values) => {
+    let result = encryptMessage(values[0], values[1]); // data, key
+
+    setContent(Office, mailboxItem, result).then(() => {
+      console.log("content changed");
+    });
   });
-
-  // encrypt and replace message body.
-
-  
 }

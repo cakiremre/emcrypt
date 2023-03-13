@@ -39,6 +39,7 @@ public class UserService extends BaseService<UserRepository, User> {
             return GenericResponse.code(404);
         }else{
             user.setActivated(true);
+            repository.save(user);
             return GenericResponse.success();
         }
     }

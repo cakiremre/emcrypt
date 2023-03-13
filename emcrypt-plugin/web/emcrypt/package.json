@@ -28,7 +28,9 @@
   "dependencies": {
     "bootstrap": "^5.2.3",
     "core-js": "^3.9.1",
+    "crypto-js": "^4.1.1",
     "jquery": "^3.6.4",
+    "jsencrypt": "^3.3.2",
     "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {

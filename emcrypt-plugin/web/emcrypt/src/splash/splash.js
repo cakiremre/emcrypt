@@ -20,17 +20,21 @@ Office.onReady((info) => {
   document.getElementById("activate").onclick = activate;
 });
 
-export async function config(){
-  let conf = getUserConfig();
+export async function config() {
+  let conf = getUserConfig(Office);
   console.log(conf);
 }
 
-export async function setConfig(){
-  setUserConfig("ali@beamteknoloji.com");
+export async function setConfig() {
+  setUserConfig(Office, "emre@beamteknoloji.com").then((ret) => {
+    console.log("config set", ret);
+  });
 }
 
-export async function resetConfig(){
-  resetUserConfig();
+export async function resetConfig() {
+  resetUserConfig(Office).then(() => {
+    console.log("config reset");
+  });
 }
 
 export async function outlook() {
@@ -52,31 +56,11 @@ export async function email() {
 export async function activate() {
   let email = $("#username").val();
 
-  let data = {
-    email: email,
-  };
-
-  $.post({
-    url: "http://localhost:8080/api/adm/user/activate",
-    data: JSON.stringify(data),
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    headers: {
-      "X-TENANT": tenant
-    },
-    success: function (response) {
-      if (response.code == 0) {
-        let config = setUserConfig(email);
-        if (config.activated) {
-          window.history.back();
-        }
-      }else{
-        // FIX for error codes
-        // 404 email not found
+  activateUser(Office, email).then(() => {
+    setUserConfig(Office, email).then((config) => {
+      if (config.activated) {
+        window.close();
       }
-    },
-    error: function (err) {
-      console.log(err);
-    },
+    });
   });
 }
