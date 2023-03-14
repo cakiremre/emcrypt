@@ -1,24 +1,49 @@
 <div class="row">
-    <div class="col">
-        <li class="list-unstyled hand" *ngFor="let content of contents">{{content.type}}</li>
-    </div>
-    
-    <div class="col">
-        <select
-            id="prefer"
-            name="prefer"
-            class="form-control form-control-lg form-control-solid"
-            required=""
-            >
-            <option>Please select language</option>
-            <option
-                *ngFor="let language of languages"
-                value="{{ language }}"
-            >
-                {{ language }}
-            </option>
-        </select>
-    
-    </div>
-</div>
+  <ul class="col-3 text-center">
+    <li
+      class="list-unstyled hand content"
+      [ngClass]="{ selected: content.selected }"
+      *ngFor="let content of contents"
+      (click)="select(content)"
+    >
+      {{ content.type }}
+    </li>
+  </ul>
 
+  <div class="col card" *ngIf="selected">
+    <div class="card-header">
+      <h3 class="card-title">
+        Define email template for at least one language
+      </h3>
+    </div>
+    <form novalidate="" class="form" autocomplete="off" id="uf">
+      <div class="card-body">
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Template Language</label
+          >
+          <div class="col-lg-8 fv-row">
+            <select
+              id="language"
+              name="language"
+              class="form-control form-control-lg form-control-solid"
+              required=""
+              title="template language"
+            >
+              <option>Please select language</option>
+              <option *ngFor="let language of languages" value="{{ language }}">
+                {{ language }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-6">
+          <ckeditor />
+        </div>
+        <div class="row mb-6">
+            <button class="btn btn-success" type="submit">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

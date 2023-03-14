@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -26,9 +27,13 @@ public class Content extends Base {
     private Type type;
     private Map<Language, String> html;
 
+    @Transient
+    private boolean missing;
+
     @Override
     public Content newIdAndCreated() {
         super.newIdAndCreated();
+        missing = true;
         html = new HashMap<>();
         Arrays.stream(Language.values()).forEach(l -> html.put(l, null));
         return this;
