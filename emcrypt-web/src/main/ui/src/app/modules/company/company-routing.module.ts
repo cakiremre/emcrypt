@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CompanyComponent } from './components/company/company.component';
-import { SettingsHomeComponent } from './modules/settings/components/settings-home/settings-home.component';
 import { UserListComponent } from './modules/users/components/user-list/user-list.component';
 import { UserManualComponent } from './modules/users/components/user-manual/user-manual.component';
 
@@ -23,7 +22,8 @@ const routes: Routes = [
       },
       {
         path: 'settings',
-        component: SettingsHomeComponent,
+        loadChildren: () =>
+          import('./modules/settings/settings.module').then((m) => m.SettingsModule),
       },
       { path: '', redirectTo: '/company/overview', pathMatch: 'full' },
       { path: '**', redirectTo: '/company/overview', pathMatch: 'full' },

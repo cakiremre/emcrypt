@@ -1,6 +1,6 @@
 package com.beam.emcryptkeyman.repository;
 
-import com.beam.emcryptcore.model.keyman.EmKey;
+import com.beam.emcryptcore.model.keyman.crypto.EmKey;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

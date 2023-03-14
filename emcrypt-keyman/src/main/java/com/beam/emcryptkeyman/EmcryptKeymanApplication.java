@@ -1,7 +1,7 @@
 package com.beam.emcryptkeyman;
 
 import com.beam.emcryptcore.dto.keyman.KeyRequest;
-import com.beam.emcryptcore.model.keyman.EmKeyType;
+import com.beam.emcryptcore.model.keyman.crypto.EmKeyType;
 import com.beam.emcryptkeyman.service.EmKeyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

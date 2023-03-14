@@ -7,7 +7,7 @@ import com.beam.emcryptcore.model.admin.tenant.Db;
 import com.beam.emcryptcore.model.admin.tenant.Tenant;
 import com.beam.emcryptcore.model.auth.Account;
 import com.beam.emcryptcore.model.auth.Role;
-import com.beam.emcryptcore.model.keyman.EmKeyType;
+import com.beam.emcryptcore.model.keyman.crypto.EmKeyType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

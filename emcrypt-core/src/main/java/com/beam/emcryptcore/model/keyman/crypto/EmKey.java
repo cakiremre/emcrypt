@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.keyman;
+package com.beam.emcryptcore.model.keyman.crypto;
 
 
 import com.beam.emcryptcore.base.Base;

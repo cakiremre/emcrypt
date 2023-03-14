@@ -1,1 +1,6 @@
-<p>settings-home works!</p>
+<div class="flex flex-column">
+    <div class="setting-item text-center col-md-3 hand" *ngFor="let item of settings" (click)="navigateByUrl(item.link)">
+        <h3 class="mb-5">{{item.name}}</h3>
+        <span class="small">{{item.description}}</span>
+    </div>
+</div>

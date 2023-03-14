@@ -3,7 +3,7 @@ package com.beam.emcryptkeyman.controller;
 import com.beam.emcryptcore.dto.keyman.DecryptRequest;
 import com.beam.emcryptcore.dto.keyman.KeyRequest;
 import com.beam.emcryptcore.dto.keyman.KeyResponse;
-import com.beam.emcryptcore.model.keyman.KeyType;
+import com.beam.emcryptcore.model.keyman.crypto.KeyType;
 import com.beam.emcryptkeyman.service.EmKeyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

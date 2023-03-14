@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.keyman;
+package com.beam.emcryptcore.model.keyman.crypto;
 
 public enum EmKeyType {
     ROOT,

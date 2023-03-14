@@ -7,7 +7,7 @@ import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.dto.admin.ActivateRequest;
 import com.beam.emcryptcore.dto.keyman.KeyRequest;
 import com.beam.emcryptcore.model.admin.company.User;
-import com.beam.emcryptcore.model.keyman.EmKeyType;
+import com.beam.emcryptcore.model.keyman.crypto.EmKeyType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

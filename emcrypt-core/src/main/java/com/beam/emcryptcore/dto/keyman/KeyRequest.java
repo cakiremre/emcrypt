@@ -1,6 +1,6 @@
 package com.beam.emcryptcore.dto.keyman;
 
-import com.beam.emcryptcore.model.keyman.EmKeyType;
+import com.beam.emcryptcore.model.keyman.crypto.EmKeyType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
