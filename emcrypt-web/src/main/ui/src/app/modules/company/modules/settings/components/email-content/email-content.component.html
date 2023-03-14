@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="col">
+        <li class="list-unstyled hand" *ngFor="let content of contents">{{content.type}}</li>
+    </div>
+    
+    <div class="col">
+        <select
+            id="prefer"
+            name="prefer"
+            class="form-control form-control-lg form-control-solid"
+            required=""
+            >
+            <option>Please select language</option>
+            <option
+                *ngFor="let language of languages"
+                value="{{ language }}"
+            >
+                {{ language }}
+            </option>
+        </select>
+    
+    </div>
+</div>
+
