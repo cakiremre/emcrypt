@@ -27,24 +27,26 @@
 </head>
 
 <body class="ms-font-m ms-welcome ms-Fabric">
-    <header class="ms-welcome__header ms-bgColor-neutralLighter">
+    <header class="ms-welcome__header ms-bgColor-neutralLighter"  style="display: none;">
         <img width="90" height="90" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
         <h1 class="ms-font-su">Splash Screen</h1>
     </header>
    
-    <main id="app-body" class="ms-welcome__main container" >
-        <button class="btn btn-default mb-2" id="config">Get Config</button>
-        <button class="btn btn-default mb-2" id="setconfig">Set Config</button>
-        <button class="btn btn-default mb-2" id="resetconfig">Reset Config</button>
-        <button class="btn btn-default mb-2" id="outlook">Activate using Outlook</button>
-        <button class="btn btn-default mb-2" id="graph">Activate using Office 365</button>
-        <button class="btn btn-default mb-2" id="office">Activate using SSO</button>
-        <button class="btn btn-default mb-2" id="email">Activate using Email</button>
+    <main id="app-body" class="ms-welcome__main container btn-group-vertical">
+        <button class="btn btn-outline-success btn-block mb-2" id="outlook">Activate using Outlook</button>
+        <button class="btn btn-outline-success btn-block mb-2" id="graph">Activate using Office 365</button>
+        <button class="btn btn-outline-success btn-block mb-2" id="office">Activate using SSO</button>
+        <button class="btn btn-outline-success btn-block mb-2" id="email">Activate using Email</button>
 
-        <section id="email-activation" class="ms-welcome__main"  style="display: none;">
-            <input class="form-control mb-2" id="username" type="text">
-            <button class="btn btn-primary" id="activate">Activate</button>
-        </section>
+        <div id="email-activation" class="row"  style="display: none;">
+            <input class="form-control  mb-2" id="username" type="text" placeholder="Please enter your email">
+            <button class="btn btn-info btn-block" id="activate">Activate</button>
+        </div>
+
+        <div id="output" class="row mt-5">
+            <span id="success" style="display:none">Your account is successfully activated. You need to restart your addin.</span>
+            <span id="error" style="display:none">An error occurred account activation. Msg: <span id="error-msg"></span></span>
+        </div>
     </main>
     
     

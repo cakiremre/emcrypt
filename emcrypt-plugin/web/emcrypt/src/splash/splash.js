@@ -7,32 +7,14 @@
 
 import $ from "jquery";
 
-
 Office.onReady((info) => {
-  document.getElementById("config").onclick = config;
-  document.getElementById("setconfig").onclick = setConfig;
-  document.getElementById("resetconfig").onclick = resetConfig;
-  document.getElementById("outlook").onclick = outlook;
-  document.getElementById("graph").onclick = graph;
-  document.getElementById("office").onclick = office;
-  document.getElementById("email").onclick = email;
+  $("#outlook").bind("click", outlook);
+  $("#graph").bind("click", graph);
+  $("#office").bind("click", office);
+  $("#email").bind("click", email);
 
-  document.getElementById("activate").onclick = activate;
+  $("#activate").bind("click", activate);
 });
-
-export async function config() {
-  let conf = getUserConfig(Office);
-}
-
-export async function setConfig() {
-  setUserConfig(Office, "emre@beamteknoloji.com").then((ret) => {
-  });
-}
-
-export async function resetConfig() {
-  resetUserConfig(Office).then(() => {
-  });
-}
 
 export async function outlook() {
   console.log("outlook");
@@ -47,17 +29,42 @@ export async function office() {
 }
 
 export async function email() {
-  document.getElementById("email-activation").style.display = "flex";
+  toggle("#email-activation", true);
 }
 
 export async function activate() {
-  let email = $("#username").val();
+  activateUser(Office, $("#username").val()).then(
+    () => {
+      setUserConfig(Office, email).then(
+        (config) => {
+          if (config.activated) {
+            output(true);
+          }
+        },
+        (message) => {
+          output(false, message);
+        }
+      );
+    },
+    (message) => {
+      output(false, message);
+    }
+  );
+}
 
-  activateUser(Office, email).then(() => {
-    setUserConfig(Office, email).then((config) => {
-      if (config.activated) {
-        window.close();
-      }
-    });
-  });
+function output(success, message) {
+  if (success) {
+    toggle("#success", true);
+  } else {
+    toggle("#error", true);
+    $("#error-msg").text(message);
+  }
+}
+
+function toggle(selector, show) {
+  if (show) {
+    $(selector).css("display", "");
+  } else {
+    $(selector).css("display", "none");
+  }
 }

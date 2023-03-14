@@ -4,28 +4,23 @@
  */
 
 /* global document, Office */
-let mailboxItem;
-
 Office.onReady((info) => {
-  $("#resetUser").bind("click", resetUser);
-  $("#decrypt").bind("click", decrypt);
-
   const config = getUserConfig(Office);
 
   if (!config.activated) {
     window.location = "splash.html";
   } else {
-    mailboxItem = Office.context.mailbox.item;
+    Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, itemChanged);
+    UpdateTaskPaneUI(Office.context.mailbox.item);
   }
 });
 
-export async function resetUser() {
-  resetUserConfig(Office).then(() => {
-  });
+export async function itemChanged(){
+  UpdateTaskPaneUI(Office.context.mailbox.item);
 }
 
-export async function decrypt() {
-  getContent(Office, mailboxItem).then((data) => {
+function UpdateTaskPaneUI(item){
+  getContent(Office, item).then((data) => {
     let payload = extractData(data);
     let encryptedKey = extractKey(data);
 
@@ -34,6 +29,5 @@ export async function decrypt() {
 
       $("#content").html(text);
     });
-
   });
 }

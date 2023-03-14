@@ -37,11 +37,11 @@ function setUserConfig(office, email) {
             email: email,
           });
         } else {
-          reject(asyncResult.error);
+          reject(asyncResult.error.message);
         }
       });
     } catch (error) {
-      reject(error);
+      reject(error.message);
     }
   });
 }

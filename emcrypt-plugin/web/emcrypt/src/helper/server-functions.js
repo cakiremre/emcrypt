@@ -29,7 +29,7 @@ function activateUser(office, email) {
         },
       });
     } catch (error) {
-      reject(error);
+      reject(error.message);
     }
   });
 }

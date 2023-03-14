@@ -17,14 +17,13 @@ let encryptMessage = function (data, publicKey) {
   let iv = generateKey(50);
   let aesEncrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Hex.parse(key), { iv: CryptoJS.enc.Hex.parse(iv) });
   let aesKey = key + ":::" + iv;
-  let encryptedMessage = aesEncrypted.toString();
 
   let rsaEncrypt = new JSEncrypt();
   rsaEncrypt.setPublicKey(publicKey);
-  encryptedKey = rsaEncrypt.encrypt(aesKey);
+
   return {
-    payload: encryptedMessage,
-    key: encryptedKey,
+    payload: aesEncrypted.toString(),
+    key: rsaEncrypt.encrypt(aesKey),
   };
 };
 
