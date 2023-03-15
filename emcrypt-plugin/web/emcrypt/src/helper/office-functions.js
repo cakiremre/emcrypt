@@ -46,6 +46,22 @@ function setUserConfig(office, email) {
   });
 }
 
+function getAsyncProp(office, mailboxItem, addressType) {
+  return new office.Promise(function (resolve, reject) {
+    try {
+      mailboxItem[addressType].getAsync(function (asyncResult) {
+        if (asyncResult.status === office.AsyncResultStatus.Succeeded) {
+          resolve(asyncResult.value);
+        } else {
+          reject(asyncResult.error.message);
+        }
+      });
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+}
+
 function getContent(office, mailboxItem) {
   return new office.Promise(function (resolve, reject) {
     try {

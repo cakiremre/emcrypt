@@ -37,6 +37,19 @@ let decryptMessage = function (payload, aesKeyAndIV) {
   return decrypted;
 };
 
+let translateAddress = function (outlookAddress) {
+  return {
+    address: outlookAddress.emailAddress,
+    name: outlookAddress.displayName,
+  };
+};
+
+let translateAddresses = function (outlookAddresses) {
+  let addresses = [];
+  outlookAddresses.forEach((address) => addresses.push(translateAddress(address)));
+  return addresses;
+};
+
 let extractData = function (content) {
   var rx = /---Payload---(.*?)---Payload---/;
   var arr = rx.exec(content);

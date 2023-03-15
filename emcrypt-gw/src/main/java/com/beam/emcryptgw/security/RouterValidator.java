@@ -13,7 +13,8 @@ public class RouterValidator {
             "/api/gw/auth/forgot",
             "/api/adm/user/activate",
             "/api/ekm/emkey/encrypt-key-html",
-            "/api/ekm/emkey/decrypt-key"
+            "/api/ekm/emkey/decrypt-key",
+            "/api/inb/email/save"
     );
 
     public Predicate<String> isSecured =

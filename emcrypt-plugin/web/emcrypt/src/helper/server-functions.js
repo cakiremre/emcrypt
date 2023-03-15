@@ -80,3 +80,28 @@ function decryptKey(office, encrypted) {
     }
   });
 }
+
+function sendEmailToServer(office, email) {
+  email.identifier = tenant;
+  return new office.Promise(function (resolve, reject) {
+    try {
+      $.post({
+        url: baseUrl + "/api/inb/email/save",
+        data: JSON.stringify(email),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        headers: {
+          "X-TENANT": tenant,
+        },
+        success: function (response) {
+          resolve(response);
+        },
+        error: function (err) {
+          reject(err);
+        },
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}

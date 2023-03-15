@@ -22,8 +22,10 @@ public class Email extends Base {
 
     private String identifier; // tenant
 
-    private String from;
-    private List<String> to;
+    private Subject from;
+    private List<Subject> to;
+    private List<Subject> cc;
+    private List<Subject> bcc;
     private String subject;
 
     private String key; // encrypted key

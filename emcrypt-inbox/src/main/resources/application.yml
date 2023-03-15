@@ -1,6 +1,6 @@
 spring:
   application:
-    name: web
+    name: inbox
   thymeleaf:
     prefix: classpath:/static/
   cloud:
