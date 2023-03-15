@@ -23,12 +23,12 @@ Office.onReady((info) => {
 
 export async function encrypt() {
   let content = getContent(Office, mailboxItem);
-  let key = getPublicKey(Office);
+  let keyAndHtml = getPublicKey(Office);
 
-  Promise.all([content, key]).then((values) => {
-    let result = encryptMessage(values[0], values[1]); // data, key
+  Promise.all([content, keyAndHtml]).then((values) => {
+    let result = encryptMessage(values[0], values[1].publicKey); // data, key
 
-    let content = `<b>This is encrypted message </b><p class="data">${result.payload}</p><p class="key">${result.key}</p>`;
+    let content = `${values[1].html}<div style="display:none">---Payload---${result.payload}---Payload---<br/>---key---${result.key}---key---</div>`;
 
     setContent(Office, mailboxItem, content).then(() => {});
   });

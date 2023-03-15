@@ -4,7 +4,7 @@ import { SettingsHomeComponent } from "./components/settings-home/settings-home.
 import { RouterModule } from "@angular/router";
 import { SettingsRoutingModule } from "./settings-routing.module";
 import { EmailContentComponent } from "./components/email-content/email-content.component";
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CKEditorModule } from "ckeditor4-angular";
 
 @NgModule({
@@ -12,6 +12,7 @@ import { CKEditorModule } from "ckeditor4-angular";
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     SettingsRoutingModule,
     ReactiveFormsModule,
     CKEditorModule,

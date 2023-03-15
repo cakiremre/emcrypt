@@ -31,18 +31,20 @@ let decryptMessage = function (payload, aesKeyAndIV) {
   let key = aesKeyAndIV.split(":::")[0];
   let iv = aesKeyAndIV.split(":::")[1];
 
-  let decrypted = CryptoJS.AES.decrypt(payload, CryptoJS.enc.Hex.parse(key), { iv: CryptoJS.enc.Hex.parse(iv) }).toString(CryptoJS.enc.Utf8);
+  let decrypted = CryptoJS.AES.decrypt(payload, CryptoJS.enc.Hex.parse(key), {
+    iv: CryptoJS.enc.Hex.parse(iv),
+  }).toString(CryptoJS.enc.Utf8);
   return decrypted;
 };
 
 let extractData = function (content) {
-  var rx = /<p class=data>(.*?)</;
+  var rx = /---Payload---(.*?)---Payload---/;
   var arr = rx.exec(content);
   return arr[1];
 };
 
 let extractKey = function (content) {
-  var rx = /<p class=key>(.*?)</;
+  var rx = /---key---(.*?)---key---/;
   var arr = rx.exec(content);
   return arr[1];
 };

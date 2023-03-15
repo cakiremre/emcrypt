@@ -1,6 +1,7 @@
 package com.beam.emcryptkeyman.controller;
 
 import com.beam.emcryptcore.dto.keyman.DecryptRequest;
+import com.beam.emcryptcore.dto.keyman.EncryptResponse;
 import com.beam.emcryptcore.dto.keyman.KeyRequest;
 import com.beam.emcryptcore.dto.keyman.KeyResponse;
 import com.beam.emcryptcore.model.keyman.crypto.KeyType;
@@ -27,9 +28,9 @@ public class EmKeyController {
         return service.createAll(keyRequests);
     }
 
-    @GetMapping("read")
-    public KeyResponse<String> readKey(@RequestParam String owner, @RequestParam KeyType keyType) {
-        return service.findByOwner(owner, keyType);
+    @GetMapping("encrypt-key-html")
+    public EncryptResponse encryptRequest(@RequestParam String owner) {
+        return service.readEncryptionMaterial(owner);
     }
 
     @PostMapping("decrypt-key")

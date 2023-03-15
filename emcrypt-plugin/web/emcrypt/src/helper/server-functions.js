@@ -38,13 +38,13 @@ function getPublicKey(office) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.get({
-        url: baseUrl + "/api/ekm/emkey/read?owner=" + tenant + "&keyType=PUBLIC",
+        url: baseUrl + "/api/ekm/emkey/encrypt-key-html?owner=" + tenant,
         headers: {
           "X-TENANT": tenant,
         },
         success: function (response) {
           // create aes-256 key.
-          resolve(response.data);
+          resolve(response);
         },
         error: function (err) {
           reject(err);

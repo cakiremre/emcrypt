@@ -16,7 +16,7 @@
         Define email template for at least one language
       </h3>
     </div>
-    <form novalidate="" class="form" autocomplete="off" id="uf">
+    <form novalidate="" class="form" autocomplete="off" id="uf" #templateForm="ngForm">
       <div class="card-body">
         <div class="row mb-6">
           <label class="col-lg-4 col-form-label required fw-bold fs-6"
@@ -24,13 +24,15 @@
           >
           <div class="col-lg-8 fv-row">
             <select
-              id="language"
-              name="language"
+              id="lang"
+              name="lang"
               class="form-control form-control-lg form-control-solid"
               required=""
               title="template language"
+              [(ngModel)]="language"
+              (change)="languageChanged()"
+              #lang="ngModel"
             >
-              <option>Please select language</option>
               <option *ngFor="let language of languages" value="{{ language }}">
                 {{ language }}
               </option>
@@ -38,10 +40,10 @@
           </div>
         </div>
         <div class="row mb-6">
-          <ckeditor />
+          <ckeditor [(ngModel)]="html" name="editor" #editor="ngModel" (blur)="setContentForLanguage()" />
         </div>
         <div class="row mb-6">
-            <button class="btn btn-success" type="submit">Save</button>
+            <button class="btn btn-success" type="button" (click)="save()">Save</button>
         </div>
       </div>
     </form>

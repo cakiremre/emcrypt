@@ -1,5 +1,5 @@
-import { OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { OnDestroy } from "@angular/core";
+import { Subscription } from "rxjs";
 
 export abstract class Base {
   id: string;
@@ -20,12 +20,21 @@ export class GenericDataResponse<T> extends GenericResponse {
   data: T;
 }
 
+export function enumFromStringValue<T>(
+  enm: { [s: string]: T },
+  value: string
+): T | undefined {
+  return (Object.values(enm) as unknown as string[]).includes(value)
+    ? (value as unknown as T)
+    : undefined;
+}
+
 export enum Language {
-  EN = 'EN',
-  TR = 'TR',
-  DE = 'DE',
-  AR = 'AR',
-  AZ = 'AZ',
+  EN = "EN",
+  TR = "TR",
+  DE = "DE",
+  AR = "AR",
+  AZ = "AZ",
 }
 
 export class HasSubscription {

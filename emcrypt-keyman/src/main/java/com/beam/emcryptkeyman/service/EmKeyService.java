@@ -1,10 +1,15 @@
 package com.beam.emcryptkeyman.service;
 
 import com.beam.emcryptcore.base.BaseService;
+import com.beam.emcryptcore.dto.keyman.EncryptResponse;
 import com.beam.emcryptcore.dto.keyman.KeyRequest;
 import com.beam.emcryptcore.dto.keyman.KeyResponse;
+import com.beam.emcryptcore.model.common.Language;
 import com.beam.emcryptcore.model.keyman.crypto.EmKey;
 import com.beam.emcryptcore.model.keyman.crypto.KeyType;
+import com.beam.emcryptcore.model.keyman.mail.Content;
+import com.beam.emcryptcore.model.keyman.mail.Type;
+import com.beam.emcryptkeyman.repository.ContentRepository;
 import com.beam.emcryptkeyman.repository.EmKeyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +30,8 @@ import static javax.crypto.Cipher.DECRYPT_MODE;
 @RequiredArgsConstructor
 @Service
 public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
+
+    private final ContentRepository contentRepository;
 
     /**
      * This method takes too much time should be async
@@ -82,9 +89,8 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
         return responseList;
     }
 
-    public KeyResponse<String> findByOwner(String owner, KeyType keyType) {
+    private KeyResponse<String> findByOwner(String owner, KeyType keyType) {
         Optional<EmKey> query = repository.findByOwner(owner);
-
         if (query.isPresent()) {
             return KeyResponse.<String>builder()
                     .code(0)
@@ -93,6 +99,23 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
         } else {
             return KeyResponse.<String>builder()
                     .data("NOT_FOUND")
+                    .code(404)
+                    .build();
+        }
+    }
+
+    public EncryptResponse readEncryptionMaterial(String owner) {
+        KeyResponse<String> key = findByOwner(owner, KeyType.PUBLIC);
+        Optional<Content> content = contentRepository.findByType(Type.REGULAR);
+
+        if(key.getCode() == 0 && content.isPresent()){
+            return EncryptResponse.builder()
+                    .code(0)
+                    .html(content.get().getHtml().get(Language.TR))
+                    .publicKey(key.getData())
+                    .build();
+        }else{
+            return EncryptResponse.builder()
                     .code(404)
                     .build();
         }
@@ -129,4 +152,6 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
             return response;
         }
     }
+
+
 }

@@ -12,7 +12,7 @@ public class RouterValidator {
             "/api/gw/auth/authenticate",
             "/api/gw/auth/forgot",
             "/api/adm/user/activate",
-            "/api/ekm/emkey/read",
+            "/api/ekm/emkey/encrypt-key-html",
             "/api/ekm/emkey/decrypt-key"
     );
 
