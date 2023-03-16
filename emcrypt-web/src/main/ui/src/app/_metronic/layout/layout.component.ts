@@ -4,17 +4,17 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
-} from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { LayoutService } from './core/layout.service';
-import { LayoutInitService } from './core/layout-init.service';
-import { ILayout, LayoutType } from './core/configs/config';
+} from "@angular/core";
+import { ActivatedRoute, NavigationEnd, Router } from "@angular/router";
+import { Subscription } from "rxjs";
+import { LayoutService } from "./core/layout.service";
+import { LayoutInitService } from "./core/layout-init.service";
+import { ILayout, LayoutType } from "./core/configs/config";
 
 @Component({
-  selector: 'app-layout',
-  templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
+  selector: "app-layout",
+  templateUrl: "./layout.component.html",
+  styleUrls: ["./layout.component.scss"],
 })
 export class LayoutComponent implements OnInit, OnDestroy {
   private unsubscribe: Subscription[] = [];
@@ -23,7 +23,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   // page
   pageContainerCSSClasses: string;
   // header
-  appHeaderDefaultClass: string = '';
+  appHeaderDefaultClass: string = "";
   appHeaderDisplay: boolean;
   appHeaderDefaultStickyEnabled: boolean;
   appHeaderDefaultStickyAttributes: { [attrName: string]: string } = {};
@@ -31,8 +31,8 @@ export class LayoutComponent implements OnInit, OnDestroy {
   appHeaderDefaultMinimizeAttributes: { [attrName: string]: string } = {};
   // toolbar
   appToolbarDisplay: boolean;
-  appToolbarLayout: 'classic' | 'accounting' | 'extended' | 'reports' | 'saas';
-  appToolbarCSSClass: string = '';
+  appToolbarLayout: "classic" | "accounting" | "extended" | "reports" | "saas";
+  appToolbarCSSClass: string = "";
   appToolbarSwapEnabled: boolean;
   appToolbarSwapAttributes: { [attrName: string]: string } = {};
   appToolbarStickyEnabled: boolean;
@@ -41,7 +41,7 @@ export class LayoutComponent implements OnInit, OnDestroy {
   appToolbarMinimizeAttributes: { [attrName: string]: string } = {};
 
   // content
-  appContentContiner?: 'fixed' | 'fluid';
+  appContentContiner?: "fixed" | "fluid";
   appContentContainerClass: string;
   contentCSSClasses: string;
   contentContainerCSSClass: string;
@@ -52,23 +52,23 @@ export class LayoutComponent implements OnInit, OnDestroy {
   appSidebarDisplay: boolean;
   appSidebarDefaultStickyEnabled: boolean;
   appSidebarDefaultStickyAttributes: { [attrName: string]: string } = {};
-  @ViewChild('ktSidebar', { static: true }) ktSidebar: ElementRef;
+  @ViewChild("ktSidebar", { static: true }) ktSidebar: ElementRef;
   /// sidebar panel
   appSidebarPanelDisplay: boolean;
   // footer
   appFooterDisplay: boolean;
-  appFooterCSSClass: string = '';
-  appFooterContainer: string = '';
-  appFooterContainerCSSClass: string = '';
+  appFooterCSSClass: string = "";
+  appFooterContainer: string = "";
+  appFooterContainerCSSClass: string = "";
   appFooterFixedDesktop: boolean;
   appFooterFixedMobile: boolean;
 
   // scrolltop
   scrolltopDisplay: boolean;
 
-  @ViewChild('ktAside', { static: true }) ktAside: ElementRef;
-  @ViewChild('ktHeaderMobile', { static: true }) ktHeaderMobile: ElementRef;
-  @ViewChild('ktHeader', { static: true }) ktHeader: ElementRef;
+  @ViewChild("ktAside", { static: true }) ktAside: ElementRef;
+  @ViewChild("ktHeaderMobile", { static: true }) ktHeaderMobile: ElementRef;
+  @ViewChild("ktHeader", { static: true }) ktHeader: ElementRef;
 
   constructor(
     private initService: LayoutInitService,
@@ -104,44 +104,44 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   updateProps(config: ILayout) {
     this.scrolltopDisplay = this.layout.getProp(
-      'scrolltop.display',
+      "scrolltop.display",
       config
     ) as boolean;
     this.pageContainerCSSClasses =
-      this.layout.getStringCSSClasses('pageContainer');
+      this.layout.getStringCSSClasses("pageContainer");
     this.appHeaderDefaultClass = this.layout.getProp(
-      'app.header.default.class',
+      "app.header.default.class",
       config
     ) as string;
     this.appHeaderDisplay = this.layout.getProp(
-      'app.header.display',
+      "app.header.display",
       config
     ) as boolean;
     this.appFooterDisplay = this.layout.getProp(
-      'app.footer.display',
+      "app.footer.display",
       config
     ) as boolean;
     this.appSidebarDisplay = this.layout.getProp(
-      'app.sidebar.display',
+      "app.sidebar.display",
       config
     ) as boolean;
     this.appSidebarPanelDisplay = this.layout.getProp(
-      'app.sidebar-panel.display',
+      "app.sidebar-panel.display",
       config
     ) as boolean;
     this.appToolbarDisplay = this.layout.getProp(
-      'app.toolbar.display',
+      "app.toolbar.display",
       config
     ) as boolean;
-    this.contentCSSClasses = this.layout.getStringCSSClasses('content');
+    this.contentCSSClasses = this.layout.getStringCSSClasses("content");
     this.contentContainerCSSClass =
-      this.layout.getStringCSSClasses('contentContainer');
+      this.layout.getStringCSSClasses("contentContainer");
     this.appContentContiner = this.layout.getProp(
-      'app.content.container',
+      "app.content.container",
       config
-    ) as 'fixed' | 'fluid';
+    ) as "fixed" | "fluid";
     this.appContentContainerClass = this.layout.getProp(
-      'app.content.containerClass',
+      "app.content.containerClass",
       config
     ) as string;
     // footer
@@ -164,12 +164,12 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   updateSidebar(config: ILayout) {
     this.appSidebarDefaultClass = this.layout.getProp(
-      'app.sidebar.default.class',
+      "app.sidebar.default.class",
       config
     ) as string;
 
     this.appSidebarDefaultDrawerEnabled = this.layout.getProp(
-      'app.sidebar.default.drawer.enabled',
+      "app.sidebar.default.drawer.enabled",
       config
     ) as boolean;
     // if (this.appSidebarDefaultDrawerEnabled) {
@@ -180,23 +180,23 @@ export class LayoutComponent implements OnInit, OnDestroy {
     // }
 
     this.appSidebarDefaultStickyEnabled = this.layout.getProp(
-      'app.sidebar.default.sticky.enabled',
+      "app.sidebar.default.sticky.enabled",
       config
     ) as boolean;
     if (this.appSidebarDefaultStickyEnabled) {
       this.appSidebarDefaultStickyAttributes = this.layout.getProp(
-        'app.sidebar.default.sticky.attributes',
+        "app.sidebar.default.sticky.attributes",
         config
       ) as { [attrName: string]: string };
     }
 
     setTimeout(() => {
-      const sidebarElement = document.getElementById('kt_app_sidebar');
+      const sidebarElement = document.getElementById("kt_app_sidebar");
       // sidebar
       if (this.appSidebarDisplay && sidebarElement) {
         const sidebarAttributes = sidebarElement
           .getAttributeNames()
-          .filter((t) => t.indexOf('data-') > -1);
+          .filter((t) => t.indexOf("data-") > -1);
         sidebarAttributes.forEach((attr) =>
           sidebarElement.removeAttribute(attr)
         );
@@ -228,34 +228,34 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   updateHeader(config: ILayout) {
     this.appHeaderDefaultStickyEnabled = this.layout.getProp(
-      'app.header.default.sticky.enabled',
+      "app.header.default.sticky.enabled",
       config
     ) as boolean;
     if (this.appHeaderDefaultStickyEnabled) {
       this.appHeaderDefaultStickyAttributes = this.layout.getProp(
-        'app.header.default.sticky.attributes',
+        "app.header.default.sticky.attributes",
         config
       ) as { [attrName: string]: string };
     }
 
     this.appHeaderDefaultMinimizeEnabled = this.layout.getProp(
-      'app.header.default.minimize.enabled',
+      "app.header.default.minimize.enabled",
       config
     ) as boolean;
     if (this.appHeaderDefaultMinimizeEnabled) {
       this.appHeaderDefaultMinimizeAttributes = this.layout.getProp(
-        'app.header.default.minimize.attributes',
+        "app.header.default.minimize.attributes",
         config
       ) as { [attrName: string]: string };
     }
 
     setTimeout(() => {
-      const headerElement = document.getElementById('kt_app_header');
+      const headerElement = document.getElementById("kt_app_header");
       // header
       if (this.appHeaderDisplay && headerElement) {
         const headerAttributes = headerElement
           .getAttributeNames()
-          .filter((t) => t.indexOf('data-') > -1);
+          .filter((t) => t.indexOf("data-") > -1);
         headerAttributes.forEach((attr) => headerElement.removeAttribute(attr));
 
         if (this.appHeaderDefaultStickyEnabled) {
@@ -285,89 +285,89 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   updateFooter(config: ILayout) {
     this.appFooterCSSClass = this.layout.getProp(
-      'app.footer.class',
+      "app.footer.class",
       config
     ) as string;
     this.appFooterContainer = this.layout.getProp(
-      'app.footer.container',
+      "app.footer.container",
       config
     ) as string;
     this.appFooterContainerCSSClass = this.layout.getProp(
-      'app.footer.containerClass',
+      "app.footer.containerClass",
       config
     ) as string;
-    if (this.appFooterContainer === 'fixed') {
-      this.appFooterContainerCSSClass += ' container-xxl';
+    if (this.appFooterContainer === "fixed") {
+      this.appFooterContainerCSSClass += " container-xxl";
     } else {
-      if (this.appFooterContainer === 'fluid') {
-        this.appFooterContainerCSSClass += ' container-fluid';
+      if (this.appFooterContainer === "fluid") {
+        this.appFooterContainerCSSClass += " container-fluid";
       }
     }
 
     this.appFooterFixedDesktop = this.layout.getProp(
-      'app.footer.fixed.desktop',
+      "app.footer.fixed.desktop",
       config
     ) as boolean;
     if (this.appFooterFixedDesktop) {
-      document.body.classList.add('data-kt-app-footer-fixed', 'true');
+      document.body.classList.add("data-kt-app-footer-fixed", "true");
     }
 
     this.appFooterFixedMobile = this.layout.getProp(
-      'app.footer.fixed.mobile'
+      "app.footer.fixed.mobile"
     ) as boolean;
     if (this.appFooterFixedMobile) {
-      document.body.classList.add('data-kt-app-footer-fixed-mobile', 'true');
+      document.body.classList.add("data-kt-app-footer-fixed-mobile", "true");
     }
   }
 
   updateToolbar(config: ILayout) {
     this.appToolbarLayout = this.layout.getProp(
-      'app.toolbar.layout',
+      "app.toolbar.layout",
       config
-    ) as 'classic' | 'accounting' | 'extended' | 'reports' | 'saas';
+    ) as "classic" | "accounting" | "extended" | "reports" | "saas";
     this.appToolbarSwapEnabled = this.layout.getProp(
-      'app.toolbar.swap.enabled',
+      "app.toolbar.swap.enabled",
       config
     ) as boolean;
     if (this.appToolbarSwapEnabled) {
       this.appToolbarSwapAttributes = this.layout.getProp(
-        'app.toolbar.swap.attributes',
+        "app.toolbar.swap.attributes",
         config
       ) as { [attrName: string]: string };
     }
 
     this.appToolbarStickyEnabled = this.layout.getProp(
-      'app.toolbar.sticky.enabled',
+      "app.toolbar.sticky.enabled",
       config
     ) as boolean;
     if (this.appToolbarStickyEnabled) {
       this.appToolbarStickyAttributes = this.layout.getProp(
-        'app.toolbar.sticky.attributes',
+        "app.toolbar.sticky.attributes",
         config
       ) as { [attrName: string]: string };
     }
 
     this.appToolbarCSSClass =
-      (this.layout.getProp('app.toolbar.class', config) as string) || '';
+      (this.layout.getProp("app.toolbar.class", config) as string) || "";
     this.appToolbarMinimizeEnabled = this.layout.getProp(
-      'app.toolbar.minimize.enabled',
+      "app.toolbar.minimize.enabled",
       config
     ) as boolean;
     if (this.appToolbarMinimizeEnabled) {
       this.appToolbarMinimizeAttributes = this.layout.getProp(
-        'app.toolbar.minimize.attributes',
+        "app.toolbar.minimize.attributes",
         config
       ) as { [attrName: string]: string };
-      this.appToolbarCSSClass += ' app-toolbar-minimize';
+      this.appToolbarCSSClass += " app-toolbar-minimize";
     }
 
     setTimeout(() => {
-      const toolbarElement = document.getElementById('kt_app_toolbar');
+      const toolbarElement = document.getElementById("kt_app_toolbar");
       // toolbar
       if (this.appToolbarDisplay && toolbarElement) {
         const toolbarAttributes = toolbarElement
           .getAttributeNames()
-          .filter((t) => t.indexOf('data-') > -1);
+          .filter((t) => t.indexOf("data-") > -1);
         toolbarAttributes.forEach((attr) =>
           toolbarElement.removeAttribute(attr)
         );

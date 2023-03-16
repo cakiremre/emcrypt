@@ -2,12 +2,10 @@ package com.beam.emcryptinbox.controller;
 
 import com.beam.emcryptcore.base.BaseController;
 import com.beam.emcryptcore.dto.GenericResponse;
+import com.beam.emcryptcore.model.inbox.Decrypted;
 import com.beam.emcryptcore.model.inbox.Email;
 import com.beam.emcryptinbox.service.EmailService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/inb/email")
@@ -20,5 +18,10 @@ public class EmailController extends BaseController<EmailService, Email> {
                 .code(0)
                 .data(email.getId())
                 .build();
+    }
+
+    @GetMapping("decrypt-read")
+    public GenericResponse<Decrypted> readDecrypted(@RequestParam String messageId, @RequestParam String tenant){
+        return service.readDecrypted(messageId, tenant);
     }
 }
