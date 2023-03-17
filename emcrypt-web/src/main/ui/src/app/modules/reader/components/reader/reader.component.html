@@ -9,6 +9,19 @@
       <h4 class="card-title">Subject: {{ decrypted.subject }}</h4>
     </div>
     <div class="card-body email-content" [innerHtml]="decrypted.content"></div>
-    <div class="card-footer">Attachments</div>
+    <div
+      class="card-footer"
+      *ngIf="decrypted.attachments && decrypted.attachments.length > 0"
+    >
+      <ul class="list-unstyled">
+        <li
+          class="attachment mx-3 hand"
+          *ngFor="let attachment of decrypted.attachments"
+          (click)="download(attachment)"
+        >
+          {{ attachment.name }}
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

@@ -41,6 +41,22 @@ export abstract class ReaderService
     );
   }
 
+  downloadAttachment(
+    messageId: string,
+    tenant: string,
+    attachmentId: string
+  ): any {
+    return this.readerApi.readAttachment(messageId, tenant, attachmentId).pipe(
+      map((res: any) => {
+        return res;
+      }),
+      catchError((err) => {
+        console.error("err", err);
+        return of(undefined);
+      })
+    );
+  }
+
   ngOnDestroy(): void {
     super.onDestroy();
   }

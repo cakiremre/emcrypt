@@ -8,10 +8,28 @@ export class Subject {
   }
 }
 
+export class Attachment {
+  id: string;
+  name: string;
+  size: number;
+  inline: boolean;
+  format: string;
+  data: string;
+
+  init(_attachment: Attachment) {
+    this.id = _attachment.id;
+    this.name = _attachment.name;
+    this.size = _attachment.size;
+    this.inline = _attachment.inline;
+    this.format = _attachment.format;
+  }
+}
+
 export class Decrypted {
   from: Subject = new Subject();
   subject: string;
   content: string;
+  attachments: Array<Attachment>;
 
   init(_decrypted: Decrypted) {
     this.from = new Subject();
@@ -19,5 +37,13 @@ export class Decrypted {
 
     this.subject = _decrypted.subject;
     this.content = _decrypted.content;
+    if (_decrypted.attachments) {
+      this.attachments = new Array();
+      _decrypted.attachments.forEach((att) => {
+        let attachment = new Attachment();
+        attachment.init(att);
+        this.attachments.push(attachment);
+      });
+    }
   }
 }

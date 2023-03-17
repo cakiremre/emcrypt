@@ -15,7 +15,8 @@ public class RouterValidator {
             "/api/ekm/emkey/encrypt-key-html",
             "/api/ekm/emkey/decrypt-key",
             "/api/inb/email/save",
-            "/api/inb/email/decrypt-read"
+            "/api/inb/email/decrypt-read",
+            "/api/inb/email/decrypt-attachment"
     );
 
     public Predicate<String> isSecured =

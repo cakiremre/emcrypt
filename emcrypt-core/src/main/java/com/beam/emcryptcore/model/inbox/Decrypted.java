@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
@@ -17,4 +19,6 @@ public class Decrypted {
 
     private String subject;
     private String content;
+
+    private List<Attachment> attachments;
 }

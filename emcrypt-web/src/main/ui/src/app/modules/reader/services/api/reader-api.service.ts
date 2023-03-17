@@ -28,4 +28,20 @@ export class ReaderApi {
       }
     );
   }
+
+  readAttachment(
+    messageId: string,
+    tenant: string,
+    attachmentId: string
+  ): Observable<Blob> {
+    return this.http.get<Blob>(`${API_URL}${this.path}/decrypt-attachment`, {
+      headers: { "X-TENANT": tenant },
+      responseType: "blob" as "json",
+      params: {
+        messageId: messageId,
+        tenant: tenant,
+        attachmentId: attachmentId,
+      },
+    });
+  }
 }
