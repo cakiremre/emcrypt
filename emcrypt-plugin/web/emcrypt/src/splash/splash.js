@@ -60,11 +60,3 @@ function output(success, message) {
     $("#error-msg").text(message);
   }
 }
-
-function toggle(selector, show) {
-  if (show) {
-    $(selector).css("display", "");
-  } else {
-    $(selector).css("display", "none");
-  }
-}

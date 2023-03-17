@@ -30,4 +30,6 @@ public class Email extends Base {
 
     private String key; // encrypted key
     private String data; // encrypted data
+
+    private List<Attachment> attachments;
 }

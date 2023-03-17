@@ -3,20 +3,22 @@
 
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Contoso Task Pane Add-in</title>
 
     <!-- Office JavaScript API -->
     <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
 
     <!-- For more information on Fluent UI, visit https://developer.microsoft.com/fluentui#/. -->
-    <link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/11.0.0/css/fabric.min.css"
+    />
 
-    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
 
     <!-- Template styles -->
     <link href="readpane.css" rel="stylesheet" type="text/css" />
@@ -27,19 +29,21 @@
     <script type="text/javascript" src="../helper/functions.js"></script>
     <script type="text/javascript" src="../helper/office-functions.js"></script>
     <script type="text/javascript" src="../helper/server-functions.js"></script>
-</head>
+  </head>
 
-<body class="ms-font-m ms-welcome ms-Fabric">
+  <body class="ms-font-m ms-welcome ms-Fabric">
     <header class="ms-welcome__header ms-bgColor-neutralLighter" style="display: none">
-        <img width="90" height="90" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
-        <h1 class="ms-font-su">Read Pane</h1>
+      <img width="90" height="90" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
+      <h1 class="ms-font-su">Read Pane</h1>
     </header>
-    
-    <main id="app-body" class="ms-welcome__main">
-        <div class="content-wrapper">
-            <span id="content"></span>
-        </div>
-    </main>
-</body>
 
+    <main id="app-body" class="ms-welcome__main">
+      <div class="content-wrapper">
+        <div id="content" style="display: block"></div>
+      </div>
+      <div id="attachments-wrapper" class="attachments-wrapper" style="display: none">
+        <div id="attachments"></div>
+      </div>
+    </main>
+  </body>
 </html>

@@ -16,51 +16,15 @@ Office.onReady((info) => {
   if (!config.activated) {
     window.location = "splash.html";
   } else {
-    $("#encrypt").bind("click", encrypt);
-    $("#send").bind("click", send);
     $("#encryptAndSend").bind("click", encryptAndSend);
     mailboxItem = Office.context.mailbox.item;
   }
 });
 
-export async function encrypt() {
-  let content = getContent(Office, mailboxItem);
-  let keyAndHtml = getPublicKey(Office);
-
-  Promise.all([content, keyAndHtml]).then((values) => {
-    let result = encryptMessage(values[0], values[1].publicKey); // data, key
-
-    let content = `${values[1].html}<div style="display:none">---Payload---${result.payload}---Payload---<br/>---key---${result.key}---key---</div>`;
-
-    setContent(Office, mailboxItem, content).then(() => {});
-  });
-}
-
-export async function send() {
-  let from = getAsyncProp(Office, mailboxItem, "from");
-  let to = getAsyncProp(Office, mailboxItem, "to");
-  let cc = getAsyncProp(Office, mailboxItem, "cc");
-  let bcc = getAsyncProp(Office, mailboxItem, "bcc");
-  let subject = getAsyncProp(Office, mailboxItem, "subject");
-
-  Promise.all([from, to, cc, bcc, subject]).then((values) => {
-    let mail = {
-      from: translateAddress(values[0]),
-      to: translateAddresses(values[1]),
-      cc: translateAddresses(values[2]),
-      bcc: translateAddresses(values[3]),
-      subject: values[4],
-    };
-
-    console.log(mail);
-
-    sendEmailToServer(Office, mail).then((response) => console.log(response));
-  });
-}
-
 export async function encryptAndSend() {
   let content = getContent(Office, mailboxItem);
   let keyAndHtml = getPublicKey(Office);
+  let attachments = getAttachments(Office, mailboxItem);
 
   let from = getAsyncProp(Office, mailboxItem, "from");
   let to = getAsyncProp(Office, mailboxItem, "to");
@@ -68,27 +32,48 @@ export async function encryptAndSend() {
   let bcc = getAsyncProp(Office, mailboxItem, "bcc");
   let subject = getAsyncProp(Office, mailboxItem, "subject");
 
-  Promise.all([content, keyAndHtml, from, to, cc, bcc, subject]).then((values) => {
-    let result = encryptMessage(values[0], values[1].publicKey); // data, key
-    let content = `${values[1].html}<div style="display:none">---Payload---${result.payload}---Payload---<br/>---key---${result.key}---key---</div>`;
+  Promise.all([content, keyAndHtml, attachments, from, to, cc, bcc, subject]).then((values) => {
+    let result = encryptMessage(values[0], values[2], values[1].publicKey); // data, key
 
     let mail = {
-      from: translateAddress(values[2]),
-      to: translateAddresses(values[3]),
-      cc: translateAddresses(values[4]),
-      bcc: translateAddresses(values[5]),
-      subject: values[6],
+      from: translateAddress(values[3]),
+      to: translateAddresses(values[4]),
+      cc: translateAddresses(values[5]),
+      bcc: translateAddresses(values[6]),
+      subject: values[7],
       key: result.key,
       data: result.payload,
+      attachments: result.attachments,
     };
 
     sendEmailToServer(Office, mail).then((response) => {
+      let content = `${values[1].html} 
+                  <div style="display:none">
+                  Emcrypt Version: v1.0<br/>
+                  Message ID: ${response.data}<br/>
+                  Metadata: <br/>
+                  ---Payload---<br/>
+                  %%${result.payload}%%
+                  ---Payload---<br/>
+                  ---key---<br/>
+                  ##${result.key}##
+                  ---key---<br/>
+                  </div>`;
+
       if (response.code == 0) {
         content = content.replace(
           "${link}",
           "http://localhost:4200/secure-read?messageid=" + response.data + "&tenant=" + tenant
         );
-        setContent(Office, mailboxItem, content).then(() => {});
+        // set body
+        let body = setBody(Office, mailboxItem, content);
+
+        // set attachments
+        let attachments = setAttachments(Office, mailboxItem, result.attachments);
+
+        Promise.all([body, attachments]).then(() => {
+          console.log("emcryption finished");
+        });
       }
     });
   });

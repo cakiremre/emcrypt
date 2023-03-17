@@ -15,11 +15,25 @@ Office.onReady((info) => {
   }
 });
 
-export async function itemChanged(){
+export async function itemChanged() {
   UpdateTaskPaneUI(Office.context.mailbox.item);
 }
 
-function UpdateTaskPaneUI(item){
+export async function downloadAttachment(event) {
+  let data = event.data;
+  let id = data.id;
+  let aesKeyAndIV = data.aesKeyAndIV;
+  let item = data.item;
+  let filename = data.name.substring(0, data.name.lastIndexOf("."));
+
+  getAttachmentData(Office, item, id).then((encryptedAttachmentData) => {
+    let decrypted = decryptAttachment(encryptedAttachmentData.content, aesKeyAndIV);
+    let blob = base64ToArrayBuffer(window.atob(decrypted));
+    saveByteArray(filename, blob);
+  });
+}
+
+function UpdateTaskPaneUI(item) {
   getContent(Office, item).then((data) => {
     let payload = extractData(data);
     let encryptedKey = extractKey(data);
@@ -28,6 +42,21 @@ function UpdateTaskPaneUI(item){
       let text = decryptMessage(payload, aesKeyAndIV);
 
       $("#content").html(text);
+
+      const attachments = item.attachments;
+      if (attachments.length > 0) {
+        toggle("#attachments-wrapper", true);
+        $("#attachments").empty();
+        for (let i = 0; i < attachments.length; i++) {
+          let a = attachments[i];
+          $("#attachments").append(`<span class="attachment" id="att_${i}">${a.name}</span>`);
+          $("#att_" + i).bind(
+            "click",
+            { id: a.id, aesKeyAndIV: aesKeyAndIV, item: item, name: a.name },
+            downloadAttachment
+          );
+        }
+      }
     });
   });
 }
