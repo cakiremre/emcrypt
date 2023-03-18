@@ -5,14 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
+
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
 @Data
-@SuperBuilder
-public class Subject {
-    private String address;
-    private String name;
+@Builder
+public class Options {
+
+    private boolean encrypt;
+    private boolean forward;
+    private Date expire;
+
 }

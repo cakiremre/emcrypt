@@ -23,13 +23,15 @@ public class Email extends Base {
     private String identifier; // tenant
 
     private Subject from;
-    private List<Subject> to;
-    private List<Subject> cc;
-    private List<Subject> bcc;
+    private List<Recipient> to;
+    private List<Recipient> cc;
+    private List<Recipient> bcc;
     private String subject;
 
     private String key; // encrypted key
     private String data; // encrypted data
+
+    private Options options;
 
     private List<Attachment> attachments;
 }
