@@ -1,5 +1,6 @@
 package com.beam.emcryptcore.model.inbox;
 
+import com.beam.emcryptcore.model.common.Accessible;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,4 +27,17 @@ public class Options {
     private int delayInMinutes;
     private Date delayAt;
 
+    public Accessible accessibleNow() {
+
+        Date now = new Date();
+        if (isDelay() && delayAt.after(now)) {
+            return Accessible.DELAY;
+        }
+
+        if (isExpire() && expireAt.before(now)) {
+            return Accessible.EXPIRE;
+        }
+
+        return Accessible.TRUE;
+    }
 }

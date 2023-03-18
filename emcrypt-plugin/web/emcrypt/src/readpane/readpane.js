@@ -4,10 +4,11 @@
  */
 
 /* global document, Office */
+let config;
 Office.onReady((info) => {
-  const config = officeGetUserConfig(Office);
+  config = officeGetUserConfig(Office);
 
-  if (!config.activated) {
+  if (!config.activated || !config.email) {
     window.location = "splash.html";
   } else {
     Office.context.mailbox.addHandlerAsync(Office.EventType.ItemChanged, itemChanged);
@@ -39,29 +40,15 @@ function UpdateTaskPaneUI(item) {
 
   officeGetContent(Office, item).then((data) => {
     let messageId = extractInfoFromContent(data, "ID");
+    let encryptedKey = extractInfoFromContent(data, "KEY");
 
-    serverGetOptions(Office, messageId).then((options) => {
-      if (options.delay && new Date(options.delayAt) > new Date()) {
-        showView("delay");
-
-        let until = new Date(options.delayAt);
-        $("#readAt").html(moment(until).format("YYYY-MM-DD HH:mm:ss"));
-        let id = setInterval(() => {
-          if (moment(new Date()).isBefore(until)) {
-            let difference = moment.duration(moment(until).diff(new Date()));
-            $("#timer").html(difference.minutes() + "m " + difference.seconds() + "s");
-          } else {
-            clearInterval(id);
-            UpdateTaskPaneUI(item);
-          }
-        }, 1000);
-      } else {
-        showView("read");
-
-        let payload = extractInfoFromContent(data, "PAYLOAD");
-        let encryptedKey = extractInfoFromContent(data, "KEY");
-
-        serverDecryptKey(Office, encryptedKey).then((aesKeyAndIV) => {
+    serverDecryptKey(Office, encryptedKey, config.email, messageId).then((response) => {
+      console.log(response);
+      switch (response.code) {
+        case 0:
+          showView("#read");
+          let payload = extractInfoFromContent(data, "PAYLOAD");
+          let aesKeyAndIV = response.data;
           let text = decryptMessage(payload, aesKeyAndIV);
 
           $("#body").html(text);
@@ -79,22 +66,42 @@ function UpdateTaskPaneUI(item) {
               );
             }
           }
-        });
+          break;
+        case 404:
+          showView("#not_found");
+          break;
+        case 500:
+          showView("#delay");
+          serverGetOptions(Office, messageId).then((options) => {
+            let until = new Date(options.delayAt);
+            $("#readAt").html(moment(until).format("YYYY-MM-DD HH:mm:ss"));
+            let id = setInterval(() => {
+              if (moment(new Date()).isBefore(until)) {
+                let difference = moment.duration(moment(until).diff(new Date()));
+                $("#timer").html(difference.minutes() + "m " + difference.seconds() + "s");
+              } else {
+                clearInterval(id);
+                UpdateTaskPaneUI(item);
+              }
+            }, 1000);
+          });
+          break;
+        case 501:
+          showView("#expire");
+          break;
+        case 502:
+          showView("#revoke");
+          break;
+        case 503:
+          showView("#forward_disabled");
+          break;
       }
     });
   });
 }
 
-function showView(val) {
-  toggle("#read", false);
-  toggle("#delay", false);
-
-  switch (val) {
-    case "delay":
-      toggle("#delay", true);
-      break;
-    case "read":
-      toggle("#read", true);
-      break;
-  }
+function showView(view) {
+  let views = ["#read", "#delay", "#not_found", "#expire", "#revoke", "#forward-disabled"];
+  views.forEach((v) => toggle(v, false));
+  toggle(view, true);
 }

@@ -39,7 +39,7 @@
     </header>
 
     <main id="app-body" class="ms-welcome__main">
-      <div id="read" class="content-wrapper" style="display: none">
+      <div id="read" class="view-wrapper" style="display: none">
         <div class="body-wrapper">
           <div id="body" style="display: block"></div>
         </div>
@@ -47,12 +47,16 @@
           <div id="attachments"></div>
         </div>
       </div>
-      <div id="delay" class="delay-wrapper text-center" style="display: none">
+      <div id="delay" class="view-wrapper text-center" style="display: none">
         <p>Sender configured this message to be accessible at:</p>
         <p id="readAt"></p>
         <p>Time remaining:</p>
         <p id="timer"></p>
       </div>
+      <div id="not_found" class="view-wrapper" style="display: none">NOT_FOUND</div>
+      <div id="expire" class="view-wrapper" style="display: none">EXPIRE</div>
+      <div id="revoke" class="view-wrapper" style="display: none">REVOKE</div>
+      <div id="forward-disabled" class="view-wrapper" style="display: none">FORWARD-DISABLED</div>
     </main>
   </body>
 </html>

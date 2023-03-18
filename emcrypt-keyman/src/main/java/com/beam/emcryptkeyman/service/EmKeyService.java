@@ -1,6 +1,8 @@
 package com.beam.emcryptkeyman.service;
 
 import com.beam.emcryptcore.base.BaseService;
+import com.beam.emcryptcore.dto.GenericResponse;
+import com.beam.emcryptcore.dto.keyman.DecryptRequest;
 import com.beam.emcryptcore.dto.keyman.EncryptResponse;
 import com.beam.emcryptcore.dto.keyman.KeyRequest;
 import com.beam.emcryptcore.dto.keyman.KeyResponse;
@@ -22,7 +24,10 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 
 import static javax.crypto.Cipher.DECRYPT_MODE;
 
@@ -32,6 +37,7 @@ import static javax.crypto.Cipher.DECRYPT_MODE;
 public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
 
     private final ContentRepository contentRepository;
+    private final EmailService emailService;
 
     /**
      * This method takes too much time should be async
@@ -98,7 +104,7 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
                     .build();
         } else {
             return KeyResponse.<String>builder()
-                    .data("NOT_FOUND")
+                    .data("Key not found")
                     .code(404)
                     .build();
         }
@@ -121,35 +127,46 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
         }
     }
 
-    public KeyResponse<String> decryptKey(String owner, String key) {
-        KeyResponse<String> response = findByOwner(owner, KeyType.PRIVATE);
+    public KeyResponse<String> decryptKey(DecryptRequest request) {
 
-        if (response.getCode() == 0) {
-            String privateKey = response.getData();
+        // get email options, and subject information by messageId and user
+        GenericResponse should = emailService.shouldDecrypt(request.getTenant(), request.getMessageId(), request.getAddress());
 
+        if(should.getCode() == 0) {
+            KeyResponse<String> response = findByOwner(request.getTenant(), KeyType.PRIVATE);
 
-            try {
-                KeyFactory kf = KeyFactory.getInstance("RSA");
-                Cipher cipher = Cipher.getInstance("RSA");
+            if (response.getCode() == 0) {
+                String privateKey = response.getData();
 
-                PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
+                try {
+                    KeyFactory kf = KeyFactory.getInstance("RSA");
+                    Cipher cipher = Cipher.getInstance("RSA");
 
-                cipher.init(DECRYPT_MODE,  kf.generatePrivate(ks));
+                    PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
 
-                byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(key));
-                return KeyResponse.<String>builder()
-                        .code(0)
-                        .data(new String(decrypted))
-                        .build();
-            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException |
-                     IllegalBlockSizeException | BadPaddingException exc) {
-                return KeyResponse.<String>builder()
-                        .code(100)
-                        .data(exc.getMessage())
-                        .build();
+                    cipher.init(DECRYPT_MODE, kf.generatePrivate(ks));
+
+                    byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(request.getKey()));
+                    return KeyResponse.<String>builder()
+                            .code(0)
+                            .data(new String(decrypted))
+                            .build();
+                } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeySpecException |
+                         InvalidKeyException |
+                         IllegalBlockSizeException | BadPaddingException exc) {
+                    return KeyResponse.<String>builder()
+                            .code(100)
+                            .data(exc.getMessage())
+                            .build();
+                }
+            } else {
+                return response;
             }
-        } else {
-            return response;
+        }else{
+            return KeyResponse.<String>builder()
+                    .code(should.getCode())
+                    .message(should.getMessage())
+                    .build();
         }
     }
 

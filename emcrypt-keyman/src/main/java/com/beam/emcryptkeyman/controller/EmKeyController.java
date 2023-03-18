@@ -35,6 +35,6 @@ public class EmKeyController {
 
     @PostMapping("decrypt-key")
     public KeyResponse<String> decryptKey(@RequestBody DecryptRequest request){
-        return service.decryptKey(request.getOwner(), request.getKey());
+        return service.decryptKey(request);
     }
 }

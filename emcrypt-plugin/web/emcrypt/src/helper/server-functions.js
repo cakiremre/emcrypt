@@ -82,12 +82,12 @@ function serverGetOptions(office, messageId) {
   });
 }
 
-function serverDecryptKey(office, encrypted) {
+function serverDecryptKey(office, encrypted, address, messageId) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.post({
         url: `${baseUrl}/api/ekm/emkey/decrypt-key`,
-        data: JSON.stringify({ owner: tenant, key: encrypted }),
+        data: JSON.stringify({ tenant: tenant, key: encrypted, address: address, messageId: messageId }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         headers: {
@@ -95,7 +95,7 @@ function serverDecryptKey(office, encrypted) {
         },
         success: function (response) {
           // create aes-256 key.
-          resolve(response.data);
+          resolve(response);
         },
         error: function (err) {
           reject(err);

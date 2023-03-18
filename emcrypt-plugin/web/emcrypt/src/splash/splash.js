@@ -33,7 +33,8 @@ export async function email() {
 }
 
 export async function activate() {
-  serverActivateUser(Office, $("#username").val()).then(
+  let email = $("#username").val();
+  serverActivateUser(Office, email).then(
     () => {
       officeSetUserConfig(Office, email).then(
         () => {

@@ -34,4 +34,10 @@ public class GenericResponse<T> {
                 .build();
     }
 
+    public static GenericResponse error(int code, String message) {
+        return GenericResponse.builder()
+                .code(code)
+                .message(message)
+                .build();
+    }
 }
