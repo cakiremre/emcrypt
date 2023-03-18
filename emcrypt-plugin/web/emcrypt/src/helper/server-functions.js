@@ -1,14 +1,14 @@
 const tenant = "beamteknolojicom";
 const baseUrl = "http://localhost:8080";
 
-function activateUser(office, email) {
+function serverActivateUser(office, email) {
   let data = {
     email: email,
   };
   return new office.Promise(function (resolve, reject) {
     try {
       $.post({
-        url: baseUrl + "/api/adm/user/activate",
+        url: `${baseUrl}/api/adm/user/activate`,
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -34,11 +34,11 @@ function activateUser(office, email) {
   });
 }
 
-function getPublicKey(office) {
+function serverGetPublicKey(office) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.get({
-        url: baseUrl + "/api/ekm/emkey/encrypt-key-html?owner=" + tenant,
+        url: `${baseUrl}/api/ekm/emkey/encrypt-key-html?owner=${tenant}`,
         headers: {
           "X-TENANT": tenant,
         },
@@ -56,11 +56,37 @@ function getPublicKey(office) {
   });
 }
 
-function decryptKey(office, encrypted) {
+function serverGetOptions(office, messageId) {
+  return new office.Promise(function (resolve, reject) {
+    try {
+      $.get({
+        url: `${baseUrl}/api/inb/email/options?tenant=${tenant}&messageId=${messageId}`,
+        headers: {
+          "X-TENANT": tenant,
+        },
+        success: function (response) {
+          // create aes-256 key.
+          if (response.code == 0) {
+            resolve(response.data);
+          } else {
+            reject(response.code);
+          }
+        },
+        error: function (err) {
+          reject(err);
+        },
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function serverDecryptKey(office, encrypted) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.post({
-        url: baseUrl + "/api/ekm/emkey/decrypt-key",
+        url: `${baseUrl}/api/ekm/emkey/decrypt-key`,
         data: JSON.stringify({ owner: tenant, key: encrypted }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -81,12 +107,12 @@ function decryptKey(office, encrypted) {
   });
 }
 
-function sendEmailToServer(office, email) {
+function serverSendEmail(office, email) {
   email.identifier = tenant;
   return new office.Promise(function (resolve, reject) {
     try {
       $.post({
-        url: baseUrl + "/api/inb/email/save",
+        url: `${baseUrl}/api/inb/email/save`,
         data: JSON.stringify(email),
         contentType: "application/json; charset=utf-8",
         dataType: "json",

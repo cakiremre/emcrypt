@@ -1,7 +1,7 @@
 let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
 // create a key for symmetric encryption
 // pass in the desired length of your key
-let generateKey = function generateKey(keyLength) {
+let generateKey = function (keyLength) {
   var randomstring = "";
 
   for (var i = 0; i < keyLength; i++) {
@@ -69,16 +69,33 @@ let translateAddresses = function (outlookAddresses) {
   return addresses;
 };
 
-let extractData = function (content) {
-  var rx = /%%(.*?)%%/;
-  var arr = rx.exec(content);
-  return arr[1];
-};
+let extractInfoFromContent = function (content, type) {
+  let rx = undefined;
+  switch (type) {
+    case "ID":
+      rx = /Message ID:(.*?)<br/;
+      break;
+    case "PAYLOAD":
+      rx = /%%(.*?)%%/;
+      break;
+    case "KEY":
+      rx = /##(.*?)##/;
+      break;
+    default:
+      console.error("Undefined extraction type", type);
+      return;
+  }
 
-let extractKey = function (content) {
-  var rx = /##(.*?)##/;
-  var arr = rx.exec(content);
-  return arr[1];
+  if (rx) {
+    let arr = rx.exec(content);
+    if (arr && arr.length > 1) {
+      return arr[1].trim();
+    } else {
+      return undefined;
+    }
+  } else {
+    return undefined;
+  }
 };
 
 let toggle = function (selector, show) {
@@ -106,4 +123,9 @@ function saveByteArray(fileName, byte) {
   link.href = window.URL.createObjectURL(blob);
   link.download = fileName;
   link.click();
+}
+
+function removeUTCDate(dateInput) {
+  let date = dateInput ? dateInput : new Date();
+  return new Date(date.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
 }

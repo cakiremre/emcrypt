@@ -80,12 +80,15 @@ b {
 }
 
 .content-wrapper {
-  border: 2px solid #ffc107;
   width: 100%;
+  display: block;
+}
+
+.body-wrapper {
+  border: 2px solid #ffc107;
+  border-radius: 10px;
   min-height: 400px;
   padding: 10px 10px;
-  border-radius: 10px;
-  display: block;
 }
 
 .attachments-wrapper {
@@ -100,4 +103,11 @@ b {
   cursor: pointer;
   margin: 5px 0;
   color: #005a9e;
+}
+
+.delay-wrapper {
+  width: 100%;
+  padding: 10px 10px;
+  display: block;
+  font-size: large;
 }

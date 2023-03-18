@@ -26,6 +26,7 @@
     <script type="text/javascript" src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="../../node_modules/crypto-js/crypto-js.js"></script>
     <script type="text/javascript" src="../../node_modules/jsencrypt/bin/jsencrypt.min.js"></script>
+    <script type="text/javascript" src="../../node_modules/moment/moment.js"></script>
     <script type="text/javascript" src="../helper/functions.js"></script>
     <script type="text/javascript" src="../helper/office-functions.js"></script>
     <script type="text/javascript" src="../helper/server-functions.js"></script>
@@ -39,6 +40,51 @@
 
     <main id="app-body" class="ms-welcome__main row">
       <button class="btn btn-outline-success btn-block mb-2" id="encryptAndSend">Encrypt and Send To Server</button>
+      <div class="options">
+        <div class="form">
+          <h5>Email Options</h5>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" id="emcrypt" />
+            <label class="form-check-label" for="flexSwitchCheckDefault">Use Emcryption</label>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" id="forward" />
+            <label class="form-check-label" for="flexSwitchCheckDefault">Disable Forwarding</label>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" id="expire" />
+            <label class="form-check-label" for="flexSwitchCheckDefault">Expires</label>
+          </div>
+          <div class="mb-2">
+            <input class="form-control" type="datetime-local" style="display: none" id="expireAt" />
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" id="delay" />
+            <label class="form-check-label" for="flexSwitchCheckDefault">Delay Access</label>
+          </div>
+          <div class="mb-2" style="display: none" id="delayAmount">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="delayInMinutes" value="1" checked />
+              <label class="form-check-label" for="inlineRadio1">1m</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="delayInMinutes" value="10" />
+              <label class="form-check-label" for="inlineRadio2">10m</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="delayInMinutes" value="60" />
+              <label class="form-check-label" for="inlineRadio3">60m</label>
+            </div>
+          </div>
+          <div class="mb-2">
+            <button class="btn btn-outline-success btn-block mb-2" id="remember">Remember Preference</button>
+          </div>
+          <div id="output">
+            <span id="success" style="display: none">Your preferences are saved.</span>
+            <span id="error" style="display: none">Error saving preferences. Msg: <span id="error-msg"></span></span>
+          </div>
+        </div>
+      </div>
     </main>
   </body>
 </html>

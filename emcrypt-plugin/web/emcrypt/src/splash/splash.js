@@ -33,13 +33,11 @@ export async function email() {
 }
 
 export async function activate() {
-  activateUser(Office, $("#username").val()).then(
+  serverActivateUser(Office, $("#username").val()).then(
     () => {
-      setUserConfig(Office, email).then(
-        (config) => {
-          if (config.activated) {
-            output(true);
-          }
+      officeSetUserConfig(Office, email).then(
+        () => {
+          output(true);
         },
         (message) => {
           output(false, message);

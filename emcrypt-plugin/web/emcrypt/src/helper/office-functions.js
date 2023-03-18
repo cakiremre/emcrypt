@@ -1,41 +1,31 @@
-function getUserConfig(office) {
+function officeGetUserConfig(office) {
   const config = {};
   config.activated = office.context.roamingSettings.get("activated");
   config.email = office.context.roamingSettings.get("email");
 
+  config.emcrypt = office.context.roamingSettings.get("emcrypt");
+  config.forward = office.context.roamingSettings.get("forward");
+  config.expire = office.context.roamingSettings.get("expire");
+  config.delay = office.context.roamingSettings.get("delay");
+
   return config;
 }
 
-function resetUserConfig(office) {
-  office.context.roamingSettings.remove("activated");
-  office.context.roamingSettings.remove("email");
-  return new office.Promise(function (resolve, reject) {
-    try {
-      office.context.roamingSettings.saveAsync(function (asyncResult) {
-        if (asyncResult.status == office.AsyncResultStatus.Succeeded) {
-          resolve(asyncResult.value);
-        } else {
-          reject(asyncResult.error);
-        }
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
-function setUserConfig(office, email) {
+function officeSetUserConfig(office, email) {
   office.context.roamingSettings.set("activated", true);
   office.context.roamingSettings.set("email", email);
 
+  // default email options
+  office.context.roamingSettings.set("emcrypt", true);
+  office.context.roamingSettings.set("forward", false);
+  office.context.roamingSettings.set("expire", false);
+  office.context.roamingSettings.set("delay", false);
+
   return new office.Promise(function (resolve, reject) {
     try {
       office.context.roamingSettings.saveAsync(function (asyncResult) {
         if (asyncResult.status == office.AsyncResultStatus.Succeeded) {
-          resolve({
-            activated: true,
-            email: email,
-          });
+          resolve();
         } else {
           reject(asyncResult.error.message);
         }
@@ -46,7 +36,29 @@ function setUserConfig(office, email) {
   });
 }
 
-function getAsyncProp(office, mailboxItem, addressType) {
+function officeSetUserPreferences(office, config) {
+  // default email options
+  office.context.roamingSettings.set("emcrypt", config.emcrypt);
+  office.context.roamingSettings.set("forward", config.forward);
+  office.context.roamingSettings.set("expire", config.expire);
+  office.context.roamingSettings.set("delay", config.delay);
+
+  return new office.Promise(function (resolve, reject) {
+    try {
+      office.context.roamingSettings.saveAsync(function (asyncResult) {
+        if (asyncResult.status == office.AsyncResultStatus.Succeeded) {
+          resolve();
+        } else {
+          reject(asyncResult.error.message);
+        }
+      });
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+}
+
+function officeGetAsyncProp(office, mailboxItem, addressType) {
   return new office.Promise(function (resolve, reject) {
     try {
       mailboxItem[addressType].getAsync(function (asyncResult) {
@@ -62,7 +74,7 @@ function getAsyncProp(office, mailboxItem, addressType) {
   });
 }
 
-function getContent(office, mailboxItem) {
+function officeGetContent(office, mailboxItem) {
   return new office.Promise(function (resolve, reject) {
     try {
       mailboxItem.body.getAsync("html", function (asyncResult) {
@@ -78,7 +90,7 @@ function getContent(office, mailboxItem) {
   });
 }
 
-function getAttachments(office, mailboxItem) {
+function officeGetAttachments(office, mailboxItem) {
   return new office.Promise(function (resolve, reject) {
     try {
       mailboxItem.getAttachmentsAsync(function (asyncResult) {
@@ -88,7 +100,7 @@ function getAttachments(office, mailboxItem) {
             let ret = [];
             let promise = [];
 
-            attachments.forEach((item) => promise.push(getAttachmentData(office, mailboxItem, item.id)));
+            attachments.forEach((item) => promise.push(officeGetAttachmentData(office, mailboxItem, item.id)));
 
             Promise.all(promise).then(function (values) {
               for (let i = 0; i < attachments.length; i++) {
@@ -116,7 +128,7 @@ function getAttachments(office, mailboxItem) {
   });
 }
 
-function getAttachmentData(office, mailboxItem, attachmentId) {
+function officeGetAttachmentData(office, mailboxItem, attachmentId) {
   return new office.Promise(function (resolve, reject) {
     try {
       mailboxItem.getAttachmentContentAsync(attachmentId, function (asyncResult) {
@@ -132,7 +144,7 @@ function getAttachmentData(office, mailboxItem, attachmentId) {
   });
 }
 
-function setBody(office, mailboxItem, content) {
+function officeSetBody(office, mailboxItem, content) {
   return new office.Promise(function (resolve, reject) {
     try {
       mailboxItem.body.setAsync(content, { coercionType: office.CoercionType.Html }, function (asyncResult) {
@@ -148,22 +160,7 @@ function setBody(office, mailboxItem, content) {
   });
 }
 
-function setAttachments(office, mailboxItem, attachments) {
-  return new office.Promise(function (resolve, reject) {
-    try {
-      let promise = [];
-      attachments.forEach((a) => promise.push(removeAttachment(office, mailboxItem, a)));
-      attachments.forEach((a) => promise.push(addAttachment(office, mailboxItem, a)));
-      Promise.all(promise).then(() => {
-        resolve();
-      });
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
-function addAttachment(office, mailboxItem, attachment) {
+function officeAddAttachment(office, mailboxItem, attachment) {
   return new office.Promise(function (resolve, reject) {
     try {
       mailboxItem.addFileAttachmentFromBase64Async(
@@ -184,7 +181,7 @@ function addAttachment(office, mailboxItem, attachment) {
   });
 }
 
-function removeAttachment(office, mailboxItem, attachment) {
+function officeRemoveAttachment(office, mailboxItem, attachment) {
   return new office.Promise(function (resolve, reject) {
     try {
       mailboxItem.removeAttachmentAsync(attachment.id, function (asyncResult) {
@@ -193,6 +190,21 @@ function removeAttachment(office, mailboxItem, attachment) {
         } else {
           reject(asyncResult.error);
         }
+      });
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+function officeSetAttachments(office, mailboxItem, attachments) {
+  return new office.Promise(function (resolve, reject) {
+    try {
+      let promise = [];
+      attachments.forEach((a) => promise.push(officeRemoveAttachment(office, mailboxItem, a)));
+      attachments.forEach((a) => promise.push(officeAddAttachment(office, mailboxItem, a)));
+      Promise.all(promise).then(() => {
+        resolve();
       });
     } catch (error) {
       reject(error);

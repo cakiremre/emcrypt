@@ -5,7 +5,7 @@
 
 /* global document, Office */
 Office.onReady((info) => {
-  const config = getUserConfig(Office);
+  const config = officeGetUserConfig(Office);
 
   if (!config.activated) {
     window.location = "splash.html";
@@ -26,7 +26,7 @@ export async function downloadAttachment(event) {
   let item = data.item;
   let filename = data.name.substring(0, data.name.lastIndexOf("."));
 
-  getAttachmentData(Office, item, id).then((encryptedAttachmentData) => {
+  officeGetAttachmentData(Office, item, id).then((encryptedAttachmentData) => {
     let decrypted = decryptAttachment(encryptedAttachmentData.content, aesKeyAndIV);
     let blob = base64ToArrayBuffer(window.atob(decrypted));
     saveByteArray(filename, blob);
@@ -34,29 +34,67 @@ export async function downloadAttachment(event) {
 }
 
 function UpdateTaskPaneUI(item) {
-  getContent(Office, item).then((data) => {
-    let payload = extractData(data);
-    let encryptedKey = extractKey(data);
+  $("#attachments").empty();
+  $("#content").html("");
 
-    decryptKey(Office, encryptedKey).then((aesKeyAndIV) => {
-      let text = decryptMessage(payload, aesKeyAndIV);
+  officeGetContent(Office, item).then((data) => {
+    let messageId = extractInfoFromContent(data, "ID");
 
-      $("#content").html(text);
+    serverGetOptions(Office, messageId).then((options) => {
+      if (options.delay && new Date(options.delayAt) > new Date()) {
+        showView("delay");
 
-      const attachments = item.attachments;
-      if (attachments.length > 0) {
-        toggle("#attachments-wrapper", true);
-        $("#attachments").empty();
-        for (let i = 0; i < attachments.length; i++) {
-          let a = attachments[i];
-          $("#attachments").append(`<span class="attachment" id="att_${i}">${a.name}</span>`);
-          $("#att_" + i).bind(
-            "click",
-            { id: a.id, aesKeyAndIV: aesKeyAndIV, item: item, name: a.name },
-            downloadAttachment
-          );
-        }
+        let until = new Date(options.delayAt);
+        $("#readAt").html(moment(until).format("YYYY-MM-DD HH:mm:ss"));
+        let id = setInterval(() => {
+          if (moment(new Date()).isBefore(until)) {
+            let difference = moment.duration(moment(until).diff(new Date()));
+            $("#timer").html(difference.minutes() + "m " + difference.seconds() + "s");
+          } else {
+            clearInterval(id);
+            UpdateTaskPaneUI(item);
+          }
+        }, 1000);
+      } else {
+        showView("read");
+
+        let payload = extractInfoFromContent(data, "PAYLOAD");
+        let encryptedKey = extractInfoFromContent(data, "KEY");
+
+        serverDecryptKey(Office, encryptedKey).then((aesKeyAndIV) => {
+          let text = decryptMessage(payload, aesKeyAndIV);
+
+          $("#body").html(text);
+
+          const attachments = item.attachments;
+          if (attachments.length > 0) {
+            toggle("#attachments-wrapper", true);
+            for (let i = 0; i < attachments.length; i++) {
+              let a = attachments[i];
+              $("#attachments").append(`<span class="attachment" id="att_${i}">${a.name}</span>`);
+              $("#att_" + i).bind(
+                "click",
+                { id: a.id, aesKeyAndIV: aesKeyAndIV, item: item, name: a.name },
+                downloadAttachment
+              );
+            }
+          }
+        });
       }
     });
   });
+}
+
+function showView(val) {
+  toggle("#read", false);
+  toggle("#delay", false);
+
+  switch (val) {
+    case "delay":
+      toggle("#delay", true);
+      break;
+    case "read":
+      toggle("#read", true);
+      break;
+  }
 }

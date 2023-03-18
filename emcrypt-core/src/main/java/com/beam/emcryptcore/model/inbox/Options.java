@@ -15,8 +15,15 @@ import java.util.Date;
 @Builder
 public class Options {
 
-    private boolean encrypt;
+    private boolean emcrypt;
     private boolean forward;
-    private Date expire;
+    private boolean expire;
+
+    private Date expireAt;
+
+    private boolean delay;
+
+    private int delayInMinutes;
+    private Date delayAt;
 
 }
