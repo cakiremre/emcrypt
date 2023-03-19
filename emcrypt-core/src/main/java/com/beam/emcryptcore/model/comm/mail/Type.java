@@ -5,6 +5,6 @@ public enum Type {
     TEST,
     ACTIVATION,
     FORGOT,
-
+    OTP,
 
 }

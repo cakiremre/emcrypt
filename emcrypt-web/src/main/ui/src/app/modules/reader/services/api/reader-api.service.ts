@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 import { GenericDataResponse } from "src/app/common/models/model";
 import { Decrypted } from "../../model/decrypted";
+import { Options } from "../../model/options";
 
 const API_URL = `${environment.apiUrl}`;
 
@@ -18,13 +19,14 @@ export class ReaderApi {
   // public methods
   readDecrypted(
     messageId: string,
-    tenant: string
+    tenant: string,
+    address: string
   ): Observable<GenericDataResponse<Decrypted>> {
     return this.http.get<GenericDataResponse<Decrypted>>(
       `${API_URL}${this.path}/decrypt-read`,
       {
         headers: { "X-TENANT": tenant },
-        params: { messageId: messageId, tenant: tenant },
+        params: { messageId: messageId, tenant: tenant, address: address },
       }
     );
   }
@@ -32,7 +34,8 @@ export class ReaderApi {
   readAttachment(
     messageId: string,
     tenant: string,
-    attachmentId: string
+    attachmentId: string,
+    address: string
   ): Observable<Blob> {
     return this.http.get<Blob>(`${API_URL}${this.path}/decrypt-attachment`, {
       headers: { "X-TENANT": tenant },
@@ -41,7 +44,21 @@ export class ReaderApi {
         messageId: messageId,
         tenant: tenant,
         attachmentId: attachmentId,
+        address: address,
       },
     });
+  }
+
+  options(
+    messageId: string,
+    tenant: string
+  ): Observable<GenericDataResponse<Options>> {
+    return this.http.get<GenericDataResponse<Options>>(
+      `${API_URL}${this.path}/options`,
+      {
+        headers: { "X-TENANT": tenant },
+        params: { messageId: messageId, tenant: tenant },
+      }
+    );
   }
 }

@@ -1,0 +1,155 @@
+<div class="container">
+  <form
+    class="form w-50 mx-auto reader-auth-form"
+    [formGroup]="readerAuthForm"
+    novalidate="novalidate"
+    id="kt_login_signin_form"
+    (ngSubmit)="submit()"
+  >
+    <!--begin::Heading-->
+    <div class="text-center mb-11">
+      <h1 class="text-dark fw-bolder mb-3">Verify your Email</h1>
+    </div>
+    <!--end::Heading-->
+
+    <!-- begin::Alert error-->
+    <ng-container *ngIf="hasError">
+      <div class="mb-lg-15 alert alert-danger">
+        <div class="alert-text font-weight-bold">
+          The login details are incorrect
+        </div>
+      </div>
+    </ng-container>
+    <!-- end::Alert error-->
+
+    <!--begin::Form group-->
+    <div class="fv-row mb-8">
+      <label class="form-label fs-6 fw-bolder text-dark">Email</label>
+      <input
+        class="form-control bg-transparent"
+        type="email"
+        name="email"
+        formControlName="email"
+        autocomplete="off"
+        [ngClass]="{
+          'is-invalid': readerAuthForm.controls['email'].invalid,
+          'is-valid': readerAuthForm.controls['email'].valid
+        }"
+      />
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'required',
+          message: 'Email is required',
+          control: readerAuthForm.controls['email']
+        }"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'email',
+          message: 'Email is invalid',
+          control: readerAuthForm.controls['email']
+        }"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'minLength',
+          message: 'Email should have at least 3 symbols',
+          control: readerAuthForm.controls['email']
+        }"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'maxLength',
+          message: 'Email should have maximum 360 symbols',
+          control: readerAuthForm.controls['email']
+        }"
+      ></ng-container>
+    </div>
+    <!--end::Form group-->
+
+    <!--begin::Form group-->
+    <div class="fv-row mb-3" *ngIf="phase == 'code'">
+      <label class="form-label fw-bolder text-dark fs-6 mb-0">Code</label>
+
+      <input
+        class="form-control bg-transparent"
+        type="text"
+        name="code"
+        autocomplete="off"
+        formControlName="code"
+        maxlength="6"
+        minlength="6"
+        [ngClass]="{
+          'is-invalid': readerAuthForm.controls['code'].invalid,
+          'is-valid': readerAuthForm.controls['code'].valid
+        }"
+      />
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'required',
+          message: 'Code is required',
+          control: readerAuthForm.controls['code']
+        }"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'minlength',
+          message: 'Code should have 6 symbols',
+          control: readerAuthForm.controls['code']
+        }"
+      ></ng-container>
+      <ng-container
+        [ngTemplateOutlet]="formError"
+        [ngTemplateOutletContext]="{
+          validation: 'maxLength',
+          message: 'Code should have 6 symbols',
+          control: readerAuthForm.controls['code']
+        }"
+      ></ng-container>
+    </div>
+    <!--end::Form group-->
+    <!--begin::Action-->
+    <div class="d-grid mb-10">
+      <button
+        type="submit"
+        id="kt_sign_in_submit"
+        class="btn btn-primary"
+        [disabled]="readerAuthForm.invalid"
+      >
+        <ng-container *ngIf="isLoading$ | async">
+          <span class="indicator-progress" [style.display]="'block'">
+            Please wait...
+            <span
+              class="spinner-border spinner-border-sm align-middle ms-2"
+            ></span>
+          </span>
+        </ng-container>
+        <ng-container *ngIf="(isLoading$ | async) === false">
+          <span class="indicator-label">Continue</span>
+        </ng-container>
+      </button>
+    </div>
+  </form>
+  <ng-template
+    #formError
+    let-control="control"
+    let-message="message"
+    let-validation="validation"
+  >
+    <ng-container
+      *ngIf="control.hasError(validation) && (control.dirty || control.touched)"
+    >
+      <div class="fv-plugins-message-container">
+        <span role="alert">
+          {{ message }}
+        </span>
+      </div>
+    </ng-container>
+  </ng-template>
+</div>

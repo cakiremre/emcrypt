@@ -4,14 +4,18 @@ import com.beam.emcryptcore.base.BaseService;
 import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.dto.comm.mail.Options;
 import com.beam.emcryptcore.dto.comm.mail.SingleRequest;
+import com.beam.emcryptcore.dto.gw.ReaderRequest;
 import com.beam.emcryptcore.dto.gw.SetPasswordRequest;
 import com.beam.emcryptcore.model.auth.Account;
 import com.beam.emcryptcore.model.auth.AccountLink;
+import com.beam.emcryptcore.model.auth.Otp;
+import com.beam.emcryptcore.model.auth.Reader;
 import com.beam.emcryptcore.model.comm.mail.Recipient;
 import com.beam.emcryptcore.model.comm.mail.Type;
 import com.beam.emcryptcore.util.RandomStringGenerator;
 import com.beam.emcryptgw.repository.AccountLinkRepository;
 import com.beam.emcryptgw.repository.AccountRepository;
+import com.beam.emcryptgw.repository.OtpRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,8 @@ public class AccountService extends BaseService<AccountRepository, Account> {
 
     private final PasswordEncoder passwordEncoder;
     private final AccountLinkRepository accountLinkRepository;
+
+    private final OtpRepository otpRepository;
     private final MailService mailService;
 
     public GenericResponse<Account> authenticate(String username, String password) {
@@ -37,6 +43,22 @@ public class AccountService extends BaseService<AccountRepository, Account> {
                 return GenericResponse.success(account);
             } else {
                 return GenericResponse.code(11);
+            }
+        }
+    }
+
+    public GenericResponse<Reader> authenticateReader(ReaderRequest request) {
+        Optional<Otp> query = otpRepository.findByAddress(request.getAddress());
+        if (query.isEmpty()) {
+            return GenericResponse.code(10);
+        } else {
+            Otp otp = query.get();
+            if (passwordEncoder.matches(request.getCode(), otp.getCode())) {
+                return GenericResponse.success(Reader.builder()
+                        .address(request.getAddress())
+                        .build());
+            } else {
+                return GenericResponse.code(111);
             }
         }
     }
@@ -100,6 +122,40 @@ public class AccountService extends BaseService<AccountRepository, Account> {
                 return GenericResponse.success(account);
             }
         }
+    }
+
+
+    public GenericResponse readerOtp(String address) {
+
+        Optional<Otp> query = otpRepository.findByAddress(address);
+        Otp otp;
+        if (query.isPresent()) {
+            otp = query.get();
+        } else {
+            otp = Otp.builder()
+                    .address(address)
+                    .build();
+            otp.newIdAndCreated();
+        }
+
+        String code = RandomStringGenerator.getRandomCode(6);
+
+        otp.setCode(passwordEncoder.encode(code));
+        otpRepository.save(otp);
+
+
+        mailService.system(SingleRequest.builder()
+                .type(Type.OTP)
+                .recipient(Recipient.builder()
+                        .email(address)
+                        .build())
+                .options(Options.<String>builder()
+                        .data(code)
+                        .saved(true)
+                        .build())
+                .build());
+
+        return GenericResponse.success();
     }
 
 

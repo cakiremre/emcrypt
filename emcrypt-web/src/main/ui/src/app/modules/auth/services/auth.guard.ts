@@ -1,12 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-} from '@angular/router';
-import { AuthService } from './auth.service';
+} from "@angular/router";
+import { ReaderComponent } from "../../reader/components/reader/reader.component";
+import { Reader } from "../models/model";
+import { AuthService } from "./auth.service";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService) {}
 
@@ -18,7 +20,11 @@ export class AuthGuard implements CanActivate {
     }
 
     // not logged in so redirect to login page with the return url
-    this.authService.logout();
+    if (route.component == ReaderComponent) {
+      this.authService.logoutReader(route.queryParams);
+    } else {
+      this.authService.logout();
+    }
     return false;
   }
 }

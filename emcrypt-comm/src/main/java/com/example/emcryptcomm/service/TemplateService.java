@@ -31,7 +31,7 @@ public class TemplateService extends BaseService<TemplateRepository, Template> {
 
     @PostConstruct
     public void readMailTypes() {
-        List<Type> types = Arrays.asList(TEST, FORGOT, ACTIVATION);
+        List<Type> types = Arrays.asList(TEST, FORGOT, ACTIVATION, OTP);
 
         types.forEach(t -> {
             Map<Language, Content> map = new HashMap<>();

@@ -43,6 +43,9 @@ Office.onReady((info) => {
     $("#delay").bind("change", function () {
       toggle("#delayAmount", this.checked);
     });
+
+    // ready to show view
+    toggle("#options", true);
   }
 });
 

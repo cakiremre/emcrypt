@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <div class="card">
+  <div class="card" *ngIf="code == 0">
     <div class="card-header">
       <h4 class="card-title">
         From: {{ decrypted.from.address }} {{ decrypted.from.name }}
@@ -23,5 +23,25 @@
         </li>
       </ul>
     </div>
+  </div>
+
+  <div class="notification-content" *ngIf="code == 404">EMAIL NOT FOUND</div>
+  <div class="notification-content" *ngIf="code == 204">
+    ERROR: EMAIL CANNOT BE DECRYPTED
+  </div>
+  <div class="notification-content" *ngIf="code == 205">
+    <p>Sender configured this message to be accessible at:</p>
+    <p *ngIf="options">{{ options.delayAt | date : "short" }}</p>
+    <cd-timer
+      #delayTimer
+      [maxTimeUnit]="'minute'"
+      [format]="'intelli'"
+      (onComplete)="ngOnInit()"
+    ></cd-timer>
+  </div>
+  <div class="notification-content" *ngIf="code == 206">ACCESS IS EXPIRED</div>
+  <div class="notification-content" *ngIf="code == 207">ACCESS IS REVOKED</div>
+  <div class="notification-content" *ngIf="code == 208">
+    FORWARD IS DISABLED
   </div>
 </div>

@@ -1,40 +1,40 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AuthComponent } from './auth.component';
-import { LoginComponent } from './components/login/login.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { LogoutComponent } from './components/logout/logout.component';
-import { ActivateComponent } from './components/activate/activate.component';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
+import { AuthComponent } from "./auth.component";
+import { LoginComponent } from "./components/login/login.component";
+import { ForgotPasswordComponent } from "./components/forgot-password/forgot-password.component";
+import { LogoutComponent } from "./components/logout/logout.component";
+import { ActivateComponent } from "./components/activate/activate.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     component: AuthComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'login',
-        pathMatch: 'full',
+        path: "",
+        redirectTo: "login",
+        pathMatch: "full",
       },
       {
-        path: 'login',
+        path: "login",
         component: LoginComponent,
         data: { returnUrl: window.location.pathname },
       },
       {
-        path: 'forgot-password',
+        path: "forgot-password",
         component: ForgotPasswordComponent,
       },
       {
-        path: 'activate',
+        path: "activate",
         component: ActivateComponent,
       },
       {
-        path: 'logout',
+        path: "logout",
         component: LogoutComponent,
       },
-      { path: '', redirectTo: 'login', pathMatch: 'full' },
-      { path: '**', redirectTo: 'login', pathMatch: 'full' },
+      { path: "", redirectTo: "login", pathMatch: "full" },
+      { path: "**", redirectTo: "login", pathMatch: "full" },
     ],
   },
 ];

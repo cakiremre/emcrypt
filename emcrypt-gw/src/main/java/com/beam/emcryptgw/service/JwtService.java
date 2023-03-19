@@ -1,6 +1,7 @@
 package com.beam.emcryptgw.service;
 
 import com.beam.emcryptcore.model.auth.Account;
+import com.beam.emcryptcore.model.auth.Reader;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,6 +21,7 @@ public class JwtService {
     public static final String SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437";
     public static final String CLAIM_TENANT_KEY = "tnt";
     public static final String CLAIM_ROLE_KEY = "rls";
+    public static final String CLAIM_MESSAGE_KEY = "msg";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -52,16 +54,21 @@ public class JwtService {
     }
 
 
-    public String generateToken(String userName){
-        Map<String,Object> claims=new HashMap<>();
-        return createToken(claims,userName);
+    public String generateToken(String userName) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userName);
     }
 
     public String generateToken(Account account) {
-        Map<String,Object> claims=new HashMap<>();
+        Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_ROLE_KEY, account.getAuthorities());
         claims.put(CLAIM_TENANT_KEY, account.getTenant());
         return createToken(claims, account.getUsername());
+    }
+
+    public String generateToken(Reader reader) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, reader.getAddress());
     }
 
     private String createToken(Map<String, Object> claims, String userName) {
@@ -69,12 +76,12 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(userName)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*30))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }
 
     private Key getSignKey() {
-        byte[] keyBytes= Decoders.BASE64.decode(SECRET);
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

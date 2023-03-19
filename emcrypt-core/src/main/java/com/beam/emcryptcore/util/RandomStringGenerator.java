@@ -12,6 +12,9 @@ public class RandomStringGenerator {
     private static char[] _base62chars =
             "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
                     .toCharArray();
+    private static char[] _numbersAndLetters =
+            "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    .toCharArray();
 
     private static Random _random = new Random(System.currentTimeMillis());
 
@@ -63,5 +66,25 @@ public class RandomStringGenerator {
 
         return sb.toString();
     }
+
+    public static String getRandomCode(int length){
+        String code = "";
+        SecureRandom sr = null;
+        for(int i =0 ; i < length; i ++) {
+            int index;
+            try {
+                // generate cryptographically secure random number
+                sr = SecureRandom.getInstance("SHA1PRNG");
+                index = sr.nextInt(_numbersAndLetters.length);
+            } catch (NoSuchAlgorithmException ex) {
+                Random r = new Random(System.currentTimeMillis());
+                index = r.nextInt(_numbersAndLetters.length);
+            }
+
+            code += _numbersAndLetters[index];
+        }
+        return code;
+    }
+
 
 }

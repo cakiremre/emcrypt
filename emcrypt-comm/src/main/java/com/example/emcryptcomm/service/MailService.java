@@ -51,6 +51,7 @@ public class MailService extends BaseService<MailRepository, Mail> {
                     content.transformBody("{{fullName}}", recipient.getFullName());
                     content.transformBody("{{link}}", options.getData().toString());
                 }
+                case OTP -> content.transformBody("{{code}}", options.getData().toString());
             }
 
             // generate mail

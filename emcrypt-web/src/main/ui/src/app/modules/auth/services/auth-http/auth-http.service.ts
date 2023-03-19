@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Account } from '../../models/model';
-import { environment } from '../../../../../environments/environment';
-import { AuthResponse } from '../../models/model';
-import { GenericResponse } from 'src/app/common/models/model';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Account, ReaderResponse } from "../../models/model";
+import { environment } from "../../../../../environments/environment";
+import { AuthResponse } from "../../models/model";
+import { GenericResponse } from "src/app/common/models/model";
 
 const API_USERS_URL = `${environment.apiUrl}/gw/auth`;
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthHTTPService {
   constructor(private http: HttpClient) {}
@@ -27,7 +27,7 @@ export class AuthHTTPService {
     return this.http.post<GenericResponse>(
       `${API_USERS_URL}/forgot`,
       {},
-      { params: new HttpParams().append('username', username) }
+      { params: new HttpParams().append("username", username) }
     );
   }
 
@@ -45,5 +45,26 @@ export class AuthHTTPService {
     return this.http.get<Account>(`${API_USERS_URL}/me`, {
       headers: httpHeaders,
     });
+  }
+
+  otpReader(address: string): Observable<GenericResponse> {
+    return this.http.post<GenericResponse>(
+      `${API_USERS_URL}/otp-reader`,
+      {},
+      { params: new HttpParams().append("address", address) }
+    );
+  }
+
+  authenticateReader(
+    address: string,
+    code: string
+  ): Observable<ReaderResponse> {
+    return this.http.post<ReaderResponse>(
+      `${API_USERS_URL}/authenticate-reader`,
+      {
+        address: address,
+        code: code,
+      }
+    );
   }
 }

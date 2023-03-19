@@ -1,5 +1,6 @@
-import { Base, Language } from 'src/app/common/models/model';
-import { __propKey } from 'tslib';
+import { Token } from "prismjs";
+import { Base, Language } from "src/app/common/models/model";
+import { __propKey } from "tslib";
 
 export class Role {
   name: string;
@@ -19,6 +20,14 @@ export class Profile {
   }
 }
 
+export class Reader {
+  address: string;
+
+  init(_reader: Reader) {
+    this.address = _reader.address;
+  }
+}
+
 export class Account extends Base {
   username: string;
   password: string;
@@ -34,8 +43,8 @@ export class Account extends Base {
   init(_user: Account) {
     super.init(_user);
 
-    this.username = _user.username || '';
-    this.password = _user.password || '';
+    this.username = _user.username || "";
+    this.password = _user.password || "";
 
     this.authorities = _user.authorities || [];
     this.profile = new Profile();
@@ -58,14 +67,30 @@ export class Account extends Base {
   }
 }
 
-export class AuthResponse {
+export class TokenResponse {
   code: number;
   token: string;
+
+  init(auth: TokenResponse) {
+    this.code = auth.code;
+    this.token = auth.token;
+  }
+}
+
+export class AuthResponse extends TokenResponse {
   account: Account;
 
   setAuth(auth: AuthResponse) {
-    this.code = auth.code;
-    this.token = auth.token;
+    super.init(auth);
     this.account = auth.account;
+  }
+}
+
+export class ReaderResponse extends TokenResponse {
+  reader: Reader;
+
+  setReader(auth: ReaderResponse) {
+    super.init(auth);
+    this.reader = auth.reader;
   }
 }

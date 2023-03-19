@@ -36,7 +36,7 @@ public class EmailService extends BaseService<EmailRepository, Email> {
         }
     }
 
-    public GenericResponse<Decrypted> readDecrypted(String messageId, String tenant) {
+    public GenericResponse<Decrypted> readDecrypted(String messageId, String tenant, String address) {
         Optional<Email> query = repository.findById(messageId);
         if (query.isPresent()) {
             Email email = query.get();
@@ -45,30 +45,45 @@ public class EmailService extends BaseService<EmailRepository, Email> {
             KeyResponse<String> response = keyManService.decryptKey(tenant, DecryptRequest.builder()
                     .key(email.getKey())
                     .tenant(tenant)
+                    .address(address)
+                    .messageId(messageId)
                     .build());
+            switch (response.getCode()) {
+                case 0:
+                    String aesKeyAndIV = response.getData();
+                    try {
+                        String html = decryptionService.decryptMessage(email.getData(), aesKeyAndIV);
 
-            if (response.getCode() == 0) {
-                String aesKeyAndIV = response.getData();
-                try {
-                    String html = decryptionService.decryptMessage(email.getData(), aesKeyAndIV);
-
-                    return GenericResponse.<Decrypted>builder()
-                            .code(0)
-                            .data(Decrypted.builder()
-                                    .from(email.getFrom())
-                                    .subject(email.getSubject())
-                                    .content(html)
-                                    .attachments(email.getAttachments())
-                                    .build())
-                            .build();
-                } catch (Exception exc) {
-                    log.error("Message could not be encrypted. [Id: {}, Message: {}]", messageId, exc.getMessage());
-                    exc.printStackTrace();
-                    return GenericResponse.code(101);
-                }
-            } else {
-                log.error("Key could not be decrypted. [Id: {}]", messageId);
-                return GenericResponse.code(100);
+                        return GenericResponse.<Decrypted>builder()
+                                .code(0)
+                                .data(Decrypted.builder()
+                                        .from(email.getFrom())
+                                        .subject(email.getSubject())
+                                        .content(html)
+                                        .attachments(email.getAttachments())
+                                        .build())
+                                .build();
+                    } catch (Exception exc) {
+                        log.error("Message could not be encrypted. [Id: {}, Message: {}]", messageId, exc.getMessage());
+                        exc.printStackTrace();
+                        return GenericResponse.code(204);
+                    }
+                default:
+                case 404:
+                    log.error("Email not found. [Id: {}]", messageId);
+                    return GenericResponse.code(404);
+                case 500:
+                    log.info("Access is delayed");
+                    return GenericResponse.code(205);
+                case 501:
+                    log.info("Access is expired");
+                    return GenericResponse.code(206);
+                case 502:
+                    log.info("Access is revoked from user");
+                    return GenericResponse.code(207);
+                case 503:
+                    log.info("Forward not allowed");
+                    return GenericResponse.code(208);
             }
         } else {
             log.error("Email not found. [Id: {}]", messageId);
@@ -76,37 +91,53 @@ public class EmailService extends BaseService<EmailRepository, Email> {
         }
     }
 
-    public ResponseEntity<byte[]> readAttachment(String messageId, String tenant, String attachmentId) {
+    public ResponseEntity<byte[]> readAttachment(String messageId, String tenant, String attachmentId, String address) {
         Optional<Email> query = repository.findById(messageId);
         if (query.isPresent()) {
             Email email = query.get();
             KeyResponse<String> response = keyManService.decryptKey(tenant, DecryptRequest.builder()
                     .key(email.getKey())
                     .tenant(tenant)
+                    .address(address)
+                            .messageId(messageId)
                     .build());
 
-            if (response.getCode() == 0) {
-                String aesKeyAndIV = response.getData();
-                try {
-                    Optional<Attachment> attachmentQ = email.getAttachments().stream()
-                            .filter(attachment -> attachment.getId().equals(attachmentId))
-                            .findFirst();
-                    if (attachmentQ.isPresent()) {
-                        String data = decryptionService.decryptMessage(attachmentQ.get().getData(), aesKeyAndIV);
-                        return ResponseEntity.ok(Base64.getDecoder().decode(data));
-                    } else {
-                        return ResponseEntity
-                                .notFound()
-                                .build();
+            switch (response.getCode()) {
+                case 0:
+                    String aesKeyAndIV = response.getData();
+                    try {
+                        Optional<Attachment> attachmentQ = email.getAttachments().stream()
+                                .filter(attachment -> attachment.getId().equals(attachmentId))
+                                .findFirst();
+                        if (attachmentQ.isPresent()) {
+                            String data = decryptionService.decryptMessage(attachmentQ.get().getData(), aesKeyAndIV);
+                            return ResponseEntity.ok(Base64.getDecoder().decode(data));
+                        } else {
+                            return ResponseEntity
+                                    .notFound()
+                                    .build();
+                        }
+                    } catch (Exception exc) {
+                        log.error("Message could not be encrypted. [Id: {}, Message: {}]", messageId, exc.getMessage());
+                        exc.printStackTrace();
+                        return ResponseEntity.status(204).build();
                     }
-                } catch (Exception exc) {
-                    log.error("Message could not be encrypted. [Id: {}, Message: {}]", messageId, exc.getMessage());
-                    exc.printStackTrace();
-                    return ResponseEntity.status(501).build();
-                }
-            } else {
-                log.error("Key could not be decrypted. [Id: {}]", messageId);
-                return ResponseEntity.status(500).build();
+                default:
+                case 404:
+                    log.error("Email not found. [Id: {}]", messageId);
+                    return ResponseEntity.notFound().build();
+                case 500:
+                    log.info("Access is delayed");
+                    return ResponseEntity.status(205).build();
+                case 501:
+                    log.info("Access is expired");
+                    return ResponseEntity.status(206).build();
+                case 502:
+                    log.info("Access is revoked from user");
+                    return ResponseEntity.status(207).build();
+                case 503:
+                    log.info("Forward not allowed");
+                    return ResponseEntity.status(208).build();
             }
         } else {
             log.error("Email not found. [Id: {}]", messageId);

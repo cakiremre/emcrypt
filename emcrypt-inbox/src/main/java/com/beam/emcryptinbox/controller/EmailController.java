@@ -28,13 +28,18 @@ public class EmailController extends BaseController<EmailService, Email> {
     }
 
     @GetMapping("decrypt-read")
-    public GenericResponse<Decrypted> readDecrypted(@RequestParam String messageId, @RequestParam String tenant){
-        return service.readDecrypted(messageId, tenant);
+    public GenericResponse<Decrypted> readDecrypted(@RequestParam String messageId,
+                                                    @RequestParam String tenant,
+                                                    @RequestParam String address){
+        return service.readDecrypted(messageId, tenant, address);
     }
 
     @GetMapping("decrypt-attachment")
-    public ResponseEntity<byte[]> readAttachment(@RequestParam String messageId, @RequestParam String tenant, @RequestParam String attachmentId){
-        return service.readAttachment(messageId, tenant, attachmentId);
+    public ResponseEntity<byte[]> readAttachment(@RequestParam String messageId,
+                                                 @RequestParam String tenant,
+                                                 @RequestParam String attachmentId,
+                                                 @RequestParam String address){
+        return service.readAttachment(messageId, tenant, attachmentId, address);
     }
 
     @GetMapping("should-decrypt")
