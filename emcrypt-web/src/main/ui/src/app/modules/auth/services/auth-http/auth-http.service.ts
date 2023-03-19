@@ -1,10 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { Account, ReaderResponse } from "../../models/model";
+import { Account, Reader, ReaderResponse } from "../../models/model";
 import { environment } from "../../../../../environments/environment";
 import { AuthResponse } from "../../models/model";
-import { GenericResponse } from "src/app/common/models/model";
+import {
+  GenericDataResponse,
+  GenericResponse,
+} from "src/app/common/models/model";
 
 const API_USERS_URL = `${environment.apiUrl}/gw/auth`;
 
@@ -38,13 +41,18 @@ export class AuthHTTPService {
     });
   }
 
-  getUserByToken(token: string): Observable<Account> {
+  getUserByToken(
+    token: string
+  ): Observable<GenericDataResponse<Account | Reader>> {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<Account>(`${API_USERS_URL}/me`, {
-      headers: httpHeaders,
-    });
+    return this.http.get<GenericDataResponse<Account | Reader>>(
+      `${API_USERS_URL}/me`,
+      {
+        headers: httpHeaders,
+      }
+    );
   }
 
   otpReader(address: string): Observable<GenericResponse> {

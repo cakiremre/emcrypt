@@ -4,8 +4,8 @@ import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.dto.gw.*;
 import com.beam.emcryptcore.model.auth.Account;
 import com.beam.emcryptcore.model.auth.Reader;
+import com.beam.emcryptcore.service.JwtService;
 import com.beam.emcryptgw.service.AccountService;
-import com.beam.emcryptgw.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +25,23 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public Account me(@RequestHeader("Authorization") String header) {
-        String username = jwtService.extractUsername(header.substring(7));
-        return accountService.loadByUsername(username)
-                .orElse(null);
+    public GenericResponse me(@RequestHeader("Authorization") String header) {
+        String token = header.substring(7);
+        String username = jwtService.extractUsername(token);
+        String usertype = jwtService.extractUsertype(token);
+
+        switch (usertype){
+            default:
+            case "account":
+                Account account = accountService.loadByUsername(username)
+                        .orElse(null);
+                return GenericResponse.success(account);
+            case "reader":
+                Reader reader = Reader.builder().address(username).build();
+                return GenericResponse.success(reader);
+        }
+
+
     }
 
     @PostMapping("/forgot")

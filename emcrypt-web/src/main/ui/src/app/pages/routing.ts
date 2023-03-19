@@ -1,28 +1,34 @@
-import { Routes } from '@angular/router';
-import { RedirComponent } from '../modules/auth/components/redir/redir.component';
-import { AuthGuard } from '../modules/auth/services/auth.guard';
+import { Routes } from "@angular/router";
+import { RedirComponent } from "../modules/auth/components/redir/redir.component";
+import { AuthGuard } from "../modules/auth/services/auth.guard";
 
 const Routing: Routes = [
   {
-    path: 'admin',
+    path: "admin",
     loadChildren: () =>
-      import('../modules/admin/admin.module').then((m) => m.AdminModule),
+      import("../modules/admin/admin.module").then((m) => m.AdminModule),
     canActivate: [AuthGuard],
   },
   {
-    path: 'company',
+    path: "company",
     loadChildren: () =>
-      import('../modules/company/company.module').then((m) => m.CompanyModule),
+      import("../modules/company/company.module").then((m) => m.CompanyModule),
     canActivate: [AuthGuard],
   },
   {
-    path: '',
+    path: "user",
+    loadChildren: () =>
+      import("../modules/user/user.module").then((m) => m.UserModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: "",
     component: RedirComponent,
-    pathMatch: 'full',
+    pathMatch: "full",
   },
   {
-    path: '**',
-    redirectTo: 'error/404',
+    path: "**",
+    redirectTo: "error/404",
   },
 ];
 

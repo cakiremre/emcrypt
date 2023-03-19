@@ -2,7 +2,7 @@ package com.beam.emcryptgw.security;
 
 
 import com.beam.emcryptcore.model.auth.Role;
-import com.beam.emcryptgw.service.JwtService;
+import com.beam.emcryptcore.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -19,8 +19,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
-import static com.beam.emcryptgw.service.JwtService.CLAIM_ROLE_KEY;
-import static com.beam.emcryptgw.service.JwtService.CLAIM_TENANT_KEY;
+import static com.beam.emcryptcore.service.JwtService.CLAIM_ROLE_KEY;
+import static com.beam.emcryptcore.service.JwtService.CLAIM_TENANT_KEY;
 
 @RequiredArgsConstructor
 @RefreshScope

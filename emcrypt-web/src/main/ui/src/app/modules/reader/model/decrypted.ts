@@ -8,6 +8,18 @@ export class Subject {
   }
 }
 
+export class Recipient extends Subject {
+  revoked: boolean;
+  accessed: boolean;
+
+  init(_recipient: Recipient) {
+    super.init(_recipient);
+
+    this.accessed = _recipient.accessed;
+    this.revoked = _recipient.revoked;
+  }
+}
+
 export class Attachment {
   id: string;
   name: string;

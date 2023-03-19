@@ -1,5 +1,11 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { Observable, BehaviorSubject, of, Subscription } from "rxjs";
+import {
+  Observable,
+  BehaviorSubject,
+  of,
+  Subscription,
+  throwError,
+} from "rxjs";
 import { map, catchError, switchMap, finalize } from "rxjs/operators";
 import {
   Account,
@@ -10,7 +16,10 @@ import {
 import { AuthResponse } from "../models/model";
 import { AuthHTTPService } from "./auth-http";
 import { Params, Router } from "@angular/router";
-import { GenericResponse } from "src/app/common/models/model";
+import {
+  GenericDataResponse,
+  GenericResponse,
+} from "src/app/common/models/model";
 
 export type UserType = Account | Reader | undefined;
 export const authLocalStorageToken = `EMCRYPT-AUTH-JWT`;
@@ -152,13 +161,25 @@ export class AuthService implements OnDestroy {
 
     this.isLoadingSubject.next(true);
     return this.authHttpService.getUserByToken(auth.token).pipe(
-      map((user: Account) => {
-        let acc: UserType = new Account();
-        acc.init(user);
-        if (user) {
-          this.currentUserSubject.next(acc);
-        } else {
-          this.logout();
+      map((response: GenericDataResponse<any>) => {
+        // any is Account | Reader FIXME later
+        let user = response.data;
+        if (user.password) {
+          let acc: UserType = new Account();
+          acc.init(user);
+          if (user) {
+            this.currentUserSubject.next(acc);
+          } else {
+            this.logout();
+          }
+        } else if (user.address) {
+          let reader: UserType = new Reader();
+          reader.init(user);
+          if (user) {
+            this.currentUserSubject.next(reader);
+          } else {
+            this.logoutReader({});
+          }
         }
         return user;
       }),

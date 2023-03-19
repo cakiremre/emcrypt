@@ -3,18 +3,15 @@ package com.beam.emcryptcore.db;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TenantContext {
-
-    public static final String COMMON = "common";
-
+public class AccountContext {
     public static final ThreadLocal<String> CONTEXT = new ThreadLocal<>();
 
-    public static void setTenant(String tenant) {
-        CONTEXT.set(tenant);
-        log.debug("Setting tenant id: " + tenant);
+    public static void setUsername(String username) {
+        CONTEXT.set(username);
+        log.debug("Setting account: " + username);
     }
 
-    public static String getTenant() {
+    public static String getUsername() {
         return CONTEXT.get();
     }
 
