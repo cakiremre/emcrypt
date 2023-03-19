@@ -1,5 +1,8 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { HasSubscription } from "src/app/common/models/model";
+import {
+  GenericDataResponse,
+  HasSubscription,
+} from "src/app/common/models/model";
 import { Email } from "../../model/email";
 import { SentService } from "../../services/sent.service";
 import * as moment from "moment";
@@ -32,11 +35,13 @@ export class SentComponent
 
   revoke(sent: Email, recipient: Recipient) {
     recipient.revoked = true;
-    let subs = this.sentService.update(sent).subscribe((data) => {
-      if (data != undefined) {
-        sent.init(data);
-      }
-    });
+    let subs = this.sentService
+      .revoke(sent.id, recipient.address)
+      .subscribe((response: GenericDataResponse<Email> | undefined) => {
+        if (response != undefined && response.code == 0) {
+          sent.init(response.data);
+        }
+      });
     this.unsubscribe.push(subs);
   }
 

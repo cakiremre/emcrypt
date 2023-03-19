@@ -48,4 +48,9 @@ public class Email extends Base {
                 .flatMap(Collection::stream)
                 .toList();
     }
+
+    public void clearPayload(){
+        setKey(null);
+        setData(null);
+    }
 }

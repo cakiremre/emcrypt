@@ -8,6 +8,7 @@ export class Email extends Base {
   to: Array<Recipient>;
   cc: Array<Recipient>;
   bcc: Array<Recipient>;
+  all: Array<Recipient>;
   subject: String;
   options: Options;
   attachments: Array<Attachment>;
@@ -39,6 +40,7 @@ export class Email extends Base {
       recipient.init(rcp);
       this.bcc.push(recipient);
     });
+    this.all = this.to.concat(this.cc).concat(this.bcc);
 
     this.subject = _email.subject;
 

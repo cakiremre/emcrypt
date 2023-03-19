@@ -1,16 +1,16 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { Base, HasSubscription } from 'src/app/common/models/model';
-import { catchError, map, Observable, of } from 'rxjs';
-import { BaseApi } from './base-api';
+import { Injectable, OnDestroy } from "@angular/core";
+import { Base, compare, HasSubscription } from "src/app/common/models/model";
+import { catchError, map, Observable, of } from "rxjs";
+import { BaseApi } from "./base-api";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export abstract class BaseService<T extends Base>
   extends HasSubscription
   implements OnDestroy
 {
-  constructor(private baseApi: BaseApi<T>) {
+  constructor(protected baseApi: BaseApi<T>) {
     super();
   }
 
@@ -25,10 +25,10 @@ export abstract class BaseService<T extends Base>
           item.init(t);
           ret.push(item);
         });
-        return ret;
+        return ret.sort(compare);
       }),
       catchError((err) => {
-        console.error('err', err);
+        console.error("err", err);
         return of(ret);
       })
     );
@@ -42,7 +42,7 @@ export abstract class BaseService<T extends Base>
         return item;
       }),
       catchError((err) => {
-        console.error('err', err);
+        console.error("err", err);
         return of(undefined);
       })
     );
@@ -56,7 +56,7 @@ export abstract class BaseService<T extends Base>
         return item;
       }),
       catchError((err) => {
-        console.error('err', err);
+        console.error("err", err);
         return of(undefined);
       })
     );
@@ -70,7 +70,7 @@ export abstract class BaseService<T extends Base>
         return item;
       }),
       catchError((err) => {
-        console.error('err', err);
+        console.error("err", err);
         return of(undefined);
       })
     );

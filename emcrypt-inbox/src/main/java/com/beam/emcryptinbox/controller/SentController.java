@@ -2,12 +2,11 @@ package com.beam.emcryptinbox.controller;
 
 import com.beam.emcryptcore.base.BaseController;
 import com.beam.emcryptcore.db.AccountContext;
+import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.model.inbox.Email;
 import com.beam.emcryptinbox.service.SentService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +19,10 @@ public class SentController extends BaseController<SentService, Email> {
     @GetMapping("list")
     public List<Email> list() {
         return service.findAll(AccountContext.getUsername());
+    }
+
+    @PostMapping("revoke")
+    public GenericResponse<Email> revoke(@RequestParam String messageId, @RequestParam String address){
+        return service.revoke(messageId, address);
     }
 }

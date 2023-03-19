@@ -108,7 +108,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let recipient of selected.to">
+        <tr *ngFor="let recipient of selected.all">
           <td>{{ recipient.getInetAddress() }}</td>
           <td>{{ recipient.accessed }}</td>
           <td>{{ recipient.revoked }}</td>

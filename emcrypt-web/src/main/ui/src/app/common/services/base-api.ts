@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
-import { Observable, ObservableLike } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { Injectable } from "@angular/core";
+import { Observable, ObservableLike } from "rxjs";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { environment } from "src/environments/environment";
 
-const API_URL = `${environment.apiUrl}`;
+export const API_URL = `${environment.apiUrl}`;
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export abstract class BaseApi<T> {
   abstract readonly path: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(protected http: HttpClient) {}
 
   // public methods
   list(): Observable<T[]> {
