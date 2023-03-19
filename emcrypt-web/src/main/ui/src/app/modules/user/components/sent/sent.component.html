@@ -18,16 +18,29 @@
         <!-- begin::Table head -->
         <thead>
           <tr class="fw-bolder text-muted bg-light">
-            <th class="ps-4 min-w-325px rounded-start">Subject</th>
-            <th class="ps-4 min-w-325px rounded-start">To</th>
-            <th class="min-w-200px text-end">Created</th>
-            <th class="min-w-200px text-end rounded-end"></th>
+            <th class="ps-4 rounded-start">From</th>
+            <th class="ps-4 min-w-450px rounded-start">Subject</th>
+            <th class="ps-4 rounded-start">Emcryption</th>
+            <th class="ps-4 rounded-start">Attachments</th>
+            <th class="text-end">Sent At</th>
           </tr>
         </thead>
         <!-- end::Table head -->
         <!-- begin::Table body -->
         <tbody>
-          <tr *ngFor="let sent of sentList">
+          <tr
+            *ngFor="let sent of sentList"
+            class="hand"
+            (click)="select(sent)"
+            id="kt_drawer_example_basic_button"
+          >
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ sent.from.getInetAddress() }}
+              </span>
+            </td>
             <td>
               <span
                 class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
@@ -37,9 +50,21 @@
             </td>
             <td>
               <span
+                [title]="getEmcryptionTitle(sent)"
                 class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
               >
-                {{ sent.to[0].address }}
+                {{ getEmcryption(sent) }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{
+                  sent.attachments && sent.attachments.length > 0
+                    ? sent.attachments.length + " attachments"
+                    : "None"
+                }}
               </span>
             </td>
             <td class="text-end">
@@ -47,20 +72,11 @@
                 href="#"
                 class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
               >
-                at {{ sent.created | date : "short" }}
+                {{ sent.created | date : "dd.MM.yyyy HH.mm" }}
               </a>
-            </td>
-            <td class="text-end">
-              <span
-                [inlineSVG]="'./assets/media/icons/duotune/general/gen011.svg'"
-                title="Revoke"
-                (click)="revoke(sent)"
-                class="svg-icon svg-icon-3 hand"
-              ></span>
             </td>
           </tr>
         </tbody>
-
         <!-- end::Table body -->
       </table>
       <!-- end::Table -->
@@ -69,3 +85,44 @@
   </div>
   <!-- begin::Body -->
 </div>
+
+<!--begin::View component-->
+<div
+  id="kt_drawer_example_basic"
+  class="bg-white"
+  data-kt-drawer="true"
+  data-kt-drawer-activate="true"
+  data-kt-drawer-toggle="#kt_drawer_example_basic_button"
+  data-kt-drawer-close="#kt_drawer_example_basic_close"
+  data-kt-drawer-width="500px"
+>
+  <div class="recipients-drawer-wrapper" *ngIf="selected">
+    <h3>Recipients</h3>
+    <table class="table" *ngIf="selected.to">
+      <thead>
+        <tr>
+          <th>Address</th>
+          <th>Accessed</th>
+          <th>Revoked</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let recipient of selected.to">
+          <td>{{ recipient.getInetAddress() }}</td>
+          <td>{{ recipient.accessed }}</td>
+          <td>{{ recipient.revoked }}</td>
+          <td>
+            <span
+              [inlineSVG]="'./assets/media/icons/duotune/general/gen011.svg'"
+              title="Revoke"
+              (click)="revoke(selected, recipient)"
+              class="svg-icon svg-icon-3 hand"
+            ></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--end::View component-->

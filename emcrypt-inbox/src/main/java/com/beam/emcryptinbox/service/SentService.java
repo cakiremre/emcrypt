@@ -15,6 +15,8 @@ import java.util.List;
 public class SentService extends BaseService<EmailRepository, Email> {
 
     public List<Email> findAll(String username) {
-        return repository.findByFromAddress(username);
+        List<Email> emails = repository.findByFromAddress(username);
+        emails.forEach(email -> email.setData(null)); // clear attachment-data
+        return emails;
     }
 }

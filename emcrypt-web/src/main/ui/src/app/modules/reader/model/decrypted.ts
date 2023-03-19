@@ -6,6 +6,10 @@ export class Subject {
     this.address = _subject.address;
     this.name = _subject.name;
   }
+
+  getInetAddress() {
+    return this.name + " - " + this.address;
+  }
 }
 
 export class Recipient extends Subject {
