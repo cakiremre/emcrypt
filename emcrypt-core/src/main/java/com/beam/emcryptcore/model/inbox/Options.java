@@ -17,6 +17,8 @@ import java.util.Date;
 public class Options {
 
     private boolean emcrypt;
+
+    /** true if forward is disabled */
     private boolean forward;
     private boolean expire;
 

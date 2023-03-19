@@ -181,10 +181,11 @@ public class EmailService extends BaseService<EmailRepository, Email> {
                         return GenericResponse.code(502);
                     }
                 } else {
+                    /** options.forward = true; if forwarding is disabled */
                     if (email.getOptions().isForward()) {
-                        return GenericResponse.success();
-                    } else {
                         return GenericResponse.code(503);
+                    } else {
+                        return GenericResponse.success();
                     }
                 }
             } else {
