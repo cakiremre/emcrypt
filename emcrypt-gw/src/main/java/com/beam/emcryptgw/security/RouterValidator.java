@@ -14,12 +14,12 @@ public class RouterValidator {
             "/api/gw/auth/otp-reader",
             "/api/gw/auth/authenticate-reader",
             "/api/adm/user/activate",
-            "/api/ekm/emkey/encrypt-key-html",
-            "/api/ekm/emkey/decrypt-key",
-            "/api/inb/email/save",
-            "/api/inb/email/options",
-            "/api/inb/email/decrypt-read",
-            "/api/inb/email/decrypt-attachment"
+            "/api/box/emkey/encrypt-key-html",
+            "/api/box/emkey/decrypt-key",
+            "/api/box/email/save",
+            "/api/box/email/options",
+            "/api/box/email/decrypt-read",
+            "/api/box/email/decrypt-attachment"
     );
 
     public Predicate<String> isSecured =

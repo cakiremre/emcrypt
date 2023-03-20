@@ -29,14 +29,9 @@ public class RouteConfig {
                         .uri("lb://admin")
                 )
                 .route( p -> p
-                        .path("/api/inb/**")
+                        .path("/api/box/**")
                         .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("lb://inbox")
-                )
-                .route( p -> p
-                        .path("/api/ekm/**")
-                        .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("lb://keyman")
+                        .uri("lb://box")
                 )
                 .route(p -> p
                         .path("/eureka/web")

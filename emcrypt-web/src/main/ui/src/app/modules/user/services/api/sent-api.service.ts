@@ -12,7 +12,7 @@ const API_TENANT_URL = `${environment.apiUrl}/inb/sent`;
   providedIn: "root",
 })
 export class SentApi extends BaseApi<Email> {
-  path: string = "/inb/sent";
+  path: string = "/box/sent";
 
   constructor(http: HttpClient) {
     super(http);

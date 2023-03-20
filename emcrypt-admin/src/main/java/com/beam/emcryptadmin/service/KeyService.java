@@ -10,7 +10,7 @@ import java.util.List;
 
 import static com.beam.emcryptcore.db.DbConfigurerInterceptor.TENANT_HEADER;
 
-@FeignClient(name = "keyman", path = "/api/ekm/emkey")
+@FeignClient(name = "box", path = "/api/box/emkey")
 public interface KeyService {
 
     @PostMapping("create")

@@ -38,7 +38,7 @@ function serverGetPublicKey(office) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.get({
-        url: `${baseUrl}/api/ekm/emkey/encrypt-key-html?owner=${tenant}`,
+        url: `${baseUrl}/api/box/emkey/encrypt-key-html?owner=${tenant}`,
         headers: {
           "X-TENANT": tenant,
         },
@@ -60,7 +60,7 @@ function serverGetOptions(office, messageId) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.get({
-        url: `${baseUrl}/api/inb/email/options?tenant=${tenant}&messageId=${messageId}`,
+        url: `${baseUrl}/api/box/email/options?tenant=${tenant}&messageId=${messageId}`,
         headers: {
           "X-TENANT": tenant,
         },
@@ -86,7 +86,7 @@ function serverDecryptKey(office, encrypted, address, messageId) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.post({
-        url: `${baseUrl}/api/ekm/emkey/decrypt-key`,
+        url: `${baseUrl}/api/box/emkey/decrypt-key`,
         data: JSON.stringify({ tenant: tenant, key: encrypted, address: address, messageId: messageId }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -112,7 +112,7 @@ function serverSendEmail(office, email) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.post({
-        url: `${baseUrl}/api/inb/email/save`,
+        url: `${baseUrl}/api/box/email/save`,
         data: JSON.stringify(email),
         contentType: "application/json; charset=utf-8",
         dataType: "json",

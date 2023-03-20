@@ -12,7 +12,7 @@ const API_URL = `${environment.apiUrl}`;
   providedIn: "root",
 })
 export class ReaderApi {
-  readonly path: string = "/inb/email";
+  readonly path: string = "/box/email";
 
   constructor(private http: HttpClient) {}
 
