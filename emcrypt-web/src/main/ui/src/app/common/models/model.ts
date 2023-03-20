@@ -30,6 +30,11 @@ export class GenericDataResponse<T> extends GenericResponse {
   data: T;
 }
 
+export enum Direction {
+  ASC,
+  DESC,
+}
+
 export function enumFromStringValue<T>(
   enm: { [s: string]: T },
   value: string

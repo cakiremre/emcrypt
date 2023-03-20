@@ -1,5 +1,10 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { Base, compare, HasSubscription } from "src/app/common/models/model";
+import {
+  Base,
+  compare,
+  Direction,
+  HasSubscription,
+} from "src/app/common/models/model";
 import { catchError, map, Observable, of } from "rxjs";
 import { BaseApi } from "./base-api";
 
