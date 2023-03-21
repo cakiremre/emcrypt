@@ -1,32 +1,31 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CompanyComponent } from './components/company/company.component';
-import { UserListComponent } from './modules/users/components/user-list/user-list.component';
-import { UserManualComponent } from './modules/users/components/user-manual/user-manual.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { CompanyComponent } from "./components/company/company.component";
+import { UserListComponent } from "./modules/users/components/user-list/user-list.component";
+import { UserManualComponent } from "./modules/users/components/user-manual/user-manual.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     children: [
       {
-        path: 'overview',
+        path: "overview",
         component: CompanyComponent,
       },
       {
-        path: 'users',
-        component: UserListComponent,
-      },
-      {
-        path: 'users/:id',
-        component: UserManualComponent,
-      },
-      {
-        path: 'settings',
+        path: "users",
         loadChildren: () =>
-          import('./modules/settings/settings.module').then((m) => m.SettingsModule),
+          import("./modules/users/users.module").then((m) => m.UsersModule),
       },
-      { path: '', redirectTo: '/company/overview', pathMatch: 'full' },
-      { path: '**', redirectTo: '/company/overview', pathMatch: 'full' },
+      {
+        path: "settings",
+        loadChildren: () =>
+          import("./modules/settings/settings.module").then(
+            (m) => m.SettingsModule
+          ),
+      },
+      { path: "", redirectTo: "/company/overview", pathMatch: "full" },
+      { path: "**", redirectTo: "/company/overview", pathMatch: "full" },
     ],
   },
 ];
