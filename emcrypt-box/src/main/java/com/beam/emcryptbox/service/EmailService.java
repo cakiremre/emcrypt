@@ -5,16 +5,25 @@ import com.beam.emcryptcore.base.BaseService;
 import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.dto.keyman.DecryptRequest;
 import com.beam.emcryptcore.dto.keyman.KeyResponse;
-import com.beam.emcryptcore.model.common.Accessible;
-import com.beam.emcryptcore.model.inbox.*;
+import com.beam.emcryptcore.model.inbox.Attachment;
+import com.beam.emcryptcore.model.inbox.Decrypted;
+import com.beam.emcryptcore.model.inbox.Email;
+import com.beam.emcryptcore.model.inbox.Options;
+import com.jlefebure.spring.boot.minio.MinioException;
+import com.jlefebure.spring.boot.minio.MinioService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.Charset;
+import java.nio.file.Paths;
 import java.util.Base64;
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +32,28 @@ public class EmailService extends BaseService<EmailRepository, Email> {
 
     private final EmKeyService emKeyService;
     private final DecryptionService decryptionService;
+
+    private final MinioService minioService;
+
+    @Override
+    public Email create(Email item) {
+        if (item.getAttachments().size() > 0) {
+            String pathPrefix = item.getIdentifier() + "/" + item.getFrom().getAddress();
+            item.getAttachments().forEach(attachment -> {
+                String filename = pathPrefix + "/" + UUID.randomUUID().toString() + "." + FilenameUtils.getExtension(attachment.getName());
+                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.getDecoder().decode(attachment.getData()));
+                try {
+                    minioService.upload(Paths.get(filename), byteArrayInputStream, attachment.getFormat());
+                    attachment.setData(filename);
+                } catch (MinioException e) {
+                    log.error(e.getMessage());
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            });
+        }
+        return super.create(item);
+    }
 
     public GenericResponse<Options> readOptions(String messageId) {
         Optional<Email> query = repository.findById(messageId);
@@ -52,7 +83,8 @@ public class EmailService extends BaseService<EmailRepository, Email> {
                 case 0:
                     String aesKeyAndIV = response.getData();
                     try {
-                        String html = decryptionService.decryptMessage(email.getData(), aesKeyAndIV);
+                        byte[] content = decryptionService.decryptMessage(email.getData(), aesKeyAndIV);
+                        String html = new String(content, Charset.forName("UTF-8"));
 
                         return GenericResponse.<Decrypted>builder()
                                 .code(0)
@@ -110,8 +142,10 @@ public class EmailService extends BaseService<EmailRepository, Email> {
                                 .filter(attachment -> attachment.getId().equals(attachmentId))
                                 .findFirst();
                         if (attachmentQ.isPresent()) {
-                            String data = decryptionService.decryptMessage(attachmentQ.get().getData(), aesKeyAndIV);
-                            return ResponseEntity.ok(Base64.getDecoder().decode(data));
+                            // read data from minio
+                            byte[] encrypted = IOUtils.toByteArray(minioService.get(Paths.get(attachmentQ.get().getData())));
+                            byte[] plain = decryptionService.decryptMessage(encrypted, aesKeyAndIV);
+                            return ResponseEntity.ok(Base64.getDecoder().decode(plain));
                         } else {
                             return ResponseEntity
                                     .notFound()

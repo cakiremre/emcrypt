@@ -9,7 +9,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -20,7 +19,12 @@ import java.util.HexFormat;
 public class DecryptionService {
 
 
-    public String decryptMessage(String data, String aesKeyAndIV) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    public byte[] decryptMessage(String data, String aesKeyAndIV) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        byte[] blob = Base64.getDecoder().decode(data);
+        return decryptMessage(blob, aesKeyAndIV);
+    }
+
+    public byte[] decryptMessage(byte[] data, String aesKeyAndIV) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
 
         if(aesKeyAndIV.contains(":::")) {
 
@@ -32,9 +36,9 @@ public class DecryptionService {
 
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
-            byte[] plainText = cipher.doFinal(Base64.getDecoder().decode(data));
+            byte[] plainText = cipher.doFinal(data);
 
-            return new String(plainText, Charset.forName("UTF-8"));
+            return plainText;
         }else{
             throw new RuntimeException("Invalid AES key and IV.");
         }

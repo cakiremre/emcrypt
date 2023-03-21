@@ -8,9 +8,14 @@ spring:
       health-check:
         refetch-instances: true
         refetch-instances-interval: 2s
-
+  minio:
+    url: http://localhost:9000
+    bucket: emcrypt
+    access-key: myQtfsvyIyDHioJN
+    secret-key: Vyeinjyk1HI820fl54RkQfVRalXyz8sF
 server:
   port: 0
+
 
 eureka:
   instance:
