@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.inbox;
+package com.beam.emcryptcore.model.box.mail;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +11,9 @@ import lombok.experimental.SuperBuilder;
 @Accessors(chain = true)
 @Data
 @SuperBuilder
-public class Forwarded extends Recipient {
+public class Recipient extends Subject {
 
-    private Recipient from;
+    private boolean revoked;
+    private boolean accessed;
+
 }

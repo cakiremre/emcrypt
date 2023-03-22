@@ -2,45 +2,69 @@ package com.beam.emcryptadmin.service;
 
 import com.beam.emcryptadmin.repository.UserRepository;
 import com.beam.emcryptcore.base.BaseService;
-import com.beam.emcryptcore.db.TenantContext;
+import com.beam.emcryptcore.dto.BatchSave;
+import com.beam.emcryptcore.dto.BatchSaveOut;
 import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.dto.admin.ActivateRequest;
-import com.beam.emcryptcore.dto.keyman.KeyRequest;
 import com.beam.emcryptcore.model.admin.company.User;
-import com.beam.emcryptcore.model.keyman.crypto.EmKeyType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class UserService extends BaseService<UserRepository, User> {
-
-    private final KeyService keyService;
-
-    @Override
-    public User create(User item) {
-        item = super.create(item);
-
-        keyService.create(TenantContext.getTenant(),
-                KeyRequest.builder()
-                        .type(EmKeyType.USER)
-                        .owner(item.getEmail())
-                        .build());
-
-        return item;
-    }
 
     public GenericResponse activate(ActivateRequest request) {
         String email = request.getEmail();
 
         User user = repository.findByEmail(email);
 
-        if(user == null){
+        if (user == null) {
             return GenericResponse.code(404);
-        }else{
+        } else {
             user.setActivated(true);
             repository.save(user);
             return GenericResponse.success();
         }
+    }
+
+    public GenericResponse saveAll(List<User> users) {
+
+        Map<String, User> existingUserMap = repository.findAll()
+                .stream()
+                .collect(Collectors.toMap(User::getEmail, Function.identity()));
+
+        List<User> toAdd = new ArrayList<>();
+        List<User> toUpdate = new ArrayList<>();
+        users.forEach(user -> {
+            if (!existingUserMap.containsKey(user.getEmail())) {
+                toAdd.add(user.newIdAndCreated());
+            }else{
+                User existing = existingUserMap.get(user.getEmail());
+                existing.updateFrom(user);
+                toUpdate.add(existing);
+            }
+        });
+
+        List<User> all = new ArrayList<>();
+        all.addAll(toAdd);
+        all.addAll(toUpdate);
+        repository.saveAll(all);
+
+        BatchSaveOut bso = new BatchSaveOut();
+        if (toAdd.size() > 0) {
+            bso.getOut().add(BatchSave.builder().code(0).count(toAdd.size()).build());
+        }
+        if (toUpdate.size() > 0) {
+            bso.getOut().add(BatchSave.builder().code(1).count(toUpdate.size()).build());
+        }
+
+        return GenericResponse.success(bso);
     }
 }

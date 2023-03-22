@@ -3,7 +3,7 @@ package com.beam.emcryptbox.controller;
 import com.beam.emcryptcore.base.BaseController;
 import com.beam.emcryptcore.db.AccountContext;
 import com.beam.emcryptcore.dto.GenericResponse;
-import com.beam.emcryptcore.model.inbox.Email;
+import com.beam.emcryptcore.model.box.mail.Email;
 import com.beam.emcryptbox.service.SentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;

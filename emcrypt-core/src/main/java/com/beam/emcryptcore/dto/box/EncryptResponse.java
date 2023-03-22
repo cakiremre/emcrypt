@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.dto.keyman;
+package com.beam.emcryptcore.dto.box;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

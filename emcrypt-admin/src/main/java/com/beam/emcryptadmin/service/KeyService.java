@@ -1,8 +1,8 @@
 package com.beam.emcryptadmin.service;
 
-import com.beam.emcryptcore.dto.keyman.KeyRequest;
-import com.beam.emcryptcore.dto.keyman.KeyResponse;
-import com.beam.emcryptcore.model.keyman.crypto.KeyType;
+import com.beam.emcryptcore.dto.box.KeyRequest;
+import com.beam.emcryptcore.dto.box.KeyResponse;
+import com.beam.emcryptcore.model.box.crypto.KeyType;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

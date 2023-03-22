@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.keyman.mail;
+package com.beam.emcryptcore.model.admin.mail;
 
 import com.beam.emcryptcore.base.Base;
 import com.beam.emcryptcore.model.common.Language;

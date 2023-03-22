@@ -2,10 +2,10 @@ package com.beam.emcryptbox.controller;
 
 import com.beam.emcryptbox.service.EmKeyService;
 import com.beam.emcryptcore.dto.GenericResponse;
-import com.beam.emcryptcore.dto.keyman.DecryptRequest;
-import com.beam.emcryptcore.dto.keyman.EncryptResponse;
-import com.beam.emcryptcore.dto.keyman.KeyRequest;
-import com.beam.emcryptcore.dto.keyman.KeyResponse;
+import com.beam.emcryptcore.dto.box.DecryptRequest;
+import com.beam.emcryptcore.dto.box.EncryptResponse;
+import com.beam.emcryptcore.dto.box.KeyRequest;
+import com.beam.emcryptcore.dto.box.KeyResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

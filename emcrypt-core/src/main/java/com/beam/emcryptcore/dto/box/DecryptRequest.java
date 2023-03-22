@@ -1,22 +1,22 @@
-package com.beam.emcryptcore.model.inbox;
+package com.beam.emcryptcore.dto.box;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
 @Data
-@SuperBuilder
-public class Recipient extends Subject {
+@Builder
+public class DecryptRequest {
 
-    private boolean revoked;
-    private boolean accessed;
+    private String tenant;
+    private String key;
 
+    private String address;
+
+    private String messageId;
 }

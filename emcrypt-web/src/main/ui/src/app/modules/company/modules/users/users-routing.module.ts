@@ -22,7 +22,7 @@ const routes: Routes = [
         component: UserLdapComponent,
       },
       {
-        path: "users/:id",
+        path: ":id",
         component: UserManualComponent,
       },
       { path: "**", redirectTo: "/company/overview", pathMatch: "full" },

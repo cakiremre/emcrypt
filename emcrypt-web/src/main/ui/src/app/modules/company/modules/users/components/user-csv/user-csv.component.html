@@ -1,1 +1,164 @@
-<p>user-csv works!</p>
+<div class="card">
+  <!-- begin::Header -->
+  <div class="card-header border-0 pt-5">
+    <h3 class="card-title align-items-start flex-column">
+      <span class="card-label fw-bolder fs-3 mb-1">Import Users / CSV</span>
+      <span class="text-muted mt-1 fw-bold fs-7"
+        >Total of {{ users.length }} of users are imported.</span
+      >
+    </h3>
+    <div class="card-toolbar">
+      <button class="btn btn-sm btn-light-primary me-3 file-upload-button">
+        <span
+          [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
+          class="svg-icon svg-icon-3"
+        ></span>
+        Load File
+        <input #csvInput (change)="onCsvSelect(csvInput)" type="file" />
+      </button>
+      <div class="me-0">
+        <button
+          class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
+          data-kt-menu-trigger="click"
+          data-kt-menu-placement="bottom-end"
+        >
+          <i class="bi bi-three-dots fs-3"></i>
+        </button>
+
+        <!--begin::Menu 3-->
+        <div
+          class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px py-3"
+          data-kt-menu="true"
+        >
+          <!--begin::Menu item-->
+          <div class="menu-item px-3">
+            <a
+              href="../../../../../../../assets/files/sample.csv"
+              class="menu-link px-3"
+            >
+              Download Sample</a
+            >
+          </div>
+          <!--end::Menu item-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end::Header -->
+  <!-- begin::Body -->
+  <div class="card-body py-3">
+    <!-- begin::Table container -->
+    <div class="table-responsive">
+      <!-- begin::Table -->
+      <table class="table align-middle gs-0 gy-4">
+        <!-- begin::Table head -->
+        <thead>
+          <tr class="fw-bolder text-muted bg-light">
+            <th class="min-w-125px">First Name</th>
+            <th class="min-w-125px">Last Name</th>
+            <th class="min-w-125px">Email</th>
+            <th class="min-w-125px">Language</th>
+            <th class="min-w-200px text-end rounded-end"></th>
+          </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ user.profile.firstName }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ user.profile.lastName }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ user.email }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ user.profile.prefer }}
+              </span>
+            </td>
+            <td class="text-end">
+              <a
+                href="#"
+                title="Configure"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+              >
+                <span
+                  [inlineSVG]="
+                    './assets/media/icons/duotune/general/gen019.svg'
+                  "
+                  class="svg-icon svg-icon-3"
+                ></span>
+              </a>
+              <a
+                routerLink="/company/users/{{ user.id }}"
+                routerLinkActive="active"
+                title="Edit"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 hand"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                  class="svg-icon svg-icon-3"
+                ></span>
+              </a>
+              <a
+                href="#"
+                title="Manage"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
+              >
+                <span
+                  [inlineSVG]="
+                    './assets/media/icons/duotune/general/gen027.svg'
+                  "
+                  class="svg-icon svg-icon-3"
+                ></span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+
+        <!-- end::Table body -->
+      </table>
+      <!-- end::Table -->
+    </div>
+    <!-- end::Table container -->
+  </div>
+  <!-- begin::Body -->
+</div>
+
+<div class="card mb-5 mb-xl-10" *ngIf="users.length > 0">
+  <div class="card-footer d-flex justify-content-end py-6 px-9">
+    <button
+      type="button"
+      class="btn btn-danger"
+      [disabled]="isSaving"
+      (click)="save()"
+    >
+      <ng-container *ngIf="!isSaving">Save Imported Users</ng-container>
+      <ng-container *ngIf="isSaving">
+        <span clas="indicator-progress" [style.display]="'block'">
+          Please wait...{{ " " }}
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </ng-container>
+    </button>
+  </div>
+</div>

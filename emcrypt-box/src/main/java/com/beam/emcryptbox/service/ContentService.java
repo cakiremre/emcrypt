@@ -2,8 +2,8 @@ package com.beam.emcryptbox.service;
 
 import com.beam.emcryptbox.repository.ContentRepository;
 import com.beam.emcryptcore.base.BaseService;
-import com.beam.emcryptcore.model.keyman.mail.Content;
-import com.beam.emcryptcore.model.keyman.mail.Type;
+import com.beam.emcryptcore.model.admin.mail.Content;
+import com.beam.emcryptcore.model.admin.mail.Type;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

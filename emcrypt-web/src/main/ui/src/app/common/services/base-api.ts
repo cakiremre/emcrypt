@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Observable, ObservableLike } from "rxjs";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/environment";
 
 export const API_URL = `${environment.apiUrl}`;

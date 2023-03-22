@@ -2,12 +2,12 @@ package com.beam.emcryptadmin.service;
 
 import com.beam.emcryptadmin.repository.TenantRepository;
 import com.beam.emcryptcore.base.BaseService;
-import com.beam.emcryptcore.dto.keyman.KeyRequest;
+import com.beam.emcryptcore.dto.box.KeyRequest;
 import com.beam.emcryptcore.model.admin.tenant.Db;
 import com.beam.emcryptcore.model.admin.tenant.Tenant;
 import com.beam.emcryptcore.model.auth.Account;
 import com.beam.emcryptcore.model.auth.Role;
-import com.beam.emcryptcore.model.keyman.crypto.EmKeyType;
+import com.beam.emcryptcore.model.box.crypto.EmKeyType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

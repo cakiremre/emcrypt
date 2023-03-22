@@ -1,6 +1,5 @@
-package com.beam.emcryptcore.dto.keyman;
+package com.beam.emcryptcore.dto.box;
 
-import com.beam.emcryptcore.model.keyman.crypto.EmKeyType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @Data
 @Builder
-public class KeyRequest {
-    private EmKeyType type;
+public class KeyResponse<T> {
+
+    private int code;
     private String owner;
+    private String message;
+    private T data;
 }

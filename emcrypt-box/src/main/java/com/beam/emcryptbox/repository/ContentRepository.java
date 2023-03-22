@@ -1,7 +1,7 @@
 package com.beam.emcryptbox.repository;
 
-import com.beam.emcryptcore.model.keyman.mail.Content;
-import com.beam.emcryptcore.model.keyman.mail.Type;
+import com.beam.emcryptcore.model.admin.mail.Content;
+import com.beam.emcryptcore.model.admin.mail.Type;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

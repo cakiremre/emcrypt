@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.inbox;
+package com.beam.emcryptcore.model.box.mail;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,16 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
 @Data
 @Builder
-public class Attachment {
-    private String id;
-    private String name;
-    private int size;
-    private boolean inline;
-    private String format;
-    private String data;
+public class Decrypted {
+
+    private Subject from;
+
+    private String subject;
+    private String content;
+
+    private List<Attachment> attachments;
 }

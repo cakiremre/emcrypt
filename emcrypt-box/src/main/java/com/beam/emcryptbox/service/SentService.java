@@ -2,7 +2,7 @@ package com.beam.emcryptbox.service;
 
 import com.beam.emcryptcore.base.BaseService;
 import com.beam.emcryptcore.dto.GenericResponse;
-import com.beam.emcryptcore.model.inbox.Email;
+import com.beam.emcryptcore.model.box.mail.Email;
 import com.beam.emcryptbox.repository.EmailRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -30,6 +30,28 @@ export class GenericDataResponse<T> extends GenericResponse {
   data: T;
 }
 
+export class BatchSave {
+  count: number;
+  code: number;
+
+  init(_batchSave: BatchSave) {
+    this.code = _batchSave.code;
+    this.count = _batchSave.count;
+  }
+}
+
+export class BatchSaveOut {
+  out: Array<BatchSave> = new Array();
+
+  init(_out: BatchSaveOut) {
+    _out.out.forEach((_item) => {
+      let item = new BatchSave();
+      item.init(_item);
+      this.out.push(item);
+    });
+  }
+}
+
 export enum Direction {
   ASC,
   DESC,

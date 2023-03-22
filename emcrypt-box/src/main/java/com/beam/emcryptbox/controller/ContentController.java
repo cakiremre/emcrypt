@@ -2,7 +2,7 @@ package com.beam.emcryptbox.controller;
 
 import com.beam.emcryptbox.service.ContentService;
 import com.beam.emcryptcore.base.BaseController;
-import com.beam.emcryptcore.model.keyman.mail.Content;
+import com.beam.emcryptcore.model.admin.mail.Content;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

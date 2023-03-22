@@ -2,9 +2,9 @@ package com.beam.emcryptbox.controller;
 
 import com.beam.emcryptcore.base.BaseController;
 import com.beam.emcryptcore.dto.GenericResponse;
-import com.beam.emcryptcore.model.inbox.Decrypted;
-import com.beam.emcryptcore.model.inbox.Email;
-import com.beam.emcryptcore.model.inbox.Options;
+import com.beam.emcryptcore.model.box.mail.Decrypted;
+import com.beam.emcryptcore.model.box.mail.Email;
+import com.beam.emcryptcore.model.box.mail.Options;
 import com.beam.emcryptbox.service.EmailService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

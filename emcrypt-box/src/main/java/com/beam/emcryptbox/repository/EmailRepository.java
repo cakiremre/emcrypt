@@ -1,6 +1,6 @@
 package com.beam.emcryptbox.repository;
 
-import com.beam.emcryptcore.model.inbox.Email;
+import com.beam.emcryptcore.model.box.mail.Email;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

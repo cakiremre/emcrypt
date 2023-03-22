@@ -1,4 +1,4 @@
-package com.beam.emcryptcore.model.inbox;
+package com.beam.emcryptcore.model.box.mail;
 
 import com.beam.emcryptcore.base.Base;
 import com.fasterxml.jackson.annotation.JsonIgnore;

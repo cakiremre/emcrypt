@@ -20,4 +20,8 @@ public class User extends Base {
     private String email;
     private Profile profile;
     private boolean activated;
+
+    public void updateFrom(User user) {
+        setProfile(user.getProfile());
+    }
 }
