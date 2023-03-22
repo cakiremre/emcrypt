@@ -1,1 +1,131 @@
-<p>user-ldap works!</p>
+<div class="card">
+  <!-- begin::Header -->
+  <div class="card-header border-0 pt-5">
+    <h3 class="card-title align-items-start flex-column">
+      <span class="card-label fw-bolder fs-3 mb-1">Import Users / LDAP</span>
+      <span class="text-muted mt-1 fw-bold fs-7"
+        >Total of {{ users.length }} of users are imported.</span
+      >
+    </h3>
+  </div>
+  <!-- end::Header -->
+  <div class="card-body py-3">
+    <h6>LDAP Connection Settings</h6>
+  </div>
+  <!-- begin::Body -->
+  <div class="card-body py-3">
+    <!-- begin::Table container -->
+    <div class="table-responsive">
+      <!-- begin::Table -->
+      <table class="table align-middle gs-0 gy-4">
+        <!-- begin::Table head -->
+        <thead>
+          <tr class="fw-bolder text-muted bg-light">
+            <th class="min-w-125px">First Name</th>
+            <th class="min-w-125px">Last Name</th>
+            <th class="min-w-125px">Email</th>
+            <th class="min-w-125px">Language</th>
+            <th class="min-w-200px text-end rounded-end"></th>
+          </tr>
+        </thead>
+        <!-- end::Table head -->
+        <!-- begin::Table body -->
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ user.profile.firstName }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ user.profile.lastName }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ user.email }}
+              </span>
+            </td>
+            <td>
+              <span
+                class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
+              >
+                {{ user.profile.prefer }}
+              </span>
+            </td>
+            <td class="text-end">
+              <a
+                href="#"
+                title="Configure"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1"
+              >
+                <span
+                  [inlineSVG]="
+                    './assets/media/icons/duotune/general/gen019.svg'
+                  "
+                  class="svg-icon svg-icon-3"
+                ></span>
+              </a>
+              <a
+                routerLink="/company/users/{{ user.id }}"
+                routerLinkActive="active"
+                title="Edit"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm me-1 hand"
+              >
+                <span
+                  [inlineSVG]="'./assets/media/icons/duotune/art/art005.svg'"
+                  class="svg-icon svg-icon-3"
+                ></span>
+              </a>
+              <a
+                href="#"
+                title="Manage"
+                class="btn btn-icon btn-bg-light btn-active-color-primary btn-sm"
+              >
+                <span
+                  [inlineSVG]="
+                    './assets/media/icons/duotune/general/gen027.svg'
+                  "
+                  class="svg-icon svg-icon-3"
+                ></span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+
+        <!-- end::Table body -->
+      </table>
+      <!-- end::Table -->
+    </div>
+    <!-- end::Table container -->
+  </div>
+  <!-- begin::Body -->
+</div>
+
+<div class="card mb-5 mb-xl-10" *ngIf="users.length > 0">
+  <div class="card-footer d-flex justify-content-end py-6 px-9">
+    <button
+      type="button"
+      class="btn btn-success"
+      [disabled]="isSaving"
+      (click)="save()"
+    >
+      <ng-container *ngIf="!isSaving">Save Imported Users</ng-container>
+      <ng-container *ngIf="isSaving">
+        <span clas="indicator-progress" [style.display]="'block'">
+          Please wait...{{ " " }}
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </ng-container>
+    </button>
+  </div>
+</div>
