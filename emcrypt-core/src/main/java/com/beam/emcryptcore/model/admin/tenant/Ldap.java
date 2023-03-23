@@ -8,21 +8,25 @@ import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("Endpoint")
-@TypeAlias("Smtp")
+@TypeAlias("Ldap")
 @Data
 @Accessors(chain = true)
-public class Smtp extends Endpoint {
+public class Ldap extends Endpoint {
 
-    private String host;
-    private int port;
-    private boolean ssl;
-    private boolean auth;
-    private String username;
+    private String url;
+    private String basedn;
 
+    private boolean trust;
+    private String userdn;
+    private String userCategory;
+    private String firstNameAttr;
+    private String lastNameAtr;
+    private String emailAttr;
+    private String languageAttr;
 
     @Override
     public <T extends Base> T newIdAndCreated() {
-        setType(Type.SMTP);
+        setType(Type.LDAP);
         return super.newIdAndCreated();
     }
 }

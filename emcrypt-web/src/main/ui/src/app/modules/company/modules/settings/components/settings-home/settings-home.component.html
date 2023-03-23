@@ -1,6 +1,8 @@
-<div class="flex flex-column">
-    <div class="setting-item text-center col-md-3 hand" *ngFor="let item of settings" (click)="navigateByUrl(item.link)">
-        <h3 class="mb-5">{{item.name}}</h3>
-        <span class="small">{{item.description}}</span>
+<div class="row">
+  <div class="col-md-6 col-xl-3 hand p-3" *ngFor="let item of settings">
+    <div class="setting-item text-center" (click)="navigateByUrl(item.link)">
+      <p class="item-title mb-5">{{ item.name }}</p>
+      <span class="small">{{ item.description }}</span>
     </div>
+  </div>
 </div>

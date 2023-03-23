@@ -1,31 +1,28 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HasSubscription, Language } from 'src/app/common/models/model';
-import { User } from '../../model/user';
-import { UserService } from '../../services/user.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { BehaviorSubject, Observable } from "rxjs";
+import { HasSubscription, Language } from "src/app/common/models/model";
+import { User } from "../../model/user";
+import { UserService } from "../../services/user.service";
 
 @Component({
-  selector: 'app-user-manual',
-  templateUrl: './user-manual.component.html',
-  styleUrls: ['./user-manual.component.scss'],
+  selector: "app-user-manual",
+  templateUrl: "./user-manual.component.html",
+  styleUrls: ["./user-manual.component.scss"],
 })
 export class UserManualComponent
   extends HasSubscription
   implements OnInit, OnDestroy
 {
-  isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  isLoading: boolean;
-
   user: User;
   languages = Object.values(Language);
 
   userForm = new FormGroup({
-    email: new FormControl<string | null>('', Validators.required),
+    email: new FormControl<string | null>("", Validators.required),
     profile: new FormGroup({
-      firstName: new FormControl<string | null>('', Validators.required),
-      lastName: new FormControl<string | null>('', Validators.required),
+      firstName: new FormControl<string | null>("", Validators.required),
+      lastName: new FormControl<string | null>("", Validators.required),
       prefer: new FormControl<Language | null>(
         Language.TR,
         Validators.required
@@ -39,16 +36,11 @@ export class UserManualComponent
     private router: Router
   ) {
     super();
-
-    const loadingSubscr = this.isLoading$
-      .asObservable()
-      .subscribe((res) => (this.isLoading = res));
-    this.unsubscribe.push(loadingSubscr);
   }
 
   ngOnInit(): void {
-    let id = this.activatedRoute.snapshot.params['id'];
-    if (id === 'new') {
+    let id = this.activatedRoute.snapshot.params["id"];
+    if (id === "new") {
       this.user = new User();
     } else {
       let subs = this.userService.get(id).subscribe((u) => {
@@ -64,7 +56,7 @@ export class UserManualComponent
   }
 
   save(stay: boolean) {
-    this.isLoading$.next(true);
+    this.isSaving$.next(true);
     let user = { ...this.user, ...this.userForm.value } as User;
     let actionObs: Observable<User | undefined>;
     if (user.id) {
@@ -79,10 +71,10 @@ export class UserManualComponent
         this.userForm.markAsPristine();
         this.userForm.markAsUntouched();
       } else {
-        this.router.navigateByUrl('/company/users');
+        this.router.navigateByUrl("/company/users");
       }
 
-      this.isLoading$.next(false);
+      this.isSaving$.next(false);
     });
     this.unsubscribe.push(subs);
   }

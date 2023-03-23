@@ -9,14 +9,14 @@ import com.beam.emcryptcore.dto.box.DecryptRequest;
 import com.beam.emcryptcore.dto.box.EncryptResponse;
 import com.beam.emcryptcore.dto.box.KeyRequest;
 import com.beam.emcryptcore.dto.box.KeyResponse;
-import com.beam.emcryptcore.model.common.Accessible;
-import com.beam.emcryptcore.model.common.Language;
-import com.beam.emcryptcore.model.box.mail.Email;
-import com.beam.emcryptcore.model.box.mail.Recipient;
-import com.beam.emcryptcore.model.box.crypto.EmKey;
-import com.beam.emcryptcore.model.box.crypto.KeyType;
 import com.beam.emcryptcore.model.admin.mail.Content;
 import com.beam.emcryptcore.model.admin.mail.Type;
+import com.beam.emcryptcore.model.box.crypto.EmKey;
+import com.beam.emcryptcore.model.box.crypto.KeyType;
+import com.beam.emcryptcore.model.box.mail.Email;
+import com.beam.emcryptcore.model.box.mail.Recipient;
+import com.beam.emcryptcore.model.common.Accessible;
+import com.beam.emcryptcore.model.common.Language;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,15 +25,18 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
 import static javax.crypto.Cipher.DECRYPT_MODE;
+import static javax.crypto.Cipher.ENCRYPT_MODE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -118,13 +121,13 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
         KeyResponse<String> key = findByOwner(owner, KeyType.PUBLIC);
         Optional<Content> content = contentRepository.findByType(Type.REGULAR);
 
-        if(key.getCode() == 0 && content.isPresent()){
+        if (key.getCode() == 0 && content.isPresent()) {
             return EncryptResponse.builder()
                     .code(0)
                     .html(content.get().getHtml().get(Language.TR))
                     .publicKey(key.getData())
                     .build();
-        }else{
+        } else {
             return EncryptResponse.builder()
                     .code(404)
                     .build();
@@ -136,21 +139,14 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
         // get email options, and subject information by messageId and user
         GenericResponse should = shouldDecrypt(request.getMessageId(), request.getAddress());
 
-        if(should.getCode() == 0) {
+        if (should.getCode() == 0) {
             KeyResponse<String> response = findByOwner(request.getTenant(), KeyType.PRIVATE);
 
             if (response.getCode() == 0) {
                 String privateKey = response.getData();
 
                 try {
-                    KeyFactory kf = KeyFactory.getInstance("RSA");
-                    Cipher cipher = Cipher.getInstance("RSA");
-
-                    PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
-
-                    cipher.init(DECRYPT_MODE, kf.generatePrivate(ks));
-
-                    byte[] decrypted = cipher.doFinal(Base64.getDecoder().decode(request.getKey()));
+                    byte[] decrypted = cryptOp(DECRYPT_MODE, privateKey, Base64.getDecoder().decode(request.getKey()));
                     return KeyResponse.<String>builder()
                             .code(0)
                             .data(new String(decrypted))
@@ -166,7 +162,7 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
             } else {
                 return response;
             }
-        }else{
+        } else {
             return KeyResponse.<String>builder()
                     .code(should.getCode())
                     .message(should.getMessage())
@@ -226,4 +222,44 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
     }
 
 
+    public KeyResponse cryptRoot(int mode, String input){
+        KeyResponse<String> response = findByOwner("ROOT", mode == ENCRYPT_MODE ? KeyType.PUBLIC : KeyType.PRIVATE);
+
+        if (response.getCode() == 0) {
+            try {
+                byte[] opInput = mode == ENCRYPT_MODE ? input.getBytes("UTF-8") : Base64.getDecoder().decode(input);
+                byte[] output = cryptOp(mode, response.getData(),opInput);
+                return KeyResponse.<String>builder()
+                        .code(0)
+                        .data(mode == ENCRYPT_MODE ? Base64.getEncoder().encodeToString(output) : new String(output, "UTF-8"))
+                        .build();
+            } catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException |
+                     IllegalBlockSizeException | BadPaddingException | UnsupportedEncodingException exc) {
+                log.error(exc.getMessage());
+                exc.printStackTrace();
+                return KeyResponse.<String>builder()
+                        .code(100)
+                        .data(exc.getMessage())
+                        .build();
+            }
+        } else {
+            return response;
+        }
+    }
+
+    public byte[] cryptOp(int mode, String key, byte[] input) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeySpecException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
+
+        KeyFactory kf = KeyFactory.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance("RSA");
+
+        if (mode == DECRYPT_MODE) {
+            PKCS8EncodedKeySpec ks = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(key));
+            cipher.init(DECRYPT_MODE, kf.generatePrivate(ks));
+        } else {
+            X509EncodedKeySpec ks = new X509EncodedKeySpec(Base64.getDecoder().decode(key));
+            cipher.init(ENCRYPT_MODE, kf.generatePublic(ks));
+        }
+
+        return cipher.doFinal(input);
+    }
 }

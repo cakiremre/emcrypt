@@ -1,5 +1,5 @@
 import { OnDestroy } from "@angular/core";
-import { Subscription } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 
 export abstract class Base {
   id: string;
@@ -78,7 +78,25 @@ export class HasSubscription {
   // private fields
   protected unsubscribe: Subscription[] = [];
 
+  protected isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  protected isLoading: boolean;
+
+  protected isDeleting$: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
+  protected isDeleting: boolean;
+
+  protected isSaving$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  protected isSaving: boolean;
+
   onDestroy() {
+    this.isSaving$.unsubscribe();
+    this.isLoading$.unsubscribe();
+    this.isDeleting$.unsubscribe();
+
     this.unsubscribe.forEach((sb) => sb.unsubscribe());
   }
 }

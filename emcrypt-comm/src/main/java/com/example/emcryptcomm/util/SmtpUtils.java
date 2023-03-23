@@ -65,11 +65,10 @@ public class SmtpUtils {
     }
 
     private Smtp getConfig() {
-        return Smtp.builder()
-                .host(host)
-                .port(port)
-                .ssl(ssl)
-                .build();
+        return new Smtp()
+                .setHost(host)
+                .setPort(port)
+                .setSsl(ssl);
     }
 
     public static InternetAddress convertSenderToInternetAddress(Sender sender) throws UnsupportedEncodingException {

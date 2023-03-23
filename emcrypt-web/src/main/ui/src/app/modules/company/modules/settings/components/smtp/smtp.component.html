@@ -1,0 +1,199 @@
+<div class="card mb-5 mb-xl-10">
+  <div class="card-header border-0 cursor-pointer">
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">SMTP Settings</h3>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <form
+      novalidate=""
+      class="form"
+      autocomplete="off"
+      id="cf"
+      [formGroup]="configForm"
+    >
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Hostname</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="host"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. smtp.server.com"
+            name="host"
+            required=""
+            formControlName="host"
+            [class.is-invalid]="host.touched && host.invalid"
+          />
+        </div>
+        <div *ngIf="host.touched && host.invalid" class="small red">
+          <div *ngIf="host.errors?.['required']">Host name is required.</div>
+        </div>
+
+        <div *ngIf="host.untouched || host.valid" class="small">
+          <div>Please enter SMTP hostname.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Port</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="port"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. Acme Corporation"
+            name="port"
+            required=""
+            formControlName="port"
+            [class.is-invalid]="port.touched && port.invalid"
+          />
+        </div>
+        <div *ngIf="port.touched && port.invalid" class="small red">
+          <div *ngIf="port.errors?.['required']">Port number is required.</div>
+        </div>
+
+        <div *ngIf="port.untouched || port.valid" class="small">
+          <div>Please enter SMTP port number.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6">SSL</label>
+        <div class="col-lg-8">
+          <div class="form-check form-check-solid form-switch fv-row">
+            <input
+              type="checkbox"
+              id="ssl"
+              name="ssl"
+              formControlName="ssl"
+              class="form-check-input w-45px h-30px"
+            /><label class="form-check-label"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Requires Authentication</label
+        >
+        <div class="col-lg-8">
+          <div class="form-check form-check-solid form-switch fv-row">
+            <input
+              type="checkbox"
+              id="auth"
+              name="auth"
+              formControlName="auth"
+              class="form-check-input w-45px h-30px"
+            /><label class="form-check-label"></label>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="auth.value">
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Username</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+              id="username"
+              type="text"
+              class="form-control form-control-lg form-control-solid"
+              placeholder="eg. john"
+              name="username"
+              required=""
+              formControlName="username"
+              [class.is-invalid]="username.touched && username.invalid"
+            />
+          </div>
+          <div *ngIf="username.touched && username.invalid" class="small red">
+            <div *ngIf="username.errors?.['required']">
+              Username name is required.
+            </div>
+          </div>
+
+          <div *ngIf="username.untouched || username.valid" class="small">
+            <div>Please enter SMTP username.</div>
+          </div>
+        </div>
+
+        <div class="row mb-6">
+          <label class="col-lg-4 col-form-label required fw-bold fs-6"
+            >Password</label
+          >
+          <div class="col-lg-8 fv-row">
+            <input
+              *ngIf="!smtp.encrypted"
+              id="password"
+              type="password"
+              class="form-control form-control-lg form-control-solid"
+              placeholder=""
+              name="password"
+              required=""
+              formControlName="password"
+              [class.is-invalid]="password.touched && password.invalid"
+            />
+            <p class="hand" *ngIf="smtp.encrypted" (click)="editPassword()">
+              **encrypted string, click to edit**
+            </p>
+          </div>
+
+          <div *ngIf="password.touched && password.invalid" class="small red">
+            <div *ngIf="password.errors?.['required']">
+              Password name is required.
+            </div>
+          </div>
+
+          <div *ngIf="password.untouched || password.valid" class="small">
+            <div>Please enter SMTP password.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end py-6 px-9">
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="isSaving"
+          (click)="save()"
+        >
+          <ng-container *ngIf="!isSaving">Save Changes</ng-container>
+          <ng-container *ngIf="isSaving">
+            <span clas="indicator-progress" [style.display]="'block'">
+              Please wait...{{ " " }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card mb-5 mb-xl-10" *ngIf="smtp?.id">
+  <div class="card-footer d-flex justify-content-end py-6 px-9">
+    <button
+      type="button"
+      class="btn btn-danger"
+      [disabled]="isDeleting"
+      (click)="delete()"
+    >
+      <ng-container *ngIf="!isDeleting">Delete Configuration</ng-container>
+      <ng-container *ngIf="isDeleting">
+        <span clas="indicator-progress" [style.display]="'block'">
+          Please wait...{{ " " }}
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </ng-container>
+    </button>
+  </div>
+</div>

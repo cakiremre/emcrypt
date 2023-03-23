@@ -1,31 +1,26 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { HasSubscription } from 'src/app/common/models/model';
-import { Tenant } from '../../model/tenant';
-import { TenantService } from '../../services/tenant.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { BehaviorSubject, Observable } from "rxjs";
+import { HasSubscription } from "src/app/common/models/model";
+import { Tenant } from "../../model/tenant";
+import { TenantService } from "../../services/tenant.service";
 
 @Component({
-  selector: 'app-tenant-edit',
-  templateUrl: './tenant-edit.component.html',
-  styleUrls: ['./tenant-edit.component.scss'],
+  selector: "app-tenant-edit",
+  templateUrl: "./tenant-edit.component.html",
+  styleUrls: ["./tenant-edit.component.scss"],
 })
 export class TenantEditComponent
   extends HasSubscription
   implements OnInit, OnDestroy
 {
-  isLoading$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  isDeleting$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  isLoading: boolean;
-  isDeleting: boolean;
-
   tenant: Tenant;
 
   tenantForm = new FormGroup({
-    name: new FormControl<string | null>('', Validators.required),
-    domain: new FormControl<string | null>('', Validators.required),
-    owner: new FormControl<string | null>('', Validators.required),
+    name: new FormControl<string | null>("", Validators.required),
+    domain: new FormControl<string | null>("", Validators.required),
+    owner: new FormControl<string | null>("", Validators.required),
   });
 
   constructor(
@@ -42,8 +37,8 @@ export class TenantEditComponent
   }
 
   ngOnInit(): void {
-    let id = this.activatedRoute.snapshot.params['id'];
-    if (id === 'new') {
+    let id = this.activatedRoute.snapshot.params["id"];
+    if (id === "new") {
       this.tenant = new Tenant();
     } else {
       let subs = this.tenantService.get(id).subscribe((t) => {
@@ -59,7 +54,7 @@ export class TenantEditComponent
   }
 
   save() {
-    this.isLoading$.next(true);
+    this.isSaving$.next(true);
     let tenant = { ...this.tenant, ...this.tenantForm.value } as Tenant;
     let actionObs: Observable<Tenant | undefined>;
     if (tenant.id) {
@@ -70,9 +65,9 @@ export class TenantEditComponent
 
     let subs = actionObs.subscribe((data) => {
       if (!tenant.id) {
-        this.router.navigateByUrl('/admin/companies/' + data?.id);
+        this.router.navigateByUrl("/admin/companies/" + data?.id);
       }
-      this.isLoading$.next(false);
+      this.isSaving$.next(false);
     });
     this.unsubscribe.push(subs);
   }
@@ -82,7 +77,7 @@ export class TenantEditComponent
     this.tenantService.delete(this.tenant.id).subscribe(() => {
       this.isDeleting$.next(false);
       setTimeout(() => {
-        this.router.navigateByUrl('/admin/companies');
+        this.router.navigateByUrl("/admin/companies");
       }, 1500);
     });
   }

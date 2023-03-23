@@ -1,0 +1,354 @@
+<div class="card mb-5 mb-xl-10">
+  <div class="card-header border-0 cursor-pointer">
+    <div class="card-title m-0">
+      <h3 class="fw-bolder m-0">LDAP Settings</h3>
+    </div>
+  </div>
+  <form
+    novalidate=""
+    class="form"
+    autocomplete="off"
+    id="cf"
+    [formGroup]="configForm"
+  >
+    <div class="card-body">
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6">Url</label>
+        <div class="col-lg-8 fv-row">
+          <input
+            id="url"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. ldaps://ldap.server.com:636"
+            name="url"
+            required=""
+            formControlName="url"
+            [class.is-invalid]="url.touched && url.invalid"
+          />
+        </div>
+        <div *ngIf="url.touched && url.invalid" class="small red">
+          <div *ngIf="url.errors?.['required']">Url is required.</div>
+        </div>
+
+        <div *ngIf="url.untouched || url.valid" class="small">
+          <div>Please enter Ldap Url.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >UserDN</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="userdn"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. CN=Administrators,DC=olta,DC=la"
+            name="userdn"
+            required=""
+            formControlName="userdn"
+            [class.is-invalid]="userdn.touched && userdn.invalid"
+          />
+        </div>
+        <div *ngIf="userdn.touched && userdn.invalid" class="small red">
+          <div *ngIf="userdn.errors?.['required']">
+            UserDN is required for connecting to LDAP.
+          </div>
+        </div>
+
+        <div *ngIf="userdn.untouched || userdn.valid" class="small">
+          <div>Please enter UserDN.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Password</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            *ngIf="!ldap.encrypted"
+            id="password"
+            type="password"
+            class="form-control form-control-lg form-control-solid"
+            placeholder=""
+            name="password"
+            required=""
+            formControlName="password"
+            [class.is-invalid]="password.touched && password.invalid"
+          />
+          <p class="hand" *ngIf="ldap.encrypted" (click)="editPassword()">
+            **encrypted string, click to edit**
+          </p>
+        </div>
+
+        <div *ngIf="password.touched && password.invalid" class="small red">
+          <div *ngIf="password.errors?.['required']">
+            Password name is required.
+          </div>
+        </div>
+
+        <div *ngIf="password.untouched || password.valid" class="small">
+          <div>Please enter LDAP password.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Trust All Certificates</label
+        >
+        <div class="col-lg-8">
+          <div class="form-check form-check-solid form-switch fv-row">
+            <input
+              type="checkbox"
+              id="trust"
+              name="trust"
+              formControlName="trust"
+              class="form-check-input w-45px h-30px"
+            /><label class="form-check-label"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >BaseDN</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="basedn"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            name="basedn"
+            required=""
+            formControlName="basedn"
+            [class.is-invalid]="basedn.touched && basedn.invalid"
+          />
+        </div>
+        <div *ngIf="basedn.touched && basedn.invalid" class="small red">
+          <div *ngIf="basedn.errors?.['required']">
+            BaseDN is required for importing users.
+          </div>
+        </div>
+
+        <div *ngIf="basedn.untouched || basedn.valid" class="small">
+          <div>Please enter BaseDN.</div>
+        </div>
+      </div>
+      <div>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="isLoading"
+          (click)="test()"
+        >
+          <ng-container *ngIf="!isLoading">Test Connection</ng-container>
+          <ng-container *ngIf="isLoading">
+            <span clas="indicator-progress" [style.display]="'block'">
+              Please wait...{{ " " }}
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
+          </ng-container>
+        </button>
+      </div>
+    </div>
+    <div class="card-header border-0 cursor-pointer">
+      <div class="card-title m-0">
+        <h3 class="fw-bolder m-0">LDAP Attributes</h3>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >User Category</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="userCategory"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. Person"
+            name="userCategory"
+            required=""
+            formControlName="userCategory"
+            [class.is-invalid]="userCategory.touched && userCategory.invalid"
+          />
+        </div>
+        <div
+          *ngIf="userCategory.touched && userCategory.invalid"
+          class="small red"
+        >
+          <div *ngIf="userCategory.errors?.['required']">
+            Category is required.
+          </div>
+        </div>
+
+        <div *ngIf="userCategory.untouched || userCategory.valid" class="small">
+          <div>Please enter User Category.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >First Name Attribute</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="firstNameAttr"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. name"
+            name="firstNameAttr"
+            required=""
+            formControlName="firstNameAttr"
+            [class.is-invalid]="firstNameAttr.touched && firstNameAttr.invalid"
+          />
+        </div>
+        <div
+          *ngIf="firstNameAttr.touched && firstNameAttr.invalid"
+          class="small red"
+        >
+          <div *ngIf="firstNameAttr.errors?.['required']">
+            First name attribute is used to fetch first name of users.
+          </div>
+        </div>
+
+        <div
+          *ngIf="firstNameAttr.untouched || firstNameAttr.valid"
+          class="small"
+        >
+          <div>Please enter first name attribute.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Last Name Attribute</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="lastNameAttr"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. sn"
+            name="lastNameAttr"
+            required=""
+            formControlName="lastNameAttr"
+            [class.is-invalid]="lastNameAttr.touched && lastNameAttr.invalid"
+          />
+        </div>
+        <div
+          *ngIf="lastNameAttr.touched && lastNameAttr.invalid"
+          class="small red"
+        >
+          <div *ngIf="lastNameAttr.errors?.['required']">
+            Last name attribute is used to fetch last name of users.
+          </div>
+        </div>
+
+        <div *ngIf="lastNameAttr.untouched || lastNameAttr.valid" class="small">
+          <div>Please enter last name attribute.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Email Attribute</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="emailAttr"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. sAMAccountName"
+            name="emailAttr"
+            required=""
+            formControlName="emailAttr"
+            [class.is-invalid]="emailAttr.touched && emailAttr.invalid"
+          />
+        </div>
+        <div *ngIf="emailAttr.touched && emailAttr.invalid" class="small red">
+          <div *ngIf="emailAttr.errors?.['required']">
+            Email attribute is used to fetch email of users.
+          </div>
+        </div>
+
+        <div *ngIf="emailAttr.untouched || emailAttr.valid" class="small">
+          <div>Please enter email attribute.</div>
+        </div>
+      </div>
+
+      <div class="row mb-6">
+        <label class="col-lg-4 col-form-label required fw-bold fs-6"
+          >Language Attribute</label
+        >
+        <div class="col-lg-8 fv-row">
+          <input
+            id="languageAttr"
+            type="text"
+            class="form-control form-control-lg form-control-solid"
+            placeholder="eg. language"
+            name="languageAttr"
+            required=""
+            formControlName="languageAttr"
+            [class.is-invalid]="languageAttr.touched && languageAttr.invalid"
+          />
+        </div>
+        <div
+          *ngIf="languageAttr.touched && languageAttr.invalid"
+          class="small red"
+        >
+          <div *ngIf="languageAttr.errors?.['required']">
+            Langauge attribute is used to fetch language of users.
+          </div>
+        </div>
+
+        <div *ngIf="languageAttr.untouched || languageAttr.valid" class="small">
+          <div>Please enter language attribute.</div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="card-footer d-flex justify-content-end py-6 px-9">
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="isSaving"
+      (click)="save()"
+    >
+      <ng-container *ngIf="!isSaving">Save Changes</ng-container>
+      <ng-container *ngIf="isSaving">
+        <span clas="indicator-progress" [style.display]="'block'">
+          Please wait...{{ " " }}
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </ng-container>
+    </button>
+  </div>
+</div>
+
+<div class="card mb-5 mb-xl-10" *ngIf="ldap?.id">
+  <div class="card-footer d-flex justify-content-end py-6 px-9">
+    <button
+      type="button"
+      class="btn btn-danger"
+      [disabled]="isDeleting"
+      (click)="delete()"
+    >
+      <ng-container *ngIf="!isDeleting">Delete Configuration</ng-container>
+      <ng-container *ngIf="isDeleting">
+        <span clas="indicator-progress" [style.display]="'block'">
+          Please wait...{{ " " }}
+          <span
+            class="spinner-border spinner-border-sm align-middle ms-2"
+          ></span>
+        </span>
+      </ng-container>
+    </button>
+  </div>
+</div>

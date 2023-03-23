@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static javax.crypto.Cipher.DECRYPT_MODE;
+import static javax.crypto.Cipher.ENCRYPT_MODE;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/box/emkey")
@@ -26,6 +29,16 @@ public class EmKeyController {
     @PostMapping("create-all")
     public List<KeyResponse> createAll(@RequestBody List<KeyRequest> keyRequests) {
         return service.createAll(keyRequests);
+    }
+
+    @PostMapping("encrypt-root")
+    public KeyResponse encryptRoot(@RequestParam String plain){
+        return service.cryptRoot(ENCRYPT_MODE, plain);
+    }
+
+    @PostMapping("decrypt-root")
+    public KeyResponse decryptRoot(@RequestParam String cipher){
+        return service.cryptRoot(DECRYPT_MODE, cipher);
     }
 
     @GetMapping("encrypt-key-html")

@@ -1,18 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { SettingsHomeComponent } from './components/settings-home/settings-home.component';
-import { RouterModule, Routes } from '@angular/router';
-import { EmailContentComponent } from './components/email-content/email-content.component';
-
-
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { SettingsHomeComponent } from "./components/settings-home/settings-home.component";
+import { RouterModule, Routes } from "@angular/router";
+import { EmailContentComponent } from "./components/email-content/email-content.component";
+import { SmtpComponent } from "./components/smtp/smtp.component";
+import { LdapComponent } from "./components/ldap/ldap.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "",
     children: [
-      { path: '', component: SettingsHomeComponent },
-      { path: 'email', component: EmailContentComponent},
-      { path: '**', redirectTo: '/company/overview', pathMatch: 'full' },
+      { path: "", component: SettingsHomeComponent },
+      { path: "email", component: EmailContentComponent },
+      { path: "smtp", component: SmtpComponent },
+      { path: "ldap", component: LdapComponent },
+
+      { path: "**", redirectTo: "/company/overview", pathMatch: "full" },
     ],
   },
 ];
@@ -21,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class SettingsRoutingModule { }
+export class SettingsRoutingModule {}

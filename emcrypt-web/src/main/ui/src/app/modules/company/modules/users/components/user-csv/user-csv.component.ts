@@ -17,9 +17,6 @@ export class UserCsvComponent
   extends HasSubscription
   implements OnInit, OnDestroy
 {
-  isSaving$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  isSaving: boolean;
-
   users: Array<User> = new Array();
 
   constructor(private userService: UserService) {

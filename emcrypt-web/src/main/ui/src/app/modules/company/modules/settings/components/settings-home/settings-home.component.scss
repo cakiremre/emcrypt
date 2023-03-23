@@ -1,5 +1,19 @@
-.setting-item{
-    border: 1px solid #CCC;
-    padding: 10px 20px;
-    border-radius: 4px;
+.setting-item {
+  border: 1px solid #ccc;
+  padding: 10px 20px;
+  border-radius: 4px;
+  height: 140px;
+  color: #555;
+}
+
+.item-title {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+  font-size: 1.8rem !important;
+  font-weight: 700;
+}
+
+.setting-item:hover {
+  background-color: #36a3f7;
+  color: white !important;
 }
