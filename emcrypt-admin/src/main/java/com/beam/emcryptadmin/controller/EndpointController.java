@@ -1,6 +1,7 @@
 package com.beam.emcryptadmin.controller;
 
 import com.beam.emcryptadmin.service.EndpointService;
+import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.model.admin.tenant.Ldap;
 import com.beam.emcryptcore.model.admin.tenant.Smtp;
 import com.beam.emcryptcore.model.admin.tenant.Type;
@@ -16,7 +17,7 @@ public class EndpointController {
 
     @GetMapping("smtp")
     public Smtp get(){
-        return service.findByType(Type.SMTP);
+        return service.findByType(Type.SMTP, Smtp.class);
     }
 
     @PostMapping("smtp")
@@ -36,7 +37,7 @@ public class EndpointController {
 
     @GetMapping("ldap")
     public Ldap ldap(){
-        return service.findByType(Type.LDAP);
+        return service.findByType(Type.LDAP, Ldap.class);
     }
 
     @PostMapping("ldap")
@@ -52,5 +53,10 @@ public class EndpointController {
     @DeleteMapping("ldap")
     public void deleteLdap(){
         service.delete(Type.LDAP);
+    }
+
+    @PostMapping("ldap-test")
+    public GenericResponse test(@RequestBody Ldap ldap){
+        return service.test(ldap);
     }
 }

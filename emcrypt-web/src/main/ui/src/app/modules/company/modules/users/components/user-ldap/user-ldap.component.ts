@@ -21,7 +21,15 @@ export class UserLdapComponent
     super();
   }
 
-  loadUsersFromLdap() {}
+  loadUsersFromLdap() {
+    let subs = this.userService.ldapAll().subscribe((users) => {
+      if (users != undefined) {
+        this.users = users;
+      } else {
+        // do something
+      }
+    });
+  }
 
   save() {}
 

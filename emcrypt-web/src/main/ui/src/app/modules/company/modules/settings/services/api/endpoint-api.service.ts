@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Ldap, Smtp } from "../../model/endpoint";
 import { Observable } from "rxjs";
 import { API_URL } from "src/app/common/services/base-api";
+import { GenericResponse } from "src/app/common/models/model";
 
 @Injectable({
   providedIn: "root",
@@ -42,5 +43,12 @@ export class EndpointApi {
 
   deleteLdap(): Observable<any> {
     return this.http.delete(`${API_URL}${this.path}/ldap`);
+  }
+
+  testLdap(ldap: Ldap): Observable<GenericResponse> {
+    return this.http.post<GenericResponse>(
+      `${API_URL}${this.path}/ldap-test`,
+      ldap
+    );
   }
 }

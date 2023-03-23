@@ -78,7 +78,15 @@ export class LdapComponent
     );
   }
 
-  test() {}
+  test() {
+    let ldap = { ...this.ldap, ...this.configForm.value } as Ldap;
+
+    let subs = this.endpointService
+      .testLdap(ldap)
+      .subscribe((res) => console.log(res));
+
+    this.unsubscribe.push(subs);
+  }
 
   ngOnDestroy(): void {
     super.onDestroy();

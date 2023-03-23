@@ -7,6 +7,14 @@
         >Total of {{ users.length }} of users are imported.</span
       >
     </h3>
+    <div class="card-toolbar">
+      <button
+        class="btn btn-sm btn-light-primary me-3"
+        (click)="loadUsersFromLdap()"
+      >
+        Import Users
+      </button>
+    </div>
   </div>
   <!-- end::Header -->
 

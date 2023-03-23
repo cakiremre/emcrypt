@@ -24,4 +24,10 @@ public class User extends Base {
     public void updateFrom(User user) {
         setProfile(user.getProfile());
     }
+
+    @Override
+    public <T extends Base> T newIdAndCreated() {
+        profile = new Profile();
+        return super.newIdAndCreated();
+    }
 }

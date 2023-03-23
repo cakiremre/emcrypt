@@ -24,6 +24,11 @@ export function compare(a: Base, b: Base) {
 export class GenericResponse {
   code: number;
   message: string;
+
+  init(_res: GenericResponse) {
+    this.code = _res.code;
+    this.message = _res.message;
+  }
 }
 
 export class GenericDataResponse<T> extends GenericResponse {

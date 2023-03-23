@@ -24,4 +24,10 @@ export class UserApi extends BaseApi<User> {
       users
     );
   }
+
+  ldapAll(): Observable<GenericDataResponse<Array<User>>> {
+    return this.http.get<GenericDataResponse<Array<User>>>(
+      `${API_URL}${this.path}/ldap-all`
+    );
+  }
 }

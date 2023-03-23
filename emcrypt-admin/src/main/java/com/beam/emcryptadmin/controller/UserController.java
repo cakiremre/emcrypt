@@ -6,10 +6,7 @@ import com.beam.emcryptcore.dto.BatchSaveOut;
 import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.dto.admin.ActivateRequest;
 import com.beam.emcryptcore.model.admin.company.User;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +23,10 @@ public class UserController extends BaseController<UserService, User> {
     @PostMapping("save-all")
     public GenericResponse<BatchSaveOut> saveAll(@RequestBody List<User> users){
         return service.saveAll(users);
+    }
+
+    @GetMapping("ldap-all")
+    public GenericResponse<List<User>> ldapAll(){
+        return service.ldapAll();
     }
 }

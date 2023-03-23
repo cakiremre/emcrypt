@@ -33,4 +33,26 @@ export class UserService extends BaseService<User> {
       })
     );
   }
+
+  ldapAll(): Observable<Array<User> | undefined> {
+    return this.userApi.ldapAll().pipe(
+      map((res: GenericDataResponse<Array<User>>) => {
+        if (res.code == 0) {
+          let ret = new Array<User>();
+          res.data.forEach((user) => {
+            let usr = new User();
+            usr.init(user);
+            ret.push(usr);
+          });
+          return ret;
+        } else {
+          return undefined;
+        }
+      }),
+      catchError((err) => {
+        console.log("err", err);
+        return of(undefined);
+      })
+    );
+  }
 }

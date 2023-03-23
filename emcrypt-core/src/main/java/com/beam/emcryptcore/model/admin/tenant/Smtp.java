@@ -3,13 +3,16 @@ package com.beam.emcryptcore.model.admin.tenant;
 
 import com.beam.emcryptcore.base.Base;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("Endpoint")
 @TypeAlias("Smtp")
-@Data
+@Getter
+@Setter
 @Accessors(chain = true)
 public class Smtp extends Endpoint {
 

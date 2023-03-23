@@ -7,6 +7,8 @@ import com.beam.emcryptcore.dto.BatchSaveOut;
 import com.beam.emcryptcore.dto.GenericResponse;
 import com.beam.emcryptcore.dto.admin.ActivateRequest;
 import com.beam.emcryptcore.model.admin.company.User;
+import com.beam.emcryptcore.model.admin.tenant.Ldap;
+import com.beam.emcryptcore.model.admin.tenant.Type;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class UserService extends BaseService<UserRepository, User> {
+
+    private final EndpointService endpointService;
 
     public GenericResponse activate(ActivateRequest request) {
         String email = request.getEmail();
@@ -45,7 +49,7 @@ public class UserService extends BaseService<UserRepository, User> {
         users.forEach(user -> {
             if (!existingUserMap.containsKey(user.getEmail())) {
                 toAdd.add(user.newIdAndCreated());
-            }else{
+            } else {
                 User existing = existingUserMap.get(user.getEmail());
                 existing.updateFrom(user);
                 toUpdate.add(existing);
@@ -66,5 +70,16 @@ public class UserService extends BaseService<UserRepository, User> {
         }
 
         return GenericResponse.success(bso);
+    }
+
+    public GenericResponse<List<User>> ldapAll() {
+        Ldap ldap = endpointService.findByTypeDecrypted(Type.LDAP, Ldap.class);
+        if (ldap != null) {
+            LdapService ldapService = LdapService.build(ldap);
+            List<User> users = ldapService.getAllPeopleWithEmail();
+            return GenericResponse.success(users);
+        } else {
+            return GenericResponse.code(404);
+        }
     }
 }

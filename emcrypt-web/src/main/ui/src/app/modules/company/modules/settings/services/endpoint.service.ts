@@ -3,6 +3,7 @@ import {
   Base,
   compare,
   Direction,
+  GenericResponse,
   HasSubscription,
 } from "src/app/common/models/model";
 import { catchError, map, Observable, of, throwError } from "rxjs";
@@ -120,6 +121,24 @@ export class EndpointService extends HasSubscription implements OnDestroy {
 
   deleteLdap(): Observable<any> {
     return this.endpointApi.deleteLdap().pipe(
+      catchError((err) => {
+        console.log("err", err);
+        return of(undefined);
+      })
+    );
+  }
+
+  testLdap(ldap: Ldap): Observable<GenericResponse | undefined> {
+    return this.endpointApi.testLdap(ldap).pipe(
+      map((res) => {
+        if (res != undefined) {
+          let item = new GenericResponse();
+          item.init(res);
+          return res;
+        } else {
+          return undefined;
+        }
+      }),
       catchError((err) => {
         console.log("err", err);
         return of(undefined);
