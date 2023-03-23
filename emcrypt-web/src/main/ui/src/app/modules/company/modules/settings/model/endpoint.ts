@@ -11,11 +11,7 @@ export class Endpoint extends Base {
   encrypted: boolean;
 
   init(_endpoint: Endpoint) {
-    super.init(_endpoint);
-
-    this.type = _endpoint.type;
-    this.password = _endpoint.password;
-    this.encrypted = _endpoint.encrypted;
+    Object.assign(this, _endpoint);
   }
 }
 
@@ -33,14 +29,7 @@ export class Ldap extends Endpoint {
   init(_ldap: Ldap) {
     super.init(_ldap);
 
-    this.url = _ldap.url;
-    this.basedn = _ldap.basedn;
-    this.trust = _ldap.trust;
-    this.userCategory = _ldap.userCategory;
-    this.firstNameAttr = _ldap.firstNameAttr;
-    this.lastNameAttr = _ldap.lastNameAttr;
-    this.emailAttr = _ldap.emailAttr;
-    this.languageAttr = _ldap.languageAttr;
+    Object.assign(this, _ldap);
   }
 }
 
@@ -52,10 +41,7 @@ export class Smtp extends Endpoint {
   username: string;
 
   init(_smtp: Smtp) {
-    this.host = _smtp.host;
-    this.port = _smtp.port;
-    this.ssl = _smtp.ssl;
-    this.auth = _smtp.auth;
-    this.username = _smtp.username;
+    super.init(_smtp);
+    Object.assign(this, _smtp);
   }
 }

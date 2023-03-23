@@ -15,43 +15,31 @@ export class Email extends Base {
 
   init(_email: Email) {
     super.init(_email);
-    this.identifier = _email.identifier;
+    Object.assign(this, _email);
 
-    this.from = new Subject();
-    this.from.init(_email.from);
+    this.from = Object.assign(new Subject(), _email.from);
 
     this.to = new Array<Recipient>();
     _email.to.forEach((rcp) => {
-      let recipient = new Recipient();
-      recipient.init(rcp);
-      this.to.push(recipient);
+      this.to.push(Object.assign(new Recipient(), rcp));
     });
 
     this.cc = new Array<Recipient>();
-    _email.cc.forEach((rcp) => {
-      let recipient = new Recipient();
-      recipient.init(rcp);
-      this.cc.push(recipient);
-    });
+    _email.cc.forEach((rcp) =>
+      this.cc.push(Object.assign(new Recipient(), rcp))
+    );
 
     this.bcc = new Array<Recipient>();
     _email.bcc.forEach((rcp) => {
-      let recipient = new Recipient();
-      recipient.init(rcp);
-      this.bcc.push(recipient);
+      this.bcc.push(Object.assign(new Recipient(), rcp));
     });
     this.all = this.to.concat(this.cc).concat(this.bcc);
 
-    this.subject = _email.subject;
-
-    this.options = new Options();
-    this.options.init(_email.options);
+    this.options = Object.assign(new Options(), _email.options);
 
     this.attachments = new Array<Attachment>();
     _email.attachments.forEach((att) => {
-      let attachment = new Attachment();
-      attachment.init(att);
-      this.attachments.push(attachment);
+      this.attachments.push(Object.assign(new Attachment(), att));
     });
   }
 }

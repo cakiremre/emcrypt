@@ -6,8 +6,7 @@ export abstract class Base {
   created: Date;
 
   init(val: any) {
-    this.id = val.id;
-    this.created = val.created;
+    Object.assign(this, val);
   }
 }
 
@@ -36,8 +35,7 @@ export class GenericResponse {
   message: string;
 
   init(_res: GenericResponse) {
-    this.code = _res.code;
-    this.message = _res.message;
+    Object.assign(this, _res);
   }
 }
 
@@ -50,8 +48,7 @@ export class BatchSave {
   code: number;
 
   init(_batchSave: BatchSave) {
-    this.code = _batchSave.code;
-    this.count = _batchSave.count;
+    Object.assign(this, _batchSave);
   }
 }
 
@@ -60,9 +57,7 @@ export class BatchSaveOut {
 
   init(_out: BatchSaveOut) {
     _out.out.forEach((_item) => {
-      let item = new BatchSave();
-      item.init(_item);
-      this.out.push(item);
+      this.out.push(Object.assign(new BatchSave(), _item));
     });
   }
 }

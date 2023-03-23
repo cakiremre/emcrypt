@@ -1,5 +1,5 @@
-import { Base } from 'src/app/common/models/model';
-import { Profile } from 'src/app/modules/auth';
+import { Base } from "src/app/common/models/model";
+import { Profile } from "src/app/modules/auth";
 
 export class User extends Base {
   email: string;
@@ -13,8 +13,7 @@ export class User extends Base {
 
   init(_user: User) {
     super.init(_user);
-    this.email = _user.email;
-    this.activated = _user.activated;
-    this.profile.init(_user.profile);
+    Object.assign(this, _user);
+    this.profile = Object.assign(new Profile(), _user.profile);
   }
 }

@@ -28,7 +28,6 @@ export class SentComponent
   ngOnInit(): void {
     let subs = this.sentService.list().subscribe((data) => {
       this.sentList = data;
-      console.log(this.sentList);
     });
     this.unsubscribe.push(subs);
   }

@@ -8,12 +8,6 @@ export class Options {
   delayAt: Date;
 
   init(_options: Options) {
-    this.emcrypt = _options.emcrypt;
-    this.forward = _options.forward;
-    this.expire = _options.expire;
-    this.expireAt = _options.expireAt;
-    this.delay = _options.delay;
-    this.delayInMinutes = _options.delayInMinutes;
-    this.delayAt = _options.delayAt;
+    Object.assign(this, _options);
   }
 }

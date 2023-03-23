@@ -1,4 +1,4 @@
-import { Base } from 'src/app/common/models/model';
+import { Base } from "src/app/common/models/model";
 
 export enum Status {
   ENABLED,
@@ -16,9 +16,6 @@ export class Tenant extends Base {
   init(_tenant: Tenant) {
     super.init(_tenant);
 
-    this.name = _tenant.name;
-    this.domain = _tenant.domain;
-    this.status = _tenant.status;
-    this.owner = _tenant.owner;
+    Object.assign(this, _tenant);
   }
 }
