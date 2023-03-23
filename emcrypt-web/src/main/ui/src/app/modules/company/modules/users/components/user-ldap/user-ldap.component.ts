@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
-import { HasSubscription } from "src/app/common/models/model";
+import { HasSubscription, Pager } from "src/app/common/models/model";
 import { User } from "../../model/user";
 import { UserService } from "../../services/user.service";
 
@@ -13,12 +13,15 @@ export class UserLdapComponent
   extends HasSubscription
   implements OnInit, OnDestroy
 {
-  isSaving$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  isSaving: boolean;
-
   users: Array<User> = new Array();
+  pager: Pager = new Pager(0, 10);
+
   constructor(private userService: UserService) {
     super();
+  }
+
+  pageChanged(pager: Pager) {
+    this.pager = pager;
   }
 
   loadUsersFromLdap() {

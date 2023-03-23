@@ -8,6 +8,7 @@ import { UserManualComponent } from "./components/user-manual/user-manual.compon
 import { UserCsvComponent } from "./components/user-csv/user-csv.component";
 import { UserLdapComponent } from "./components/user-ldap/user-ldap.component";
 import { UsersRoutingModule } from "./users-routing.module";
+import { CommonsModule } from "src/app/common/commons.module";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { UsersRoutingModule } from "./users-routing.module";
     InlineSVGModule,
     RouterModule,
     ReactiveFormsModule,
+    CommonsModule,
   ],
 })
 export class UsersModule {}

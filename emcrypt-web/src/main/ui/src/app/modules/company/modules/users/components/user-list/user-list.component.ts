@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { HasSubscription } from "src/app/common/models/model";
+import { HasSubscription, Pager } from "src/app/common/models/model";
 import { User } from "../../model/user";
 import { UserService } from "../../services/user.service";
 
@@ -13,9 +13,14 @@ export class UserListComponent
   implements OnInit, OnDestroy
 {
   users: User[] = [];
+  pager = new Pager(0, 10);
 
   constructor(private userService: UserService) {
     super();
+  }
+
+  pageChanged(pager: Pager) {
+    this.pager = pager;
   }
 
   ngOnInit(): void {

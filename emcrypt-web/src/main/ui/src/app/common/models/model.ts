@@ -11,6 +11,16 @@ export abstract class Base {
   }
 }
 
+export class Pager {
+  current: number;
+  size: number;
+
+  constructor(current: number, size: number) {
+    this.current = current;
+    this.size = size;
+  }
+}
+
 export function compare(a: Base, b: Base) {
   if (a.created < b.created) {
     return 1;

@@ -1,0 +1,50 @@
+<div class="d-flex flex-stack flex-wrap pt-10">
+  <div class="d-flex flex-stack fs-6 fw-bold text-gray-700">
+    <span>Showing {{ start }} to {{ end }} of {{ total }} entries </span>
+    <div class="d-flex align-items-center py-3 mx-4">
+      <select
+        class="form-control"
+        style="width: 75px"
+        (change)="update()"
+        [(ngModel)]="size"
+      >
+        <option [ngValue]="size" *ngFor="let size of sizeList">
+          {{ size }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div>
+    <ul class="pagination" *ngIf="showScale">
+      <li class="page-item previous">
+        <a class="page-link cursor-pointer" (click)="first()"
+          ><fa-icon [icon]="faAnglesLeft"></fa-icon>
+        </a>
+      </li>
+      <li class="page-item previous">
+        <a class="page-link cursor-pointer" (click)="prev()"
+          ><fa-icon [icon]="faAngleLeft"></fa-icon>
+        </a>
+      </li>
+      <li
+        class="page-item"
+        [ngClass]="{ active: this.current == i - 1 }"
+        *ngFor="let i of visible"
+      >
+        <a class="page-link cursor-pointer" (click)="setPage(i)">
+          {{ i == -1 ? "..." : i }}
+        </a>
+      </li>
+      <li class="page-item next">
+        <a class="page-link cursor-pointer" (click)="next()"
+          ><fa-icon [icon]="faAngleRight"></fa-icon
+        ></a>
+      </li>
+      <li class="page-item next">
+        <a class="page-link cursor-pointer" (click)="last()"
+          ><fa-icon [icon]="faAnglesRight"></fa-icon
+        ></a>
+      </li>
+    </ul>
+  </div>
+</div>
