@@ -27,10 +27,6 @@ export class SentComponent
     super();
   }
 
-  pageChanged(pager: Pager) {
-    this.pager = pager;
-  }
-
   ngOnInit(): void {
     let subs = this.sentService.list().subscribe((data) => {
       this.sentList = data;

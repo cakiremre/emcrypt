@@ -117,10 +117,7 @@
       </table>
       <!-- end::Table -->
     </div>
-    <app-pager
-      [total]="users.length"
-      (pageChanged)="pageChanged($event)"
-    ></app-pager>
+    <app-pager [total]="users.length" [(pager)]="pager"></app-pager>
     <!-- end::Table container -->
   </div>
   <!-- begin::Body -->

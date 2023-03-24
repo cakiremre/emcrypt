@@ -22,7 +22,8 @@ import { Pager } from "../../models/model";
 })
 export class PagerComponent implements OnChanges {
   @Input() total: number;
-  @Output() pageChanged = new EventEmitter<Pager>();
+  @Input() pager: Pager;
+  @Output() pagerChange = new EventEmitter<Pager>();
 
   faAngleLeft = faAngleLeft;
   faAnglesLeft = faAnglesLeft;
@@ -116,6 +117,7 @@ export class PagerComponent implements OnChanges {
       this.end = this.total;
     }
 
-    this.pageChanged.emit(new Pager(this.current, this.size));
+    Object.assign(this.pager, { current: this.current, size: this.size });
+    this.pagerChange.emit(this.pager);
   }
 }

@@ -19,7 +19,7 @@ export class UserListComponent
     super();
   }
 
-  pageChanged(pager: Pager) {
+  pagerChange(pager: Pager) {
     this.pager = pager;
   }
 

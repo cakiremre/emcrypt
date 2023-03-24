@@ -29,10 +29,6 @@ export class UserCsvComponent
     // empty
   }
 
-  pageChanged(pager: Pager) {
-    this.pager = pager;
-  }
-
   onCsvSelect(csvInput: HTMLInputElement) {
     if (csvInput.files != null && csvInput.files.length > 0) {
       let fileReader = new FileReader();

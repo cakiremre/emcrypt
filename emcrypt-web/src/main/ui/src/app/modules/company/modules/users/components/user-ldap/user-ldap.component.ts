@@ -14,14 +14,10 @@ export class UserLdapComponent
   implements OnInit, OnDestroy
 {
   users: Array<User> = new Array();
-  pager: Pager;
+  pager: Pager = new Pager(0, 10);
 
   constructor(private userService: UserService) {
     super();
-  }
-
-  pageChanged(pager: Pager) {
-    this.pager = pager;
   }
 
   loadUsersFromLdap() {

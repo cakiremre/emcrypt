@@ -8,14 +8,22 @@
       >
     </h3>
     <div class="card-toolbar">
-      <button class="btn btn-sm btn-light-primary me-3 file-upload-button">
+      <a
+        class="btn btn-sm btn-light-primary me-3 file-upload-button"
+        (click)="csvInput.click()"
+      >
         <span
           [inlineSVG]="'./assets/media/icons/duotune/arrows/arr075.svg'"
           class="svg-icon svg-icon-3"
         ></span>
         Load File
-        <input #csvInput (change)="onCsvSelect(csvInput)" type="file" />
-      </button>
+        <input
+          #csvInput
+          (change)="onCsvSelect(csvInput)"
+          type="file"
+          style="display: none"
+        />
+      </a>
       <div class="me-0">
         <button
           class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary"
@@ -54,6 +62,13 @@
         <!-- begin::Table head -->
         <thead>
           <tr class="fw-bolder text-muted bg-light">
+            <th class="">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                *ngIf="users.length > 0"
+              />
+            </th>
             <th class="min-w-125px">First Name</th>
             <th class="min-w-125px">Last Name</th>
             <th class="min-w-125px">Email</th>
@@ -72,6 +87,9 @@
                   : (pager.current + 1) * pager.size
             "
           >
+            <td>
+              <input type="checkbox" class="form-check-input" />
+            </td>
             <td>
               <span
                 class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
@@ -144,10 +162,7 @@
       </table>
       <!-- end::Table -->
     </div>
-    <app-pager
-      [total]="users.length"
-      (pageChanged)="pageChanged($event)"
-    ></app-pager>
+    <app-pager [total]="users.length" [(pager)]="pager"></app-pager>
     <!-- end::Table container -->
   </div>
   <!-- begin::Body -->

@@ -86,10 +86,7 @@
       </table>
       <!-- end::Table -->
     </div>
-    <app-pager
-      [total]="sentList.length"
-      (pageChanged)="pageChanged($event)"
-    ></app-pager>
+    <app-pager [(pager)]="pager" [total]="sentList.length"></app-pager>
     <!-- end::Table container -->
   </div>
   <!-- begin::Body -->
