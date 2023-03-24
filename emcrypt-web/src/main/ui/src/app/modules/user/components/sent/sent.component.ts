@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import {
   GenericDataResponse,
   HasSubscription,
+  Pager,
 } from "src/app/common/models/model";
 import { Email } from "../../model/email";
 import { SentService } from "../../services/sent.service";
@@ -20,9 +21,14 @@ export class SentComponent
   sentList: Array<Email> = new Array();
   dateFormat = "DD.MM.yyyy HH:mm";
   selected: Email;
+  pager = new Pager(0, 10);
 
   constructor(private sentService: SentService) {
     super();
+  }
+
+  pageChanged(pager: Pager) {
+    this.pager = pager;
   }
 
   ngOnInit(): void {

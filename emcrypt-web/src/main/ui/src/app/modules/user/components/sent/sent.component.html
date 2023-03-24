@@ -29,7 +29,12 @@
         <!-- begin::Table body -->
         <tbody>
           <tr
-            *ngFor="let sent of sentList"
+            *ngFor="
+              let sent of sentList
+                | slice
+                  : pager.current * pager.size
+                  : (pager.current + 1) * pager.size
+            "
             class="hand"
             (click)="select(sent)"
             id="kt_drawer_example_basic_button"
@@ -81,6 +86,10 @@
       </table>
       <!-- end::Table -->
     </div>
+    <app-pager
+      [total]="sentList.length"
+      (pageChanged)="pageChanged($event)"
+    ></app-pager>
     <!-- end::Table container -->
   </div>
   <!-- begin::Body -->

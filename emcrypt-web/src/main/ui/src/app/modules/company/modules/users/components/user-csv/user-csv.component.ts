@@ -4,6 +4,7 @@ import {
   enumFromStringValue,
   HasSubscription,
   Language,
+  Pager,
 } from "src/app/common/models/model";
 import { User } from "../../model/user";
 import { UserService } from "../../services/user.service";
@@ -18,6 +19,7 @@ export class UserCsvComponent
   implements OnInit, OnDestroy
 {
   users: Array<User> = new Array();
+  pager: Pager = new Pager(0, 10);
 
   constructor(private userService: UserService) {
     super();
@@ -25,6 +27,10 @@ export class UserCsvComponent
 
   ngOnInit(): void {
     // empty
+  }
+
+  pageChanged(pager: Pager) {
+    this.pager = pager;
   }
 
   onCsvSelect(csvInput: HTMLInputElement) {

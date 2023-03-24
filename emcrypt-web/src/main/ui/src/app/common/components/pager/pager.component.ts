@@ -88,11 +88,11 @@ export class PagerComponent implements OnChanges {
     if (this.totalPages > 1) {
       this.showScale = true;
 
-      this.start = this.current * this.size + 1;
+      this.start = this.total == 0 ? 0 : this.current * this.size + 1;
       this.end = Math.min(this.start + this.size, this.total);
 
       if (this.totalPages <= 5) {
-        for (let k = 1; k < this.totalPages; k++) {
+        for (let k = 1; k <= this.totalPages; k++) {
           this.visible.push(k);
         }
       } else {

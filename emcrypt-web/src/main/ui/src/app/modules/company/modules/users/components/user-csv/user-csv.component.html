@@ -64,7 +64,14 @@
         <!-- end::Table head -->
         <!-- begin::Table body -->
         <tbody>
-          <tr *ngFor="let user of users">
+          <tr
+            *ngFor="
+              let user of users
+                | slice
+                  : pager.current * pager.size
+                  : (pager.current + 1) * pager.size
+            "
+          >
             <td>
               <span
                 class="text-dark fw-bolder text-hover-primary d-block mb-1 fs-6"
@@ -137,6 +144,10 @@
       </table>
       <!-- end::Table -->
     </div>
+    <app-pager
+      [total]="users.length"
+      (pageChanged)="pageChanged($event)"
+    ></app-pager>
     <!-- end::Table container -->
   </div>
   <!-- begin::Body -->

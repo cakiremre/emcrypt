@@ -14,7 +14,7 @@ export class UserLdapComponent
   implements OnInit, OnDestroy
 {
   users: Array<User> = new Array();
-  pager: Pager = new Pager(0, 10);
+  pager: Pager;
 
   constructor(private userService: UserService) {
     super();
