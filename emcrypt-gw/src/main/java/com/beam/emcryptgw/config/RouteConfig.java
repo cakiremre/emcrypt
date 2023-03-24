@@ -18,6 +18,10 @@ public class RouteConfig {
                         .path("/", "/*.css", "/*.js")
                         .uri("lb://web")
                 )
+                .route(p -> p
+                        .path("/webaddin/**")
+                        .uri("lb://web")
+                )
                 .route( p -> p
                         .path("/api/comm/**")
                         .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
