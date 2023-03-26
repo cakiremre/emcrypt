@@ -34,6 +34,7 @@ export class Account extends Base {
 
   authorities: Role[];
   profile: Profile;
+  tenant: string;
 
   accountNonExpired: boolean;
   accountNonLocked: boolean;

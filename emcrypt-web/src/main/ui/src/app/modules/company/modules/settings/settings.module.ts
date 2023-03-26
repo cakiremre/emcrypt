@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CKEditorModule } from "ckeditor4-angular";
 import { LdapComponent } from "./components/ldap/ldap.component";
 import { SmtpComponent } from "./components/smtp/smtp.component";
+import { PluginComponent } from './components/plugin/plugin.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,7 @@ import { SmtpComponent } from "./components/smtp/smtp.component";
     EmailContentComponent,
     LdapComponent,
     SmtpComponent,
+    PluginComponent,
   ],
   imports: [
     CommonModule,

@@ -5,6 +5,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { EmailContentComponent } from "./components/email-content/email-content.component";
 import { SmtpComponent } from "./components/smtp/smtp.component";
 import { LdapComponent } from "./components/ldap/ldap.component";
+import { PluginComponent } from "./components/plugin/plugin.component";
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
       { path: "email", component: EmailContentComponent },
       { path: "smtp", component: SmtpComponent },
       { path: "ldap", component: LdapComponent },
+      { path: "plugin", component: PluginComponent },
 
       { path: "**", redirectTo: "/company/overview", pathMatch: "full" },
     ],

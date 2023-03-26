@@ -14,13 +14,13 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
 
 import static com.beam.emcryptcore.service.JwtService.CLAIM_ROLE_KEY;
 import static com.beam.emcryptcore.service.JwtService.CLAIM_TENANT_KEY;
+import static com.beam.emcryptgw.security.RoleResolver.resolve;
 
 @RequiredArgsConstructor
 @RefreshScope
@@ -45,7 +45,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     jwtService.validateToken(token);
 
                     // If user is not ADMIN = > then add header
-                    List<Role> roles = config.from((List<LinkedHashMap<String, String>>) jwtService.extractClaim(token, claims -> claims.get(CLAIM_ROLE_KEY)));
+                    List<Role> roles = resolve((List<LinkedHashMap<String, String>>) jwtService.extractClaim(token, claims -> claims.get(CLAIM_ROLE_KEY)));
 
                     if (!roles.contains(Role.admin())) {
                         String identifier = jwtService.extractClaim(token, claims -> claims.get(CLAIM_TENANT_KEY).toString());
@@ -72,14 +72,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
     public static class Config {
 
-        private List<Role> from(List<LinkedHashMap<String, String>> from) {
-            List<Role> roles = new ArrayList<>();
 
-            from.forEach(item -> {
-                roles.add(Role.builder().name(item.get("name")).build());
-            });
-
-            return roles;
-        }
     }
 }

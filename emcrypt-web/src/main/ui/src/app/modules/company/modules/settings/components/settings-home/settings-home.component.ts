@@ -26,6 +26,11 @@ export class SettingsHomeComponent {
         "Smtp settings are necessary for sending email from company SMTP server",
       link: "/company/settings/smtp",
     },
+    {
+      name: "Plugin",
+      description: "Download various plugins for Emcrypt",
+      link: "/company/settings/plugin",
+    },
   ];
   constructor(private router: Router) {}
 

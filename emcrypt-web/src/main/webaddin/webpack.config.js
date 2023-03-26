@@ -4,6 +4,7 @@ const devCerts = require("office-addin-dev-certs");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const { DefinePlugin } = require("webpack");
 
 const urlDev = "https://localhost:3000/";
 const urlProd = "{{webaddin-path}}";
@@ -59,6 +60,9 @@ module.exports = async (env, options) => {
       ],
     },
     plugins: [
+      new DefinePlugin({
+        API_URL: dev ? JSON.stringify("http://localhost:8080") : JSON.stringify(""),
+      }),
       new HtmlWebpackPlugin({
         filename: "readpane.html",
         template: "./src/readpane/readpane.html",

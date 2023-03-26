@@ -22,5 +22,5 @@ eureka:
 logging:
   level:
     root: INFO
-    org.springframework.cloud.gateway: TRACE
-    org.springframework.cloud.gateway.route.RouteDefinitionLocator: TRACE
+    org.springframework.cloud.gateway: INFO
+    org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO

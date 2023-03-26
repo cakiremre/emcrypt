@@ -1,5 +1,5 @@
 export const tenant = "beamteknolojicom";
-export const baseUrl = "http://localhost:8080";
+export const baseUrl = API_URL; // defined by webpack; look for DefinePlugin
 
 import $ from "jquery";
 
