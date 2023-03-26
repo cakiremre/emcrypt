@@ -4,6 +4,21 @@
  */
 
 /* global document, Office */
+
+import $ from "jquery";
+var moment = require("moment");
+
+import { officeGetUserConfig, officeGetContent, officeGetAttachmentData } from "../helper/office-functions";
+import { serverDecryptKey, serverGetOptions } from "../helper/server-functions";
+import {
+  decryptAttachment,
+  decryptMessage,
+  base64ToArrayBuffer,
+  saveByteArray,
+  extractInfoFromContent,
+  toggle,
+} from "../helper/functions";
+
 let config;
 Office.onReady((info) => {
   config = officeGetUserConfig(Office);

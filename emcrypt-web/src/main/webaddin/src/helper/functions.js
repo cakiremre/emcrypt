@@ -1,3 +1,8 @@
+var CryptoJS = require("crypto-js");
+const JSEncrypt = require("jsencrypt").default;
+
+import $ from "jquery";
+
 let chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
 // create a key for symmetric encryption
 // pass in the desired length of your key
@@ -106,7 +111,7 @@ let toggle = function (selector, show) {
   }
 };
 
-function base64ToArrayBuffer(base64) {
+let base64ToArrayBuffer = function (base64) {
   var binaryString = window.atob(base64);
   var binaryLen = binaryString.length;
   var bytes = new Uint8Array(binaryLen);
@@ -115,17 +120,30 @@ function base64ToArrayBuffer(base64) {
     bytes[i] = ascii;
   }
   return bytes;
-}
+};
 
-function saveByteArray(fileName, byte) {
+let saveByteArray = function (fileName, byte) {
   var blob = new Blob([byte]);
   var link = document.createElement("a");
   link.href = window.URL.createObjectURL(blob);
   link.download = fileName;
   link.click();
-}
+};
 
-function removeUTCDate(dateInput) {
+let removeUTCDate = function (dateInput) {
   let date = dateInput ? dateInput : new Date();
   return new Date(date.getTime() - new Date().getTimezoneOffset() * 60 * 1000);
-}
+};
+
+export {
+  toggle,
+  encryptMessage,
+  decryptMessage,
+  decryptAttachment,
+  translateAddresses,
+  translateAddress,
+  extractInfoFromContent,
+  base64ToArrayBuffer,
+  saveByteArray,
+  removeUTCDate,
+};

@@ -5,8 +5,19 @@
 
 /* global document, Office */
 import $ from "jquery";
-let CryptoJS = require("crypto-js");
-let JSEncrypt = require("jsencrypt");
+var moment = require("moment");
+
+import {
+  officeGetUserConfig,
+  officeGetContent,
+  officeGetAttachments,
+  officeGetAsyncProp,
+  officeSetBody,
+  officeSetAttachments,
+  officeSetUserPreferences,
+} from "../helper/office-functions";
+import { toggle, removeUTCDate, encryptMessage, translateAddress, translateAddresses } from "../helper/functions";
+import { serverGetPublicKey, serverSendEmail, tenant } from "../helper/server-functions";
 
 let mailboxItem;
 

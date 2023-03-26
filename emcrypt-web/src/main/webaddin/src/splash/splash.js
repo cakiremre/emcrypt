@@ -6,6 +6,9 @@
 /* global document, Office */
 
 import $ from "jquery";
+import { toggle } from "../helper/functions";
+import { officeSetUserConfig } from "../helper/office-functions";
+import { serverActivateUser } from "../helper/server-functions";
 
 Office.onReady((info) => {
   $("#outlook").bind("click", outlook);

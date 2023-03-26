@@ -17,7 +17,6 @@ async function getHttpsOptions() {
 module.exports = async (env, options) => {
   const dev = options.mode === "development";
   const config = {
-    devtool: "source-map",
     entry: {
       polyfill: ["core-js/stable", "regenerator-runtime/runtime"],
       readpane: ["./src/readpane/readpane.js", "./src/readpane/readpane.html"],
@@ -28,6 +27,7 @@ module.exports = async (env, options) => {
     output: {
       clean: true,
       path: path.resolve(__dirname, "../resources/webaddin/"),
+      filename: "[name].[contenthash].js",
     },
     resolve: {
       extensions: [".html", ".js"],
@@ -111,6 +111,9 @@ module.exports = async (env, options) => {
         options: env.WEBPACK_BUILD || options.https !== undefined ? options.https : await getHttpsOptions(),
       },
       port: process.env.npm_package_config_dev_server_port || 3000,
+    },
+    stats: {
+      errorDetails: true,
     },
   };
 

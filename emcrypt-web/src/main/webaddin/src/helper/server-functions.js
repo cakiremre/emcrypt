@@ -1,7 +1,9 @@
-const tenant = "beamteknolojicom";
-const baseUrl = "http://localhost:8080";
+export const tenant = "beamteknolojicom";
+export const baseUrl = "http://localhost:8080";
 
-function serverActivateUser(office, email) {
+import $ from "jquery";
+
+export function serverActivateUser(office, email) {
   let data = {
     email: email,
   };
@@ -34,7 +36,7 @@ function serverActivateUser(office, email) {
   });
 }
 
-function serverGetPublicKey(office) {
+export function serverGetPublicKey(office) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.get({
@@ -56,7 +58,7 @@ function serverGetPublicKey(office) {
   });
 }
 
-function serverGetOptions(office, messageId) {
+export function serverGetOptions(office, messageId) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.get({
@@ -82,7 +84,7 @@ function serverGetOptions(office, messageId) {
   });
 }
 
-function serverDecryptKey(office, encrypted, address, messageId) {
+export function serverDecryptKey(office, encrypted, address, messageId) {
   return new office.Promise(function (resolve, reject) {
     try {
       $.post({
@@ -107,7 +109,7 @@ function serverDecryptKey(office, encrypted, address, messageId) {
   });
 }
 
-function serverSendEmail(office, email) {
+export function serverSendEmail(office, email) {
   email.identifier = tenant;
   return new office.Promise(function (resolve, reject) {
     try {
