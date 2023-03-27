@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "admin", path = "/api/adm/db")
+@FeignClient(name = "admin.emc", path = "/api/adm/db")
 public interface DbService extends IDbService {
 
     @GetMapping("list")

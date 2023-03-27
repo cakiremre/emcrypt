@@ -1,6 +1,6 @@
 spring:
   application:
-    name: gw
+    name: gw.emc
   data:
     mongodb:
       database: emcrypt-gw
@@ -14,8 +14,6 @@ spring:
     web-application-type: REACTIVE
 
 eureka:
-  instance:
-    hostname: localhost
   client:
     registry-fetch-interval-seconds: 5
     serviceUrl:

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: comm
+    name: comm.emc
   cloud:
     loadbalancer:
       health-check:
@@ -15,8 +15,6 @@ server:
   port: 0
 
 eureka:
-  instance:
-    hostname: localhost
   client:
     registry-fetch-interval-seconds: 5
     serviceUrl:

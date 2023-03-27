@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import static com.beam.emcryptcore.db.DbConfigurerInterceptor.TENANT_HEADER;
 
-@FeignClient(name = "box", path = "/api/box/emkey")
+@FeignClient(name = "box.emc", path = "/api/box/emkey")
 public interface KeyService {
 
     @PostMapping("create")

@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "gw", path = "/api/gw/account")
+@FeignClient(name = "gw.emc", path = "/api/gw/account")
 public interface AccountService {
 
     @PostMapping

@@ -17,27 +17,27 @@ public class RouteConfig {
         return builder.routes()
                 .route(p -> p
                         .path("/", "/*.css", "/*.js")
-                        .uri("lb://web")
+                        .uri("lb://web.emc")
                 )
                 .route(p -> p
                         .path("/webaddin/**")
                         .filters(f -> f.filter(webResourceFilter.apply(new WebResourceFilter.Config())))
-                        .uri("lb://web")
+                        .uri("lb://web.emc")
                 )
                 .route( p -> p
                         .path("/api/comm/**")
                         .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("lb://comm")
+                        .uri("lb://comm.emc")
                 )
                 .route( p -> p
                         .path("/api/adm/**")
                         .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("lb://admin")
+                        .uri("lb://admin.emc")
                 )
                 .route( p -> p
                         .path("/api/box/**")
                         .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
-                        .uri("lb://box")
+                        .uri("lb://box.emc")
                 )
                 .route(p -> p
                         .path("/eureka/web")
@@ -50,7 +50,7 @@ public class RouteConfig {
                 )
                 .route(p -> p
                         .predicate(r -> r.getRequest().getHeaders().getAccept().contains(MediaType.TEXT_HTML))
-                        .uri("lb://web")
+                        .uri("lb://web.emc")
                 )
                 .build();
     }
