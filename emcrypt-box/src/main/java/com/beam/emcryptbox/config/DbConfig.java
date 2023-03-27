@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DbConfig implements IPrimaryDbConfigurator {
 
-    public static final String PRIMARY_DATABASE_URI = "mongodb://localhost/";
+    public static final String PRIMARY_DATABASE_URI = "mongodb://db.emc/";
     public static final String PRIMARY_DATABASE_NAME = "emcrypt-box";
 
     private final DbService dbService;

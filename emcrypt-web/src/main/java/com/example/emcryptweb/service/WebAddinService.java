@@ -22,9 +22,7 @@ public class WebAddinService {
 
     public ResponseEntity manifest(String serverName, String tenant) {
 
-        serverName = cleanServerName(serverName);
-
-        String addinHost = "https://" + tenant + "." + serverName;
+        String addinHost = getAddinHost(serverName, tenant);
         String addinPath = addinHost + "/webaddin/resources/";
 
         try {
@@ -46,13 +44,19 @@ public class WebAddinService {
 
     }
 
-    private String cleanServerName(String serverName) {
+    private String getAddinHost(String serverName, String tenant) {
         if(serverName.contains(",")){ // that means multiple hosts including localhost
             List<String> hosts = Arrays.asList(serverName.split(","));
-            return hosts.stream()
+            String hostname = hosts.stream()
                     .filter(q -> !q.contains("localhost"))
                     .findFirst()
                     .orElse(null);
+
+            if(hostname.contains(tenant)){
+                return "https://" + hostname;
+            }else{
+                return "https://" + tenant + "." + hostname;
+            }
         }else{
             return serverName;
         }

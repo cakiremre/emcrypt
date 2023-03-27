@@ -3,7 +3,7 @@ eureka:
     fetch-registry: false
     register-with-eureka: false
   instance:
-    hostname: localhost
+    hostname: eureka.emc
 server:
   port: 8761
 
