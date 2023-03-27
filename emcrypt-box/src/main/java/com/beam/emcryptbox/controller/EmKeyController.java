@@ -42,13 +42,13 @@ public class EmKeyController {
     }
 
     @GetMapping("encrypt-key-html")
-    public EncryptResponse encryptRequest(@RequestParam String owner) {
+    public EncryptResponse encryptRequest(@RequestHeader("X-TENANT") String owner) {
         return service.readEncryptionMaterial(owner);
     }
 
     @PostMapping("decrypt-key")
-    public KeyResponse<String> decryptKey(@RequestBody DecryptRequest request){
-        return service.decryptKey(request);
+    public KeyResponse<String> decryptKey(@RequestHeader("X-TENANT") String tenant, @RequestBody DecryptRequest request){
+        return service.decryptKey(tenant, request);
     }
 
     @GetMapping("should-decrypt")

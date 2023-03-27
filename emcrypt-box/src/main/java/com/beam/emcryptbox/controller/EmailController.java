@@ -23,7 +23,7 @@ public class EmailController extends BaseController<EmailService, Email> {
     }
 
     @GetMapping("options")
-    private GenericResponse<Options> options(@RequestParam String tenant, @RequestParam String messageId){
+    private GenericResponse<Options> options(@RequestHeader("X-TENAN") String tenant, @RequestParam String messageId){
         return service.readOptions(messageId);
     }
 

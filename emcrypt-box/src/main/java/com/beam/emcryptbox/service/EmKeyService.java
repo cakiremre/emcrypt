@@ -134,13 +134,13 @@ public class EmKeyService extends BaseService<EmKeyRepository, EmKey> {
         }
     }
 
-    public KeyResponse<String> decryptKey(DecryptRequest request) {
+    public KeyResponse<String> decryptKey(String tenant, DecryptRequest request) {
 
         // get email options, and subject information by messageId and user
         GenericResponse should = shouldDecrypt(request.getMessageId(), request.getAddress());
 
         if (should.getCode() == 0) {
-            KeyResponse<String> response = findByOwner(request.getTenant(), KeyType.PRIVATE);
+            KeyResponse<String> response = findByOwner(tenant, KeyType.PRIVATE);
 
             if (response.getCode() == 0) {
                 String privateKey = response.getData();

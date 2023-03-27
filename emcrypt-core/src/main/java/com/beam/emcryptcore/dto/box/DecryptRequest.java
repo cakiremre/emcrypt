@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
 @Builder
 public class DecryptRequest {
 
-    private String tenant;
     private String key;
 
     private String address;

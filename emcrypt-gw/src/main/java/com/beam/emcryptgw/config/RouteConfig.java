@@ -36,7 +36,9 @@ public class RouteConfig {
                 )
                 .route( p -> p
                         .path("/api/box/**")
-                        .filters(f->f.filter(authFilter.apply(new AuthenticationFilter.Config())))
+                        .filters(f->f
+                                .filter(authFilter.apply(new AuthenticationFilter.Config()))
+                                .filter(webResourceFilter.apply(new WebResourceFilter.Config())))
                         .uri("lb://box.emc")
                 )
                 .route(p -> p

@@ -62,6 +62,7 @@ module.exports = async (env, options) => {
     plugins: [
       new DefinePlugin({
         API_URL: dev ? JSON.stringify("http://localhost:8080") : JSON.stringify(""),
+        DEV_TENANT: dev ? JSON.stringify("beamteknolojicom") : JSON.stringify(""),
       }),
       new HtmlWebpackPlugin({
         filename: "readpane.html",

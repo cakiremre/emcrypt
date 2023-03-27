@@ -1,4 +1,4 @@
-export const tenant = "beamteknolojicom";
+export const tenant = DEV_TENANT;
 export const baseUrl = API_URL; // defined by webpack; look for DefinePlugin
 
 import $ from "jquery";
@@ -9,14 +9,11 @@ export function serverActivateUser(office, email) {
   };
   return new office.Promise(function (resolve, reject) {
     try {
-      $.post({
+      let request = {
         url: `${baseUrl}/api/adm/user/activate`,
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        headers: {
-          "X-TENANT": tenant,
-        },
         success: function (response) {
           if (response.code == 0) {
             resolve();
@@ -29,7 +26,14 @@ export function serverActivateUser(office, email) {
         error: function (err) {
           reject(err.message);
         },
-      });
+      };
+
+      if (tenant) {
+        request.headers = {
+          "X-TENANT": tenant,
+        };
+      }
+      $.post(request);
     } catch (error) {
       reject(error.message);
     }
@@ -39,11 +43,8 @@ export function serverActivateUser(office, email) {
 export function serverGetPublicKey(office) {
   return new office.Promise(function (resolve, reject) {
     try {
-      $.get({
-        url: `${baseUrl}/api/box/emkey/encrypt-key-html?owner=${tenant}`,
-        headers: {
-          "X-TENANT": tenant,
-        },
+      let request = {
+        url: `${baseUrl}/api/box/emkey/encrypt-key-html`,
         success: function (response) {
           // create aes-256 key.
           resolve(response);
@@ -51,7 +52,13 @@ export function serverGetPublicKey(office) {
         error: function (err) {
           reject(err);
         },
-      });
+      };
+      if (tenant) {
+        request.headers = {
+          "X-TENANT": tenant,
+        };
+      }
+      $.get(request);
     } catch (error) {
       reject(error);
     }
@@ -61,11 +68,8 @@ export function serverGetPublicKey(office) {
 export function serverGetOptions(office, messageId) {
   return new office.Promise(function (resolve, reject) {
     try {
-      $.get({
-        url: `${baseUrl}/api/box/email/options?tenant=${tenant}&messageId=${messageId}`,
-        headers: {
-          "X-TENANT": tenant,
-        },
+      let request = {
+        url: `${baseUrl}/api/box/email/options?messageId=${messageId}`,
         success: function (response) {
           // create aes-256 key.
           if (response.code == 0) {
@@ -77,7 +81,13 @@ export function serverGetOptions(office, messageId) {
         error: function (err) {
           reject(err);
         },
-      });
+      };
+      if (tenant) {
+        request.headers = {
+          "X-TENANT": tenant,
+        };
+      }
+      $.get(request);
     } catch (error) {
       reject(error);
     }
@@ -87,14 +97,11 @@ export function serverGetOptions(office, messageId) {
 export function serverDecryptKey(office, encrypted, address, messageId) {
   return new office.Promise(function (resolve, reject) {
     try {
-      $.post({
+      let request = {
         url: `${baseUrl}/api/box/emkey/decrypt-key`,
-        data: JSON.stringify({ tenant: tenant, key: encrypted, address: address, messageId: messageId }),
+        data: JSON.stringify({ key: encrypted, address: address, messageId: messageId }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        headers: {
-          "X-TENANT": tenant,
-        },
         success: function (response) {
           // create aes-256 key.
           resolve(response);
@@ -102,7 +109,13 @@ export function serverDecryptKey(office, encrypted, address, messageId) {
         error: function (err) {
           reject(err);
         },
-      });
+      };
+      if (tenant) {
+        request.headers = {
+          "X-TENANT": tenant,
+        };
+      }
+      $.post(request);
     } catch (error) {
       reject(error);
     }
@@ -113,21 +126,24 @@ export function serverSendEmail(office, email) {
   email.identifier = tenant;
   return new office.Promise(function (resolve, reject) {
     try {
-      $.post({
+      let request = {
         url: `${baseUrl}/api/box/email/save`,
         data: JSON.stringify(email),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        headers: {
-          "X-TENANT": tenant,
-        },
         success: function (response) {
           resolve(response);
         },
         error: function (err) {
           reject(err);
         },
-      });
+      };
+      if (tenant) {
+        request.headers = {
+          "X-TENANT": tenant,
+        };
+      }
+      $.post(request);
     } catch (error) {
       reject(error);
     }

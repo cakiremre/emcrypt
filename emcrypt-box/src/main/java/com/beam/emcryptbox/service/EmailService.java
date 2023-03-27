@@ -73,9 +73,8 @@ public class EmailService extends BaseService<EmailRepository, Email> {
             Email email = query.get();
             email.getAttachments().forEach(attachment -> attachment.setData(null));
 
-            KeyResponse<String> response = emKeyService.decryptKey(DecryptRequest.builder()
+            KeyResponse<String> response = emKeyService.decryptKey(tenant, DecryptRequest.builder()
                     .key(email.getKey())
-                    .tenant(tenant)
                     .address(address)
                     .messageId(messageId)
                     .build());
@@ -127,9 +126,8 @@ public class EmailService extends BaseService<EmailRepository, Email> {
         Optional<Email> query = repository.findById(messageId);
         if (query.isPresent()) {
             Email email = query.get();
-            KeyResponse<String> response = emKeyService.decryptKey(DecryptRequest.builder()
+            KeyResponse<String> response = emKeyService.decryptKey(tenant, DecryptRequest.builder()
                     .key(email.getKey())
-                    .tenant(tenant)
                     .address(address)
                     .messageId(messageId)
                     .build());
